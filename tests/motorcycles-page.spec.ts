@@ -38,7 +38,7 @@ test.describe("page motos professionnelles", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/");
     await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
-    await expect(page.locator("#mega-equipements a", { hasText: "Motos et mobilité légère" }).first()).toHaveAttribute(
+    await expect(page.locator("#mega-equipements a", { hasText: "Motos & deux-roues" }).first()).toHaveAttribute(
       "href",
       "/equipements/motos",
     );

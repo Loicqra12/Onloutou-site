@@ -39,7 +39,7 @@ test.describe("page hub équipements", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/");
     await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
-    await expect(page.locator("#mega-equipements a", { hasText: "Vue d’ensemble" }).first()).toHaveAttribute(
+    await expect(page.locator("#mega-equipements a", { hasText: "Vue d'ensemble" }).first()).toHaveAttribute(
       "href",
       "/equipements",
     );

@@ -32,7 +32,7 @@ test.describe("page location", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/solutions");
     await page.locator(".site-nav-trigger", { hasText: "Solutions" }).hover();
-    const louer = page.locator("#mega-solutions a", { hasText: "Louer" }).first();
+    const louer = page.locator("#mega-solutions a", { hasText: "Location d'équipements" }).first();
     await expect(louer).toHaveAttribute("href", "/solutions/location");
   });
 });

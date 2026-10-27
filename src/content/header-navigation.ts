@@ -20,14 +20,6 @@ const mobilityImage = img(
   "48% 58%",
 );
 
-const warehouseImage = img(
-  `${projectA}/gestion-equipements-entrepot.png`,
-  "Opératrice scannant des équipements dans un entrepôt",
-  1536,
-  1024,
-  "64% 38%",
-);
-
 const supervisionImage = img(
   `${projectA}/supervision-flotte-abidjan.png`,
   "Écran de démonstration de supervision de flotte consulté depuis un bureau — données illustratives",
@@ -41,7 +33,7 @@ const digitalImage = img(
   "Équipe discutant d'un outil numérique autour d'une tablette",
   1536,
   1024,
-  "72% 40%",
+  "58% 40%",
 );
 
 const equipmentMenuImage = img(
@@ -49,15 +41,15 @@ const equipmentMenuImage = img(
   "Technicien contrôlant un groupe électrogène, avec un utilitaire et une moto en arrière-plan",
   1586,
   992,
-  "82% 68%",
+  "72% 55%",
 );
 
 const expertiseImage = img(
-  `${projectB}/controle-cablage-automobile.png`,
-  "Contrôle du câblage automobile avant une installation",
+  `${projectB}/formation-dispositif-connecte.png`,
+  "Techniciens ONLOUTOU consultant une tablette devant un groupe électrogène",
   1536,
   1024,
-  "55% 42%",
+  "42% 38%",
 );
 
 const facadeImage = img(
@@ -68,284 +60,314 @@ const facadeImage = img(
   "center 52%",
 );
 
-// Step 1 — Solutions: 3 groups (Équiper / Connecter & piloter / Construire), layout columns-3-visual
 const solutionsMenu: MegaMenuConfig = {
   id: "solutions",
   label: "Solutions",
-  layout: "columns-3-visual",
-  overviewHref: "/solutions",
-  overviewLabel: "Toutes les solutions",
-  defaultVisual: "equiper",
+  variant: "columns",
+  eyebrow: "Nos solutions",
+  width: 1180,
+  asideWeight: 1.05,
+  overview: { label: "Toutes les solutions", href: "/solutions" },
   groups: [
     {
       id: "equiper",
+      iconId: "excavator",
       title: "Équiper",
-      description: "Location, vente et sélection d'équipements.",
-      href: "/equipements",
+      description: "Les moyens adaptés à votre activité.",
       items: [
-        { type: "link", label: "Location de véhicules", href: "/solutions/location#vehicules" },
-        { type: "link", label: "Location de camions et engins", href: "/solutions/location#camions" },
-        { type: "link", label: "Location d'équipements", href: "/solutions/location#outils" },
+        { type: "link", label: "Location d'équipements", href: "/solutions/location", emphasis: true },
         { type: "link", label: "Vente d'équipements", href: "/solutions/vente" },
-        { type: "link", label: "Explorer le catalogue", href: "/equipements" },
+        { type: "link", label: "Explorer les familles", href: "/equipements" },
       ],
     },
     {
       id: "connecter",
+      iconId: "pin",
       title: "Connecter & piloter",
-      description: "Géolocalisation, flotte, alertes et supervision.",
-      href: "/solutions#connecter-piloter",
+      description: "Gardez la maîtrise du terrain.",
       items: [
         { type: "link", label: "Géolocalisation", href: "/solutions/geolocalisation" },
         { type: "link", label: "Gestion de flotte", href: "/solutions/gestion-de-flotte" },
-        { type: "link", label: "Alertes et géozones", href: "/solutions/geolocalisation#alertes" },
-        { type: "link", label: "Supervision des actifs", href: "/solutions/securisation-actifs" },
-        { type: "link", label: "Tableaux de bord", href: "/solutions/gestion-de-flotte#tableaux-de-bord" },
+        { type: "link", label: "Sécurisation des actifs", href: "/solutions/securisation-actifs" },
       ],
     },
     {
       id: "construire",
+      iconId: "cog",
       title: "Construire",
-      description: "Plateformes Web, mobile et outils métier.",
-      href: "/solutions/plateformes-sur-mesure",
+      description: "Des outils conçus pour vos usages.",
       items: [
-        { type: "link", label: "Plateformes Web et mobile", href: "/solutions/plateformes-sur-mesure#types-plateformes" },
-        { type: "link", label: "Applications métier", href: "/solutions/plateformes-sur-mesure#roles-interfaces" },
-        { type: "link", label: "Intégrations", href: "/solutions/plateformes-sur-mesure#architecture-fonctionnelle" },
-        { type: "link", label: "Préparer un projet", href: "/solutions/plateformes-sur-mesure#brief-projet" },
+        { type: "link", label: "Plateformes sur mesure", href: "/solutions/plateformes-sur-mesure" },
+        {
+          type: "link",
+          label: "Applications métier",
+          href: "/solutions/plateformes-sur-mesure#roles-interfaces",
+        },
+        {
+          type: "link",
+          label: "Préparer un projet",
+          href: "/solutions/plateformes-sur-mesure#brief-projet",
+        },
       ],
     },
   ],
-  visuals: {
-    equiper: {
-      image: mobilityImage,
-      caption: "Mobilité professionnelle pour les opérations de terrain.",
-      cta: { label: "Voir la location", href: "/solutions/location" },
-    },
-    connecter: {
-      image: supervisionImage,
-      caption: "Interface de démonstration — données illustratives.",
-      cta: { label: "Voir la géolocalisation", href: "/solutions/geolocalisation" },
-    },
-    construire: {
-      image: digitalImage,
-      caption: "Outils numériques conçus avec les équipes métier.",
-      cta: { label: "Voir les plateformes", href: "/solutions/plateformes-sur-mesure" },
-    },
+  visual: {
+    image: mobilityImage,
+    title: "Un besoin. La bonne solution.",
+    subtitle: "Parlons de votre activité.",
+    cta: { label: "Trouver ma solution", href: "/solutions#contact-solutions" },
+  },
+  footer: {
+    iconId: "chat",
+    text: "Un projet à préciser ?",
+    cta: { label: "Échangeons sur votre besoin", href: "/contact" },
   },
 };
 
-// Step 2 — Équipements: 5 groups with iconId, layout grid-icon-visual
 const equipmentMenu: MegaMenuConfig = {
   id: "equipements",
   label: "Équipements",
-  layout: "grid-icon-visual",
-  overviewHref: "/equipements",
+  variant: "icon-grid",
+  eyebrow: "Les équipements",
+  width: 1100,
+  asideWeight: 0.68,
+  overview: { label: "Vue d'ensemble", href: "/equipements" },
   groups: [
     {
       id: "vehicules",
-      iconId: "car",
+      iconId: "van",
       title: "Véhicules professionnels",
-      description: "Utilitaires, berlines, 4×4",
+      description: "La mobilité au service de vos équipes.",
       href: "/equipements/vehicules",
-      items: [
-        { type: "link", label: "Véhicules en location", href: "/solutions/location#vehicules" },
-        { type: "link", label: "Véhicules à la vente", href: "/solutions/vente#vehicules" },
-      ],
-    },
-    {
-      id: "motos",
-      iconId: "bike",
-      title: "Motos et deux-roues",
-      description: "Livraison et déplacements terrain",
-      href: "/equipements/motos",
-      items: [
-        { type: "link", label: "Motos professionnelles", href: "/equipements/motos" },
-      ],
+      items: [],
     },
     {
       id: "camions",
-      iconId: "truck",
-      title: "Camions et engins",
-      description: "Transport lourd, BTP, chantier",
+      iconId: "excavator",
+      title: "Camions & engins",
+      description: "Pour les chantiers et les opérations.",
       href: "/equipements/camions-engins",
-      items: [
-        { type: "link", label: "Camions et utilitaires lourds", href: "/solutions/location#camions" },
-        { type: "link", label: "Engins de chantier", href: "/equipements/camions-engins" },
-      ],
-    },
-    {
-      id: "outils",
-      iconId: "gear",
-      title: "Outils et matériels",
-      description: "Outillage professionnel",
-      href: "/equipements/outils-materiels",
-      items: [
-        { type: "link", label: "Matériels professionnels", href: "/solutions/vente#outils" },
-        { type: "link", label: "Outillage", href: "/equipements/outils-materiels" },
-      ],
+      items: [],
     },
     {
       id: "connectes",
       iconId: "signal",
       title: "Équipements connectés",
-      description: "GPS, trackers, IoT",
+      description: "Suivre et piloter vos actifs.",
       href: "/equipements/equipements-connectes",
-      items: [
-        { type: "link", label: "Trackers et boîtiers GPS", href: "/equipements/equipements-connectes" },
-        { type: "link", label: "Orienter ma demande", href: "/equipements#orientation-equipement" },
-      ],
+      items: [],
+    },
+    {
+      id: "motos",
+      iconId: "bike",
+      title: "Motos & deux-roues",
+      description: "Pour les déplacements du quotidien.",
+      href: "/equipements/motos",
+      items: [],
+    },
+    {
+      id: "outils",
+      iconId: "drill",
+      title: "Outils & matériel",
+      description: "Des moyens adaptés à chaque métier.",
+      href: "/equipements/outils-materiels",
+      items: [],
     },
   ],
+  promo: {
+    iconId: "document",
+    title: "Location ou achat ?",
+    cta: { label: "Comparer les options", href: "/solutions/vente" },
+  },
   visual: {
     image: equipmentMenuImage,
-    caption: "Des équipements adaptés aux réalités du terrain.",
+    title: "Partons de votre usage.",
+    subtitle: "Nous vous aidons à préciser votre besoin.",
     cta: { label: "Orienter ma demande", href: "/equipements#orientation-equipement" },
+  },
+  footer: {
+    iconId: "info",
+    text: "Références et disponibilités confirmées après qualification.",
   },
 };
 
-// Step 3 — Expertise: 2 groups + footerCta, layout two-col-visual-footer, broken links fixed
 const expertiseMenu: MegaMenuConfig = {
   id: "expertise",
   label: "Expertise",
-  layout: "two-col-visual-footer",
-  overviewHref: "/expertise",
-  overviewLabel: "Voir l'expertise",
+  variant: "columns",
+  eyebrow: "Notre expertise",
+  width: 1110,
+  asideWeight: 1.15,
+  overview: { label: "Découvrir l'expertise", href: "/expertise" },
   groups: [
     {
       id: "preparer",
+      iconId: "document-gear",
       title: "Préparer & déployer",
+      description: "Poser les bonnes bases.",
       items: [
-        { type: "link", label: "Déploiement terrain", href: "/expertise#approche" },
-        { type: "link", label: "Installation et paramétrage", href: "/expertise#installation" },
-        { type: "link", label: "Ingénierie matérielle", href: "/expertise" },
-        { type: "link", label: "Mise en service", href: "/expertise#approche" },
+        { type: "link", label: "Étude & préparation du projet", href: "/expertise#approche" },
+        { type: "link", label: "Déploiement terrain", href: "/projets#terrain-methode" },
+        { type: "link", label: "Installation & paramétrage", href: "/expertise#installation" },
       ],
     },
     {
       id: "exploiter",
+      iconId: "team",
       title: "Exploiter & accompagner",
+      description: "Faire vivre les solutions au quotidien.",
       items: [
-        { type: "link", label: "Supervision et reporting", href: "/solutions/gestion-de-flotte" },
-        { type: "link", label: "Gestion de flotte", href: "/solutions/gestion-de-flotte" },
-        { type: "link", label: "Formation", href: "/expertise#formation" },
-        { type: "link", label: "Support et maintenance", href: "/expertise" },
+        { type: "link", label: "Flotte & opérations", href: "/solutions/gestion-de-flotte#pilotage" },
+        {
+          type: "link",
+          label: "Supervision & reporting",
+          href: "/solutions/gestion-de-flotte#tableaux-de-bord",
+        },
+        { type: "link", label: "Formation & accompagnement", href: "/expertise#formation" },
       ],
     },
   ],
-  footerCta: { label: "Appels d'offres et projets structurés", href: "/projets" },
   visual: {
     image: expertiseImage,
-    caption: "Une expertise de terrain, de l'installation au suivi.",
-    cta: { label: "Découvrir l'expertise", href: "/expertise" },
+    title: "Du terrain au suivi.",
+    subtitle: "Une approche adaptée à vos opérations.",
+  },
+  footer: {
+    iconId: "document",
+    text: "Appels d'offres & projets structurés",
+    cta: { label: "Parlons de votre projet", href: "/projets#brief-projet" },
   },
 };
 
-// Step 4 — Projets: fix hrefs (#mobilite, #supervision)
 const projectsMenu: MegaMenuConfig = {
   id: "projets",
   label: "Projets",
-  layout: "cards",
-  overviewHref: "/projets",
-  overviewLabel: "Vue d'ensemble des projets",
+  variant: "cards",
+  eyebrow: "Explorer les projets",
+  width: 1156,
+  overview: { label: "Vue d'ensemble", href: "/projets" },
   groups: [],
   cards: [
     {
       id: "mobilite",
       title: "Mobilité professionnelle",
-      description: "Véhicules et équipements sélectionnés selon les usages et le terrain.",
+      description: "Organiser les moyens de terrain.",
       href: "/projets#mobilite",
       image: mobilityImage,
     },
     {
       id: "supervision",
       title: "Supervision de flotte",
-      description: "Positions, alertes et suivi opérationnel — interfaces illustratives.",
+      description: "Relier les véhicules aux opérations.",
       href: "/projets#supervision",
       image: supervisionImage,
     },
     {
-      id: "numerique",
-      title: "Projet numérique sur mesure",
-      description: "Plateformes et outils conçus avec les équipes métier.",
-      href: "/projets#brief-projet",
+      id: "plateformes",
+      title: "Plateformes sur mesure",
+      description: "Connecter les équipes et les usages.",
+      href: "/projets#domaines-projets",
       image: digitalImage,
     },
   ],
-  footerCta: { label: "Préparer mon brief", href: "/projets#brief-projet" },
+  cardsNote: "Exemples de projets et de configurations possibles.",
+  footer: {
+    iconId: "chat",
+    text: "Votre projet commence par un besoin.",
+    cta: { label: "Préparer mon brief", href: "/projets#brief-projet" },
+  },
 };
 
-// Step 5 — Partenaires: 3 groups, no visual, layout three-col-flat
 const partnersMenu: MegaMenuConfig = {
   id: "partenaires",
   label: "Partenaires",
-  layout: "three-col-flat",
-  overviewHref: "/partenaires",
-  overviewLabel: "Vue d'ensemble",
+  variant: "columns",
+  eyebrow: "Grandir ensemble",
+  width: 1156,
+  asideWeight: 1.3,
+  overview: { label: "Voir les partenariats", href: "/partenaires" },
   groups: [
     {
       id: "collaborer",
+      iconId: "handshake",
       title: "Collaborer",
+      description: "Construire une relation utile.",
       items: [
-        { type: "link", label: "Vue d'ensemble", href: "/partenaires" },
-        { type: "link", label: "Devenir partenaire", href: "/devenir-partenaire" },
-        { type: "link", label: "Présenter une proposition", href: "/devenir-partenaire" },
-        { type: "link", label: "Livraison et coordination", href: "/livraison" },
+        { type: "link", label: "Devenir partenaire", href: "/devenir-partenaire", emphasis: true },
+        {
+          type: "link",
+          label: "Présenter une proposition",
+          href: "/devenir-partenaire#preparer-proposition",
+        },
+        { type: "link", label: "Nos modes de collaboration", href: "/partenaires#profils-partenaires" },
       ],
     },
     {
       id: "profils",
+      iconId: "network",
       title: "Les profils",
+      description: "Trouver votre place dans le réseau.",
       items: [
         { type: "link", label: "Fournisseurs", href: "/partenaires/fournisseurs" },
-        { type: "link", label: "Livreurs", href: "/partenaires/livreurs" },
-        { type: "link", label: "Technologiques", href: "/partenaires/technologiques" },
-        { type: "link", label: "Profils de collaboration", href: "/partenaires#profils-partenaires" },
-      ],
-    },
-    {
-      id: "espaces",
-      title: "Vos futurs espaces",
-      items: [
-        { type: "info", label: "Espace partenaire", note: "En préparation — aperçu conceptuel." },
-        { type: "info", label: "Espace livreur", note: "En préparation — aperçu conceptuel." },
+        { type: "link", label: "Livraison & coordination", href: "/livraison" },
+        { type: "link", label: "Partenaires technologiques", href: "/partenaires/technologiques" },
+        { type: "link", label: "Devenir livreur", href: "/devenir-livreur" },
       ],
     },
   ],
+  aside: {
+    id: "espaces",
+    iconId: "grid",
+    title: "Vos futurs espaces",
+    description: "Des outils pour simplifier les échanges.",
+    items: [
+      { type: "info", label: "Espace partenaire", badge: "En préparation" },
+      { type: "info", label: "Espace livreur", badge: "En préparation" },
+    ],
+    note: "Aperçus conceptuels des futurs portails.",
+  },
+  footer: {
+    iconId: "handshake",
+    text: "Une idée de collaboration ?",
+    cta: { label: "Échangeons sur votre proposition", href: "/contact" },
+  },
 };
 
-// Step 6 — À propos: 2 groups (L'entreprise / Contact & aide), layout two-col-visual
 const aboutMenu: MegaMenuConfig = {
   id: "a-propos",
   label: "À propos",
-  layout: "two-col-visual",
-  overviewHref: "/a-propos",
-  overviewLabel: "Lire notre histoire",
+  variant: "columns",
+  eyebrow: "Découvrir ONLOUTOU",
+  width: 1030,
+  asideWeight: 1.25,
   groups: [
     {
       id: "entreprise",
+      iconId: "building",
       title: "L'entreprise",
       items: [
-        { type: "link", label: "Notre histoire", href: "/a-propos#about-history" },
         { type: "link", label: "Notre approche", href: "/a-propos#about-principles" },
+        { type: "link", label: "Équipe & compétences", href: "/a-propos#about-team" },
         { type: "link", label: "Présence régionale", href: "/a-propos#about-implantation" },
-        { type: "link", label: "Équipe et compétences", href: "/a-propos#about-team" },
         { type: "link", label: "Références historiques", href: "/a-propos#about-references" },
       ],
     },
     {
       id: "contact-aide",
-      title: "Contact & aide",
+      iconId: "chat",
+      title: "Nous joindre",
       items: [
-        { type: "link", label: "Nous contacter", href: "/contact" },
+        { type: "link", label: "Contact", href: "/contact" },
         { type: "link", label: "Centre d'aide", href: "/aide" },
       ],
+      note: "Une question ? Notre équipe vous accompagne.",
     },
   ],
   visual: {
     image: facadeImage,
-    caption: "Photographie d'archive — identité visuelle ONLOUTOU.",
-    cta: { label: "Lire notre histoire", href: "/a-propos" },
+    title: "Notre histoire",
+    subtitle: "Découvrez le parcours d'ONLOUTOU.",
+    cta: { label: "Lire notre histoire", href: "/a-propos#parcours" },
   },
 };
 

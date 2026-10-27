@@ -34,7 +34,7 @@ test.describe("page vente", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/solutions");
     await page.locator(".site-nav-trigger", { hasText: "Solutions" }).hover();
-    await expect(page.locator("#mega-solutions a", { hasText: "Acheter" }).first()).toHaveAttribute(
+    await expect(page.locator("#mega-solutions a", { hasText: "Vente d'équipements" }).first()).toHaveAttribute(
       "href",
       "/solutions/vente",
     );

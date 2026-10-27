@@ -39,6 +39,6 @@ test.describe("page projets", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/");
     await page.locator(".site-nav-trigger", { hasText: "Projets" }).hover();
-    await expect(page.locator("#mega-projets .mega-overview--cards")).toHaveAttribute("href", "/projets");
+    await expect(page.locator("#mega-projets a", { hasText: "Vue d'ensemble" })).toHaveAttribute("href", "/projets");
   });
 });

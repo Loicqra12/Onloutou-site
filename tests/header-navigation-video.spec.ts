@@ -10,11 +10,11 @@ test("vidéo — survol, bascule et menu mobile", async ({ page }) => {
   await page.waitForLoadState("domcontentloaded");
   await page.waitForTimeout(400);
 
-  await page.getByRole("button", { name: /Solutions, ouvrir le menu/i }).hover();
+  await page.getByRole("button", { name: "Solutions", exact: true }).hover();
   await page.waitForTimeout(700);
-  await page.getByRole("button", { name: /Équipements, ouvrir le menu/i }).hover();
+  await page.getByRole("button", { name: "Équipements", exact: true }).hover();
   await page.waitForTimeout(700);
-  await page.getByRole("button", { name: /Partenaires, ouvrir le menu/i }).hover();
+  await page.getByRole("button", { name: "Partenaires", exact: true }).hover();
   await page.waitForTimeout(500);
   await page.mouse.move(200, 400);
   await page.waitForTimeout(400);

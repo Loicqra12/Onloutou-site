@@ -33,7 +33,7 @@ test.describe("page outils et matériels", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/");
     await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
-    await expect(page.locator("#mega-equipements a", { hasText: "Outils & matériels" }).first()).toHaveAttribute(
+    await expect(page.locator("#mega-equipements a", { hasText: "Outils & matériel" }).first()).toHaveAttribute(
       "href",
       "/equipements/outils-materiels",
     );

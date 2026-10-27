@@ -47,7 +47,7 @@ test.describe("page hub partenaires", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/");
     await page.locator(".site-nav-trigger", { hasText: "Partenaires" }).hover();
-    await expect(page.locator("#mega-partenaires a", { hasText: "Vue d’ensemble" }).first()).toHaveAttribute(
+    await expect(page.locator("#mega-partenaires a", { hasText: "Voir les partenariats" }).first()).toHaveAttribute(
       "href",
       "/partenaires",
     );

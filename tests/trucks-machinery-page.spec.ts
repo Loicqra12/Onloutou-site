@@ -38,7 +38,7 @@ test.describe("page camions et engins", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/");
     await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
-    await expect(page.locator("#mega-equipements a", { hasText: "Camions et engins" }).first()).toHaveAttribute(
+    await expect(page.locator("#mega-equipements a", { hasText: "Camions & engins" }).first()).toHaveAttribute(
       "href",
       "/equipements/camions-engins",
     );

@@ -1,3 +1,22 @@
+export type NavIconId =
+  | "excavator"
+  | "pin"
+  | "cog"
+  | "van"
+  | "bike"
+  | "drill"
+  | "signal"
+  | "document"
+  | "document-gear"
+  | "team"
+  | "chat"
+  | "info"
+  | "lock"
+  | "handshake"
+  | "network"
+  | "grid"
+  | "building";
+
 export type NavImage = {
   src: string;
   alt: string;
@@ -13,22 +32,35 @@ export type NavCta = {
 };
 
 export type NavEntry =
-  | { type: "link"; label: string; href: string }
-  | { type: "info"; label: string; note?: string };
+  | {
+      type: "link";
+      label: string;
+      href: string;
+      /** Premier choix du groupe : flèche jaune persistante. */
+      emphasis?: boolean;
+    }
+  | {
+      /** Entrée non cliquable (ex. espace « En préparation »). */
+      type: "info";
+      label: string;
+      badge?: string;
+    };
 
 export type NavGroup = {
   id: string;
   title: string;
   description?: string;
+  /** Si renseigné et sans `items`, le titre devient un lien. */
   href?: string;
-  iconId?: string;
+  iconId?: NavIconId;
   items: NavEntry[];
+  /** Mention discrète en bas d'un groupe-carte. */
+  note?: string;
 };
 
 export type NavVisual = {
   image: NavImage;
-  caption?: string;
-  title?: string;
+  title: string;
   subtitle?: string;
   cta?: NavCta;
 };
@@ -37,24 +69,47 @@ export type NavCard = {
   id: string;
   title: string;
   description: string;
-  href?: string;
+  href: string;
   image: NavImage;
 };
 
-export type MegaMenuLayout = "columns-visual" | "list-visual" | "cards" | "simple-visual" | "columns-3-visual" | "grid-icon-visual" | "two-col-visual-footer" | "three-col-flat" | "two-col-visual";
+export type NavPromo = {
+  iconId: NavIconId;
+  title: string;
+  cta: NavCta;
+};
+
+export type NavFooter = {
+  iconId: NavIconId;
+  text: string;
+  cta?: NavCta;
+};
+
+/**
+ * - `columns` : groupes en colonnes + visuel ou carte à droite
+ * - `icon-grid` : grille de familles (2 colonnes) + visuel
+ * - `cards` : cartes image
+ */
+export type MegaMenuVariant = "columns" | "icon-grid" | "cards";
 
 export type MegaMenuConfig = {
   id: string;
   label: string;
-  layout: MegaMenuLayout;
-  overviewHref?: string;
-  overviewLabel?: string;
+  variant: MegaMenuVariant;
+  eyebrow: string;
+  /** Largeur maximale du panneau (px), ajustée au contenu. */
+  width: number;
+  overview?: NavCta;
   groups: NavGroup[];
+  /** Carte additionnelle dans la dernière colonne (ex. « Vos futurs espaces »). */
+  aside?: NavGroup;
+  promo?: NavPromo;
   cards?: NavCard[];
+  cardsNote?: string;
   visual?: NavVisual;
-  visuals?: Record<string, NavVisual>;
-  defaultVisual?: string;
-  footerCta?: NavCta;
+  /** Poids (fr) de la colonne visuelle ou carte par rapport à un groupe. */
+  asideWeight?: number;
+  footer?: NavFooter;
 };
 
 export type HeaderNavItem =

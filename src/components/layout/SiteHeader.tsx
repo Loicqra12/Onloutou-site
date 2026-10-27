@@ -1,140 +1,82 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import { usePathname } from "next/navigation";
 import { headerCta, headerNavigation } from "@/content/header-navigation";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { DesktopNavigation } from "@/components/navigation/DesktopNavigation";
 import { MobileNavigation } from "@/components/navigation/MobileNavigation";
-import { Button } from "@/components/ui/Button";
 
-const OPEN_DELAY = 120;
-const CLOSE_DELAY = 260;
+const DESKTOP_MIN_WIDTH = 1200;
 
 export function SiteHeader() {
   const pathname = usePathname();
 
-  return (
-    <HeaderShell key={pathname} pathname={pathname} />
-  );
+  // Remonter l'en-tête à chaque changement de route réinitialise menus et accordéons.
+  return <HeaderShell key={pathname} pathname={pathname} />;
 }
 
 function HeaderShell({ pathname }: { pathname: string }) {
   const mobileNavId = useId();
-  const headerRef = useRef<HTMLElement>(null);
-  const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const barRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const openTimer = useRef<number | null>(null);
-  const closeTimer = useRef<number | null>(null);
 
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [accordion, setAccordion] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<string[]>([]);
+  const [drawerTop, setDrawerTop] = useState(96);
   const [scrolled, setScrolled] = useState(false);
-  const [activeFamily, setActiveFamily] = useState("louer");
 
-  const clearTimers = () => {
-    if (openTimer.current !== null) window.clearTimeout(openTimer.current);
-    if (closeTimer.current !== null) window.clearTimeout(closeTimer.current);
-    openTimer.current = null;
-    closeTimer.current = null;
-  };
+  const measureDrawerTop = useCallback(() => {
+    const bottom = barRef.current?.getBoundingClientRect().bottom;
+    if (typeof bottom === "number") setDrawerTop(Math.round(bottom));
+  }, []);
 
-  const closeDesktop = (restoreFocus = false) => {
-    clearTimers();
-    const current = openMenu;
-    setOpenMenu(null);
-    if (restoreFocus && current) triggerRefs.current[current]?.focus();
-  };
-
-  const closeAll = () => {
-    closeDesktop();
+  const closeMobile = useCallback((restoreFocus = false) => {
     setMobileOpen(false);
-    setAccordion(null);
-  };
+    setExpanded([]);
+    if (restoreFocus) menuButtonRef.current?.focus();
+  }, []);
 
-  const openDesktop = (id: string) => {
-    clearTimers();
-    setOpenMenu(id);
-    const item = headerNavigation.find((i) => i.id === id && i.type === "menu");
-    if (item?.type === "menu" && item.menu.defaultVisual) {
-      setActiveFamily(item.menu.defaultVisual);
+  const closeAll = useCallback(() => {
+    setOpenMenu(null);
+    closeMobile();
+  }, [closeMobile]);
+
+  const toggleMobile = () => {
+    if (mobileOpen) {
+      closeMobile();
+      return;
     }
+    measureDrawerTop();
+    setOpenMenu(null);
+    setMobileOpen(true);
   };
 
-  const onTriggerEnter = (id: string) => {
-    clearTimers();
-    openTimer.current = window.setTimeout(() => openDesktop(id), OPEN_DELAY);
-  };
+  const toggleAccordion = (id: string) =>
+    setExpanded((current) => (current.includes(id) ? current.filter((value) => value !== id) : [...current, id]));
 
-  const onTriggerLeave = () => {
-    clearTimers();
-    closeTimer.current = window.setTimeout(() => setOpenMenu(null), CLOSE_DELAY);
-  };
-
-  const onTriggerClick = (id: string) => {
-    if (openMenu === id) closeDesktop();
-    else openDesktop(id);
-  };
-
-  const onPanelEnter = () => {
-    clearTimers();
-  };
-
-  const onPanelLeave = () => {
-    clearTimers();
-    closeTimer.current = window.setTimeout(() => setOpenMenu(null), CLOSE_DELAY);
-  };
-
-  useEffect(() => {
-    return () => clearTimers();
-  }, []);
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      if (openMenu) {
-        clearTimers();
-        setOpenMenu(null);
-        triggerRefs.current[openMenu]?.focus();
-      } else if (mobileOpen) {
-        setMobileOpen(false);
-        setAccordion(null);
-        menuButtonRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [openMenu, mobileOpen]);
-
-  useEffect(() => {
-    const onPointerDown = (event: PointerEvent) => {
-      const target = event.target as Node | null;
-      if (!target || headerRef.current?.contains(target)) return;
-      clearTimers();
-      setOpenMenu(null);
-      setMobileOpen(false);
-      setAccordion(null);
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, []);
-
+  // Échap et clic extérieur (menu mobile) ; le desktop gère les siens dans DesktopNavigation.
   useEffect(() => {
     if (!mobileOpen) return;
+
+    const onKey = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") closeMobile(true);
+    };
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
     };
-  }, [mobileOpen]);
+  }, [mobileOpen, closeMobile]);
 
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled((prev) => (y > 24 ? true : y < 8 ? false : prev));
-    };
+    const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -142,46 +84,56 @@ function HeaderShell({ pathname }: { pathname: string }) {
 
   useEffect(() => {
     const onResize = () => {
-      if (window.innerWidth >= 1200) {
+      if (window.innerWidth >= DESKTOP_MIN_WIDTH) {
         setMobileOpen(false);
-        setAccordion(null);
+        setExpanded([]);
       } else {
         setOpenMenu(null);
       }
+      measureDrawerTop();
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, []);
+  }, [measureDrawerTop]);
 
-  const compact = scrolled && !openMenu && !mobileOpen;
+  // Le focus reste dans l'en-tête tant que le menu mobile est ouvert.
+  const onHeaderKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (!mobileOpen || event.key !== "Tab") return;
+    const focusable = Array.from(
+      event.currentTarget.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"),
+    ).filter((node) => node.offsetParent !== null || node === document.activeElement);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
 
   return (
     <header
-      ref={headerRef}
-      className={`site-header${compact ? " is-scrolled" : ""}${openMenu ? " is-menu-open" : ""}${mobileOpen ? " is-mobile-open" : ""}`}
+      onKeyDown={onHeaderKeyDown}
+      className={`site-header${scrolled ? " is-scrolled" : ""}${openMenu ? " is-menu-open" : ""}${mobileOpen ? " is-mobile-open" : ""}`}
     >
       <AnnouncementBar />
-      <div className="site-header-bar">
+      <div ref={barRef} className="site-header-bar">
         <BrandLogo theme="dark" />
         <DesktopNavigation
           pathname={pathname}
           openMenu={openMenu}
-          activeFamily={activeFamily}
-          triggerRefs={triggerRefs}
-          onTriggerEnter={onTriggerEnter}
-          onTriggerLeave={onTriggerLeave}
-          onTriggerClick={onTriggerClick}
-          onPanelEnter={onPanelEnter}
-          onPanelLeave={onPanelLeave}
-          onFamilyChange={setActiveFamily}
+          onOpenMenu={setOpenMenu}
           onNavigate={closeAll}
         />
-        <Button href={headerCta.href} variant="primary" className="site-header-cta">
-          {headerCta.label}
-          <span className="btn-arrow" aria-hidden>
+        <Link href={headerCta.href} className="site-header-cta" onClick={closeAll}>
+          <span>{headerCta.label}</span>
+          <span className="nh-arrow" aria-hidden>
             ↗
           </span>
-        </Button>
+        </Link>
         <button
           ref={menuButtonRef}
           type="button"
@@ -189,10 +141,7 @@ function HeaderShell({ pathname }: { pathname: string }) {
           aria-expanded={mobileOpen}
           aria-controls={mobileNavId}
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          onClick={() => {
-            setMobileOpen((value) => !value);
-            setAccordion(null);
-          }}
+          onClick={toggleMobile}
         >
           <span />
           <span />
@@ -203,8 +152,10 @@ function HeaderShell({ pathname }: { pathname: string }) {
         id={mobileNavId}
         open={mobileOpen}
         pathname={pathname}
-        accordion={accordion}
-        onAccordion={setAccordion}
+        expanded={expanded}
+        top={drawerTop}
+        onToggle={toggleAccordion}
+        onClose={() => closeMobile(true)}
         onNavigate={closeAll}
       />
       <noscript>

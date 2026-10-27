@@ -36,7 +36,7 @@ test.describe("page géolocalisation", () => {
     await page.goto("/");
     await page.locator(".site-header-toggle").click();
     await page.locator(".site-mobile-trigger", { hasText: "Solutions" }).click();
-    const link = page.getByRole("link", { name: "Géolocalisation", exact: true });
+    const link = page.locator(".site-nav-mobile").getByRole("link", { name: "Géolocalisation", exact: true });
     await expect(link).toHaveAttribute("href", "/solutions/geolocalisation");
   });
 });

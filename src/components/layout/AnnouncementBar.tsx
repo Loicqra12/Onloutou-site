@@ -11,7 +11,9 @@ export function AnnouncementBar() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          WhatsApp
+          <span>{headerUtility.whatsappLabel}</span>
+          <span aria-hidden>↗</span>
+          <span className="sr-only"> (s’ouvre dans un nouvel onglet)</span>
         </a>
       </div>
     </div>

@@ -37,7 +37,7 @@ test.describe("page plateformes sur mesure", () => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/solutions");
     await page.locator(".site-nav-trigger", { hasText: "Solutions" }).hover();
-    await expect(page.locator("#mega-solutions a", { hasText: "Construire" }).first()).toHaveAttribute(
+    await expect(page.locator("#mega-solutions a", { hasText: "Plateformes sur mesure" }).first()).toHaveAttribute(
       "href",
       "/solutions/plateformes-sur-mesure",
     );
