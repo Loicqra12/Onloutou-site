@@ -1,0 +1,19 @@
+node_modules
+.next
+out
+*.log
+.env*.local
+test-results
+playwright-report
+blob-report
+
+# Ajouts publication GitHub
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.eslintcache
+coverage
+.vercel
+.DS_Store
+Thumbs.db

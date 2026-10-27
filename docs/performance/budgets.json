@@ -1,0 +1,9 @@
+{
+  "description": "Budgets déterministes (post-baseline). Les scores Lighthouse ne sont pas testés en CI.",
+  "maxPublicAssetBytes": 2500000,
+  "maxSinglePublicImageBytes": 1600000,
+  "documentedHeavyThresholdBytes": 400000,
+  "criticalRoutes": ["/", "/solutions", "/produits", "/equipements/vehicules", "/aide"],
+  "forbiddenResponsePatterns": ["/docs/captures/", ".webm"],
+  "maxInitialJsTransferKb": 450
+}

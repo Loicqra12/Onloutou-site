@@ -1,0 +1,33 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Infrastructure navigation : extension des types TypeScript, corrections CSS (bug barre utilitaire, états interactifs fusionnés, focus-visible manquant), styles des 5 nouveaux layouts MegaMenu, mise à jour des composants MegaMenuVisual, MegaMenu, AnnouncementBar, SiteHeader. Ce FEAT est indépendant du contenu (FEAT-002) — il fournit les fondations que FEAT-002 utilise.",
+  "status": "completed",
+  "steps": [
+    "1. Étendre src/types/navigation.ts : MegaMenuLayout += 'columns-3-visual' | 'grid-icon-visual' | 'two-col-visual-footer' | 'three-col-flat' | 'two-col-visual'. NavVisual += title?: string; subtitle?: string. NavGroup += iconId?: string.",
+    "2. Corriger src/app/globals.css — bug barre utilitaire : sur .site-header-utility retirer min-height:36px, ajouter overflow:hidden, ajouter max-height:48px par défaut et l'inclure dans transition. Sur .site-header-utility-inner réduire min-height à 28px et padding-block à 0.25rem. Sur .site-header-utility-phone et .site-header-utility-whatsapp réduire min-height à 28px.",
+    "3. Corriger src/app/globals.css — focus-visible : retirer outline:none de .site-header-utility-phone:focus-visible et .site-header-utility-whatsapp:focus-visible pour laisser la règle globale :focus-visible{outline:2px solid #f5c400} s'appliquer.",
+    "4. Corriger src/app/globals.css — états interactifs : séparer is-active (couleur jaune + underline scaleX(1)), is-open (fond rgba(255,255,255,0.08) + border-radius:6px, PAS d'underline, couleur de base conservée), hover (couleur jaune seule). Retirer is-open des deux sélecteurs fusionnés. Ajouter règle .mega-column.is-active .mega-column-title { color:#f5c400 } + indicateur visuel (border-bottom ou pseudo-element).",
+    "5. Ajouter dans src/app/globals.css les blocs CSS des nouveaux layouts : .mega-grid--3col, .mega-columns--3 (columns-3-visual). .mega-grid--icon-visual, .mega-icon-grid, .mega-icon-group, .mega-icon-badge (grid-icon-visual). .mega-grid--two-visual, .mega-two-col (two-col-visual-footer). .mega-three-flat (three-col-flat). .mega-two-groups-col (two-col-visual). .mega-visual-title, .mega-visual-subtitle (MegaMenuVisual).",
+    "6. Mettre à jour src/components/layout/AnnouncementBar.tsx : retirer l'élément <a href=tel:...> et le <span> séparateur. Garder uniquement location (span) + WhatsApp (a). Utiliser les propriétés existantes de headerUtility.",
+    "7. Mettre à jour src/components/navigation/MegaMenuVisual.tsx : ajouter le rendu de visual.title (classe mega-visual-title) et visual.subtitle (classe mega-visual-subtitle) entre le frame image et le caption. Si visual.title est présent, ne pas afficher visual.caption pour éviter la redondance.",
+    "8. Mettre à jour src/components/navigation/MegaMenu.tsx : ajouter la fonction NavGroupIcon (inline SVG pour car/bike/truck/gear/signal). Ajouter les 5 renderers JSX pour columns-3-visual, grid-icon-visual, two-col-visual-footer, three-col-flat, two-col-visual — voir plan.md items 7 pour les structures HTML exactes.",
+    "9. Mettre à jour src/components/layout/SiteHeader.tsx : dans openDesktop, remplacer le hardcode 'if (id === solutions) setActiveFamily(louer)' par une lecture de menu.defaultVisual depuis headerNavigation."
+  ],
+  "acceptance_criteria": [
+    "npm run typecheck exit code 0 — aucune erreur TypeScript après extension des types",
+    "npm run build exit code 0 — aucune erreur de compilation ni de build",
+    "La barre utilitaire a une hauteur effective 0 en état scrolled (overflow:hidden + max-height:0 fonctionnent ensemble)",
+    "Le trigger 'is-open' n'affiche plus de trait jaune sous-ligné — seulement un fond semi-transparent",
+    "Le trigger 'is-active' affiche le trait jaune en bas",
+    "Tab sur les liens de la barre utilitaire affiche un contour jaune visible (plus de outline:none)",
+    "AnnouncementBar ne contient plus le numéro de téléphone",
+    "MegaMenu compile sans erreur avec les 5 nouveaux layout handlers"
+  ],
+  "verification": [
+    "npm run typecheck",
+    "npm run build"
+  ],
+  "blocked_reason": null,
+  "findings": "Tous les critères d'acceptation satisfaits. npm run typecheck exit 0, npm run build exit 0 (37 pages générées, Turbopack). Points notables pour FEAT-002 : (1) AnnouncementBar ne contient plus le téléphone — les propriétés phoneTel/phoneDisplay restent dans header-navigation.ts pour un usage éventuel dans le footer. (2) Les 5 nouveaux layouts (columns-3-visual, grid-icon-visual, two-col-visual-footer, three-col-flat, two-col-visual) sont rendus par MegaMenu.tsx mais aucun menu ne les utilise encore — FEAT-002 devra mettre à jour header-navigation.ts pour basculer les 6 menus vers leurs nouveaux layouts. (3) SiteHeader.tsx lit désormais menu.defaultVisual dynamiquement — chaque menu restructuré dans FEAT-002 doit déclarer defaultVisual. (4) Le layout 'columns-3-visual' partage la logique de visuals/activeFamily avec 'columns-visual' — les deux sont compatibles avec le stacking mega-visual-layer. (5) Le layout 'two-col-visual' réutilise mega-grid mega-grid--split (classe existante) car la structure est identique à list-visual côté grille."
+}

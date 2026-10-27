@@ -1,0 +1,16 @@
+{
+  "phase": "after",
+  "measuredAt": "2026-10-20T14:14:08.345Z",
+  "baseUrl": "http://127.0.0.1:3000",
+  "runsPerRoute": 1,
+  "routes": [
+    "/",
+    "/solutions",
+    "/solutions/plateformes-sur-mesure",
+    "/equipements/vehicules",
+    "/produits",
+    "/aide"
+  ],
+  "environment": "local Windows, next start production",
+  "note": "Scores laboratoire — pas de CrUX ni INP terrain."
+}

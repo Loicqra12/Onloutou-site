@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 690" class="onl-art" role="img" aria-labelledby="gps-title gps-desc">
+      <title id="gps-title">ONLOUTOU — Du véhicule à la supervision</title>
+      <desc id="gps-desc">Un camion et une voiture sur une route stylisée, reliés à un boîtier GPS et à un écran. Une impulsion de localisation et des points de transmission montrent la remontée des positions.</desc>
+      <style>
+        .onl-art{display:block;width:100%;height:auto;font-family:Arial,sans-serif}
+        .onl-art .gps-flow{stroke-dasharray:5 55;animation:gps-flow 5s linear infinite}
+        .onl-art .gps-wave{animation:gps-wave 3.5s ease-out infinite;transform-box:fill-box;transform-origin:center}
+        .onl-art .gps-truck{animation:gps-truck 8s ease-in-out infinite}
+        .onl-art .gps-car{animation:gps-car 8s ease-in-out infinite}
+        .onl-art .gps-alert{animation:gps-alert 6s ease-in-out infinite}
+        @keyframes gps-flow{to{stroke-dashoffset:-360}}
+        @keyframes gps-wave{0%{transform:scale(.6);opacity:.5}90%,100%{transform:scale(1.65);opacity:0}}
+        @keyframes gps-truck{0%,100%{transform:translateX(0)}50%{transform:translateX(12px)}}
+        @keyframes gps-car{0%,100%{transform:translateX(0)}50%{transform:translateX(-12px)}}
+        @keyframes gps-alert{0%,65%,100%{transform:translateY(0)}72%,85%{transform:translateY(-5px)}}
+        @media(prefers-reduced-motion:reduce){.onl-art *{animation:none!important}}
+        @media(max-width:480px){.onl-art .gps-small{display:none}.onl-art .gps-label{font-size:38px}}
+      </style>
+      <rect width="1200" height="690" rx="24" fill="#f5f5ef"/>
+      <text x="64" y="64" fill="#797970" font-size="20" letter-spacing="3">ONLOUTOU / GÉOLOCALISATION</text>
+      <text x="64" y="114" fill="#242424" font-size="37" font-weight="600">Gardez le lien avec votre flotte.</text>
+      <!-- Écran de supervision : réseau de rues volontairement schématique. -->
+      <g id="supervision-screen">
+        <rect x="414" y="173" width="374" height="242" rx="15" fill="#282828"/>
+        <rect x="423" y="182" width="356" height="213" rx="8" fill="#e7e7df"/>
+        <path d="M431 298Q510 264 565 316T773 321V386H431Z" fill="#c4d6ce"/>
+        <g fill="none" stroke="#f7f8f1" stroke-width="14"><path d="M444 210 754 362M451 359 738 205M517 196 505 386M633 196 621 386M752 196 735 386M431 258H771"/></g>
+        <path d="M462 338 510 306 584 335 641 274 719 243" fill="none" stroke="#9ea991" stroke-width="2" stroke-dasharray="5 6"/>
+        <path d="M462 338 510 306 584 335 641 274 719 243" fill="none" stroke="#ac8b00" stroke-width="3"/>
+        <circle cx="641" cy="274" r="27" fill="none" stroke="#c8a000" stroke-width="2" class="gps-wave"/>
+        <path d="M641 286C636 280 625 272 625 261A16 16 0 0 1 657 261C657 272 646 280 641 286Z" fill="#f5c400" stroke="#9b7d00"/>
+        <circle cx="641" cy="261" r="6" fill="#282828"/>
+        <circle cx="462" cy="338" r="6" fill="#282828"/><circle cx="719" cy="243" r="6" fill="#282828"/>
+        <rect x="431" y="190" width="116" height="31" rx="5" fill="#fff"/>
+        <circle cx="445" cy="205" r="4" fill="#60936a"/><text x="458" y="211" fill="#3a3a32" font-size="15" class="gps-small">Votre flotte</text>
+        <path d="M577 415V440H626V415" fill="#50544b"/><path d="M548 442H653" stroke="#50544b" stroke-width="7" stroke-linecap="round"/>
+      </g>
+      <!-- Liaisons et flux de données. -->
+      <path d="M303 380Q321 262 414 265M882 386Q878 270 788 269" fill="none" stroke="#c3c3b9" stroke-width="2"/>
+      <path class="gps-flow" d="M303 380Q321 262 414 265M882 386Q878 270 788 269" fill="none" stroke="#bd9700" stroke-width="4" stroke-linecap="round"/>
+      <path d="M600 449V484" stroke="#c3c3b9" stroke-width="2"/>
+      <path class="gps-flow" d="M600 449V484" stroke="#bd9700" stroke-width="4" stroke-linecap="round"/>
+      <!-- Route horizontale d’une forme différente des orbites des références. -->
+      <path d="M56 441C232 385 336 468 435 472M763 470C886 464 947 392 1148 435" fill="none" stroke="#dfdfd5" stroke-width="69" stroke-linecap="round"/>
+      <path d="M56 441C232 385 336 468 435 472M763 470C886 464 947 392 1148 435" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="14 18"/>
+      <!-- Camion dessiné spécialement pour cette scène. -->
+      <g class="gps-truck">
+        <ellipse cx="240" cy="440" rx="117" ry="12" fill="#282828" opacity=".1"/>
+        <path d="M137 337H282V414H137Z" fill="#f5c400"/>
+        <path d="M137 337 154 324H297L282 337Z" fill="#ffe175"/>
+        <path d="M282 337 297 324V401L282 414Z" fill="#b08c00"/>
+        <path d="M292 363H330L354 390V418H292Z" fill="#f6f7ef" stroke="#aaaa9f" stroke-width="2"/>
+        <path d="M303 372H325L341 391H303Z" fill="#6d756e"/>
+        <rect x="129" y="409" width="231" height="13" rx="4" fill="#37372f"/>
+        <circle cx="170" cy="423" r="21" fill="#242424"/><circle cx="170" cy="423" r="9" fill="#a8a89c"/>
+        <circle cx="322" cy="423" r="21" fill="#242424"/><circle cx="322" cy="423" r="9" fill="#a8a89c"/>
+        <path d="M150 350H267" stroke="#d8ad00" stroke-width="2"/>
+        <text x="168" y="386" fill="#51491d" font-size="18" font-weight="700">ONLOUTOU</text>
+      </g>
+      <!-- Voiture de tourisme. -->
+      <g class="gps-car">
+        <ellipse cx="964" cy="440" rx="112" ry="12" fill="#282828" opacity=".1"/>
+        <path d="M858 398 891 388 921 357H993L1027 388 1062 399V424H853V409Q853 401 858 398Z" fill="#303030"/>
+        <path d="M906 387 930 365H984L1008 387Z" fill="#bfc5bb"/>
+        <path d="M959 365V387" stroke="#303030" stroke-width="5"/>
+        <path d="M866 403H1054" stroke="#f5c400" stroke-width="4"/>
+        <rect x="851" y="406" width="14" height="9" rx="3" fill="#f5c400"/>
+        <rect x="1051" y="407" width="13" height="8" rx="2" fill="#d8dccb"/>
+        <circle cx="893" cy="424" r="21" fill="#242424"/><circle cx="893" cy="424" r="10" fill="#a8a89c"/>
+        <circle cx="1028" cy="424" r="21" fill="#242424"/><circle cx="1028" cy="424" r="10" fill="#a8a89c"/>
+      </g>
+      <!-- GPS et étiquette du produit au premier plan. -->
+      <g id="gps-device">
+        <ellipse cx="605" cy="549" rx="126" ry="15" fill="#282828" opacity=".1"/>
+        <path d="M510 488H675Q688 488 688 501V534Q688 547 675 547H510Q497 547 497 534V501Q497 488 510 488Z" fill="#282828"/>
+        <path d="M512 494H672" stroke="#637055" stroke-width="3" stroke-linecap="round"/>
+        <rect x="520" y="504" width="146" height="28" rx="14" fill="#f5c400"/>
+        <text x="593" y="523" text-anchor="middle" fill="#282828" font-size="16" font-weight="700">ONLOUTOU GPS</text>
+        <path d="M497 518H470Q448 518 448 538" fill="none" stroke="#303030" stroke-width="8"/>
+        <rect x="439" y="534" width="19" height="18" rx="3" fill="#303030"/>
+        <g fill="none" stroke="#bd9700" stroke-width="3" stroke-linecap="round"><path d="M708 502Q724 518 708 534"/><path d="M719 492Q746 518 719 544" opacity=".5"/></g>
+      </g>
+      <g fill="#50554c" font-size="20" class="gps-small"><text x="183" y="294">Camions</text><text x="917" y="320">Véhicules</text></g>
+      <g transform="translate(820 186)" class="gps-alert">
+        <rect width="300" height="58" rx="12" fill="#fff" stroke="#dce0d2"/>
+        <rect x="13" y="14" width="30" height="30" rx="8" fill="#fff1b0"/>
+        <path d="M28 21V32M28 37V38" stroke="#7b6200" stroke-width="3" stroke-linecap="round"/>
+        <text x="57" y="36" fill="#393d32" font-size="19">Alerte de sortie de zone</text>
+      </g>
+      <g text-anchor="middle" fill="#242424" font-size="23" font-weight="600" class="gps-label"><text x="205" y="614">LOCALISER</text><text x="475" y="614">SUIVRE</text><text x="741" y="614">ALERTER</text><text x="1005" y="614">ANALYSER</text></g>
+      <g fill="#bf9a00"><rect x="179" y="633" width="52" height="3" rx="1.5"/><rect x="449" y="633" width="52" height="3" rx="1.5"/><rect x="715" y="633" width="52" height="3" rx="1.5"/><rect x="979" y="633" width="52" height="3" rx="1.5"/></g>
+    </svg>

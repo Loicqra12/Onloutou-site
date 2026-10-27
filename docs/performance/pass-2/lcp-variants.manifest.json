@@ -1,0 +1,140 @@
+{
+  "generatedAt": "2026-10-20T15:39:08.679Z",
+  "items": [
+    {
+      "source": "/assets/images/solutions/installation-traceur-gps-onloutou.png",
+      "sourceBytes": 2306429,
+      "intrinsic": {
+        "width": 1536,
+        "height": 1024
+      },
+      "variants": [
+        {
+          "width": 640,
+          "file": "/assets/images/lcp/installation-traceur-gps-onloutou.w640.webp",
+          "bytes": 45868
+        },
+        {
+          "width": 828,
+          "file": "/assets/images/lcp/installation-traceur-gps-onloutou.w828.webp",
+          "bytes": 65634
+        },
+        {
+          "width": 1080,
+          "file": "/assets/images/lcp/installation-traceur-gps-onloutou.w1080.webp",
+          "bytes": 90620
+        }
+      ]
+    },
+    {
+      "source": "/assets/images/projects/project-a/mobilite-professionnelle-cour-logistique.png",
+      "sourceBytes": 2626041,
+      "intrinsic": {
+        "width": 1536,
+        "height": 1024
+      },
+      "variants": [
+        {
+          "width": 640,
+          "file": "/assets/images/lcp/mobilite-professionnelle-cour-logistique.w640.webp",
+          "bytes": 53090
+        },
+        {
+          "width": 828,
+          "file": "/assets/images/lcp/mobilite-professionnelle-cour-logistique.w828.webp",
+          "bytes": 82100
+        },
+        {
+          "width": 1080,
+          "file": "/assets/images/lcp/mobilite-professionnelle-cour-logistique.w1080.webp",
+          "bytes": 124524
+        }
+      ]
+    },
+    {
+      "source": "/assets/images/equipment/vehicles/Flotte professionnelle inspectée à Abidjan-2.png",
+      "sourceBytes": 2315145,
+      "intrinsic": {
+        "width": 1672,
+        "height": 941
+      },
+      "variants": [
+        {
+          "width": 640,
+          "file": "/assets/images/lcp/Flotte-professionnelle-inspect-e-Abidjan-2.w640.webp",
+          "bytes": 42134
+        },
+        {
+          "width": 828,
+          "file": "/assets/images/lcp/Flotte-professionnelle-inspect-e-Abidjan-2.w828.webp",
+          "bytes": 65046
+        },
+        {
+          "width": 1080,
+          "file": "/assets/images/lcp/Flotte-professionnelle-inspect-e-Abidjan-2.w1080.webp",
+          "bytes": 93938
+        }
+      ]
+    },
+    {
+      "source": "/assets/images/solutions/installation-gps-berline-onloutou.png",
+      "sourceBytes": 2307070,
+      "intrinsic": {
+        "width": 1536,
+        "height": 1024
+      },
+      "variants": [
+        {
+          "width": 640,
+          "file": "/assets/images/lcp/installation-gps-berline-onloutou.w640.webp",
+          "bytes": 40018
+        },
+        {
+          "width": 828,
+          "file": "/assets/images/lcp/installation-gps-berline-onloutou.w828.webp",
+          "bytes": 57982
+        }
+      ]
+    },
+    {
+      "source": "/assets/images/menu/mega-menu-equipements-onloutou.png",
+      "sourceBytes": 2408989,
+      "intrinsic": {
+        "width": 1586,
+        "height": 992
+      },
+      "variants": [
+        {
+          "width": 480,
+          "file": "/assets/images/lcp/mega-menu-equipements-onloutou.w480.webp",
+          "bytes": 28732
+        },
+        {
+          "width": 640,
+          "file": "/assets/images/lcp/mega-menu-equipements-onloutou.w640.webp",
+          "bytes": 45104
+        }
+      ]
+    },
+    {
+      "source": "/assets/images/projects/project-b/inspection-groupe-electrogene.png",
+      "sourceBytes": 2342763,
+      "intrinsic": {
+        "width": 1536,
+        "height": 1024
+      },
+      "variants": [
+        {
+          "width": 480,
+          "file": "/assets/images/lcp/inspection-groupe-electrogene.w480.webp",
+          "bytes": 31774
+        },
+        {
+          "width": 640,
+          "file": "/assets/images/lcp/inspection-groupe-electrogene.w640.webp",
+          "bytes": 48218
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 690" class="onl-art" role="img" aria-labelledby="eco-title eco-desc">
+      <title id="eco-title">ONLOUTOU — Louer, connecter et construire</title>
+      <desc id="eco-desc">Trois scènes originales reliées par un flux jaune : équipements, géolocalisation et développement de solutions numériques. Des signaux et des liaisons s’animent doucement.</desc>
+      <defs>
+        <pattern id="eco-grid" width="36" height="36" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#ffffff" opacity=".08"/></pattern>
+        <linearGradient id="eco-metal" x2="0" y2="1"><stop stop-color="#424640"/><stop offset="1" stop-color="#20231f"/></linearGradient>
+      </defs>
+      <style>
+        .onl-art{display:block;width:100%;height:auto;font-family:Arial,sans-serif}
+        .onl-art .ink{fill:#f8f8f2}.onl-art .muted{fill:#a2a69c}.onl-art .yellow{fill:#f5c400}
+        .onl-art .caption{font-size:24px;font-weight:600;letter-spacing:1px}.onl-art .small{font-size:18px}
+        .onl-art .flow{stroke-dasharray:9 170;animation:onl-flow 7s linear infinite}
+        .onl-art .float{animation:onl-float 5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+        .onl-art .pulse{animation:onl-pulse 3.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+        .onl-art .blink{animation:onl-blink 4s ease-in-out infinite}
+        @keyframes onl-flow{to{stroke-dashoffset:-716}}
+        @keyframes onl-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+        @keyframes onl-pulse{0%{transform:scale(.7);opacity:.65}80%,100%{transform:scale(1.65);opacity:0}}
+        @keyframes onl-blink{0%,100%{opacity:.35}50%{opacity:1}}
+        @media(prefers-reduced-motion:reduce){.onl-art *{animation:none!important}}
+        @media(max-width:480px){.onl-art .small,.onl-art .detail{display:none}.onl-art .caption{font-size:38px}}
+      </style>
+      <rect width="1200" height="690" rx="24" fill="#141414"/>
+      <rect width="1200" height="690" rx="24" fill="url(#eco-grid)"/>
+      <path d="M0 564Q490 460 1200 558V690H0Z" fill="#1d1d1d"/>
+      <text x="64" y="64" class="yellow" font-size="28" font-weight="700" letter-spacing="3">ONLOUTOU</text>
+      <text x="64" y="112" class="ink" font-size="35" font-weight="600">Le terrain rencontre la technologie.</text>
+      <path d="M62 514C195 627 355 512 481 512S717 621 838 512 1050 430 1142 505" fill="none" stroke="#464646" stroke-width="3"/>
+      <path class="flow" d="M62 514C195 627 355 512 481 512S717 621 838 512 1050 430 1142 505" fill="none" stroke="#f5c400" stroke-width="5" stroke-linecap="round"/>
+      <!-- Location et équipement : îlot atelier, véhicules et matériel. -->
+      <g id="equipment">
+        <path d="M70 438 244 386 400 438 226 495Z" fill="#333333"/>
+        <path d="M70 438V456L226 513 400 456V438L226 495Z" fill="#262626"/>
+        <path d="M70 438 226 495 400 438" fill="none" stroke="#656565"/>
+        <ellipse cx="230" cy="443" rx="119" ry="21" fill="#000" opacity=".25"/>
+        <g transform="translate(114 263)">
+          <rect x="0" y="40" width="176" height="101" rx="8" fill="#e5b900"/>
+          <path d="M0 40 27 24H187L176 40Z" fill="#ffe26c"/>
+          <path d="M176 40 187 24V124L176 141Z" fill="#a48814"/>
+          <rect x="16" y="57" width="80" height="59" rx="5" fill="#252525"/>
+          <g stroke="#666666" stroke-width="3"><path d="M27 67H84M27 77H84M27 87H84M27 97H84M27 107H84"/></g>
+          <rect x="113" y="61" width="42" height="24" rx="3" fill="#141414"/>
+          <circle cx="126" cy="73" r="4" fill="#f5c400" class="blink"/>
+          <circle cx="144" cy="73" r="3" fill="#87b980"/>
+          <path d="M23 39V17Q23 8 33 8H143Q153 8 153 17V39" fill="none" stroke="#8c947e" stroke-width="8"/>
+          <circle cx="32" cy="143" r="20" fill="#141414"/><circle cx="32" cy="143" r="8" fill="#878787"/>
+          <circle cx="146" cy="143" r="20" fill="#141414"/><circle cx="146" cy="143" r="8" fill="#878787"/>
+          <text x="111" y="110" fill="#333333" font-size="14" font-weight="700">ONL.</text>
+        </g>
+        <g transform="translate(291 356)">
+          <path d="M0 19 32 7 67 19 35 32Z" fill="#e3dbbc"/>
+          <path d="M0 19V69L35 83V32Z" fill="#a69c75"/><path d="M35 32 67 19V69L35 83Z" fill="#c0b48b"/>
+          <path d="M18 13 51 25V44" fill="none" stroke="#f5c400" stroke-width="9"/>
+          <path d="M42 63 58 57" stroke="#4a4b3f" stroke-width="3"/>
+        </g>
+        <g class="float" style="animation-delay:-1s">
+          <rect x="87" y="203" width="161" height="42" rx="21" fill="#282828" stroke="#595959"/>
+          <circle cx="108" cy="224" r="5" fill="#f5c400"/>
+          <text x="123" y="230" class="ink small">Équipements</text>
+        </g>
+      </g>
+      <!-- Connectivité : écran de supervision et boîtier. -->
+      <g id="connectivity">
+        <path d="M424 438 602 386 771 438 593 495Z" fill="#333333"/>
+        <path d="M424 438V456L593 513 771 456V438L593 495Z" fill="#262626"/>
+        <rect x="478" y="222" width="244" height="177" rx="13" fill="#555555"/>
+        <rect x="485" y="229" width="230" height="157" rx="8" fill="#252525"/>
+        <path d="M501 259H699M501 299H699M501 339H699M536 247V370M585 247V370M638 247V370M681 247V370" fill="none" stroke="#454545" stroke-width="12"/>
+        <path d="M501 347 549 322 586 338 633 282 687 262" fill="none" stroke="#f5c400" stroke-width="3" stroke-linecap="round"/>
+        <path class="flow" d="M501 347 549 322 586 338 633 282 687 262" fill="none" stroke="#fff6c6" stroke-width="5" stroke-linecap="round"/>
+        <g transform="translate(635 270)"><circle r="17" fill="#f5c400" opacity=".15" class="pulse"/><path d="M0 18C-4 13-13 5-13-3A13 13 0 0 1 13-3C13 5 4 13 0 18Z" fill="#f5c400"/><circle cy="-3" r="5" fill="#252525"/></g>
+        <path d="M579 399V423H620V399" fill="#50554c"/><path d="M557 425H641" stroke="#888888" stroke-width="6" stroke-linecap="round"/>
+        <g transform="translate(534 416)">
+          <path d="M0 18 67 0 124 18 57 36Z" fill="#505050"/>
+          <path d="M0 18V45L57 63 124 44V18L57 36Z" fill="#222222"/>
+          <path d="M16 21 66 8 107 21 57 34Z" fill="#f5c400"/>
+          <text x="38" y="26" fill="#191919" font-size="12" font-weight="700">GPS</text>
+          <path d="M124 33Q161 22 164 51" fill="none" stroke="#686868" stroke-width="7"/>
+          <rect x="155" y="49" width="17" height="14" rx="2" fill="#111111"/>
+        </g>
+        <g fill="none" stroke="#f5c400" stroke-width="3" stroke-linecap="round" class="blink"><path d="M569 192Q600 168 631 192"/><path d="M582 203Q600 189 618 203"/><path d="M596 214H604"/></g>
+      </g>
+      <!-- Construction de solutions : interfaces et modules. -->
+      <g id="software">
+        <path d="M799 438 966 386 1137 438 970 495Z" fill="#333333"/>
+        <path d="M799 438V456L970 513 1137 456V438L970 495Z" fill="#262626"/>
+        <g transform="translate(831 238)">
+          <rect width="253" height="164" rx="12" fill="#ecece8"/>
+          <path d="M12 0H241Q253 0 253 12V29H0V12Q0 0 12 0Z" fill="#d5d5ce"/>
+          <circle cx="16" cy="15" r="3" fill="#555555"/><circle cx="28" cy="15" r="3" fill="#888888"/><circle cx="40" cy="15" r="3" fill="#b0b0a6"/>
+          <rect x="12" y="42" width="56" height="110" rx="4" fill="#252c20"/>
+          <path d="M23 58H54M23 73H46M23 88H54" stroke="#92928a" stroke-width="4" stroke-linecap="round"/>
+          <rect x="81" y="44" width="74" height="39" rx="4" fill="#f5c400"/>
+          <rect x="165" y="44" width="75" height="39" rx="4" fill="#c8c8be"/>
+          <rect x="81" y="94" width="159" height="57" rx="4" fill="#d8d8d1"/>
+          <path d="M93 135 115 122 142 129 173 109 198 115 227 103" fill="none" stroke="#4b4b43" stroke-width="3"/>
+          <path d="M113 164 88 180H270L245 164" fill="#adada3"/>
+        </g>
+        <g class="float" style="animation-delay:-2s">
+          <rect x="1006" y="335" width="78" height="134" rx="13" fill="#171717" stroke="#686860" stroke-width="3"/>
+          <rect x="1014" y="350" width="62" height="104" rx="6" fill="#e5e5dc"/>
+          <rect x="1031" y="341" width="27" height="3" rx="2" fill="#77776c"/>
+          <rect x="1022" y="360" width="46" height="32" rx="5" fill="#f5c400"/>
+          <path d="M1023 405H1067M1023 416H1055M1023 431H1067" stroke="#a0a094" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <g class="float" style="animation-delay:-3s">
+          <rect x="970" y="182" width="111" height="42" rx="9" fill="#f5c400"/>
+          <path d="m998 193-11 10 11 10m55-20 11 10-11 10m-23-13-8 20" fill="none" stroke="#252c20" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </g>
+      <g class="ink caption" text-anchor="middle"><text x="231" y="574">LOUER</text><text x="601" y="574">CONNECTER</text><text x="973" y="574">CONSTRUIRE</text></g>
+      <g class="muted small" text-anchor="middle"><text x="231" y="607">Location &amp; vente d’équipements</text><text x="601" y="607">GPS, IoT &amp; gestion de flotte</text><text x="973" y="607">Applications &amp; projets sur mesure</text></g>
+      <rect x="64" y="647" width="42" height="4" rx="2" fill="#f5c400"/>
+      <text x="119" y="654" class="muted small">Des solutions pensées pour votre activité.</text>
+    </svg>

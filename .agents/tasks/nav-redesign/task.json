@@ -1,0 +1,10 @@
+{
+  "task_id": "task-nav-redesign",
+  "task_description": "Refonte navigation ONLOUTOU : correction bug CSS barre utilitaire, séparation états interactifs, extension types TypeScript, 5 nouveaux layouts MegaMenu, restructuration des 6 menus, ajout d'ancres sur expertise et projets.",
+  "status": "completed",
+  "feature_order": [
+    "FEAT-001",
+    "FEAT-002"
+  ],
+  "blocked_reason": null
+}

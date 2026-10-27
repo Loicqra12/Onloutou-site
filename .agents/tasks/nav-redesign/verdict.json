@@ -1,0 +1,5 @@
+{
+  "verdict": "APPROVED",
+  "summary": "All FEAT-001 and FEAT-002 acceptance criteria are met: typecheck exits 0, build exits 0 (37 pages), utility bar bug is fixed, interactive states are correctly separated, all 6 menus use the correct new layout values, no broken /#… links remain, AnnouncementBar has no phone number, and all four required anchors exist in their respective pages.",
+  "findings": []
+}
