@@ -105,10 +105,10 @@ const paths: Record<NavIconId, React.ReactNode> = {
       <path d="M16 15v7M16 10.5h.01" strokeWidth={2} />
     </>
   ),
-  lock: (
+  preview: (
     <>
-      <rect x="6" y="14" width="20" height="14" rx="3" />
-      <path d="M10.5 14v-3.5a5.5 5.5 0 0 1 11 0V14M16 20v3" />
+      <rect x="4" y="6" width="24" height="20" rx="3" />
+      <path d="M4 12h24M9 9h.01M13 9h.01M9 17h8M9 21h5M20 17h4v4h-4z" />
     </>
   ),
   handshake: (

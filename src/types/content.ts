@@ -63,6 +63,8 @@ export type CapabilityCategory = {
 };
 
 export type DeploymentPhase = {
+  /** Ancre optionnelle sur la carte de l'étape. */
+  id?: string;
   step: string;
   title: string;
   description: string;

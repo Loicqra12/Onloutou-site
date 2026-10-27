@@ -11,7 +11,7 @@ export type NavIconId =
   | "team"
   | "chat"
   | "info"
-  | "lock"
+  | "preview"
   | "handshake"
   | "network"
   | "grid"
@@ -31,20 +31,15 @@ export type NavCta = {
   external?: boolean;
 };
 
-export type NavEntry =
-  | {
-      type: "link";
-      label: string;
-      href: string;
-      /** Premier choix du groupe : flèche jaune persistante. */
-      emphasis?: boolean;
-    }
-  | {
-      /** Entrée non cliquable (ex. espace « En préparation »). */
-      type: "info";
-      label: string;
-      badge?: string;
-    };
+export type NavEntry = {
+  type: "link";
+  label: string;
+  href: string;
+  /** Premier choix du groupe : flèche jaune persistante. */
+  emphasis?: boolean;
+  /** Mention d'état affichée à côté du libellé (ex. « En préparation »). */
+  badge?: string;
+};
 
 export type NavGroup = {
   id: string;

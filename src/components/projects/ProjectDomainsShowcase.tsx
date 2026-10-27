@@ -10,6 +10,13 @@ import { projectsDomains, projectsImageDisclaimer } from "@/content/projects-pag
 const AUTOPLAY_MS = 7000;
 const RESUME_MS = 10000;
 
+/** Ancres d'URL (/projets#…) qui ouvrent directement le domaine correspondant. */
+const DOMAIN_HASHES: Record<string, string> = {
+  plateformes: "platforms",
+  supervision: "fleet",
+  mobilite: "mobility",
+};
+
 function domainLinks(domain: (typeof projectsDomains.items)[number]) {
   if ("links" in domain && domain.links) return domain.links;
   return [domain.link];
@@ -114,17 +121,43 @@ export function ProjectDomainsShowcase() {
     };
   }, [scheduleAdvance, clearTimers]);
 
-  const selectIndex = (index: number, manual = false) => {
-    setActiveIndex(index);
-    if (manual) {
-      flags.current.interaction = true;
-      clearTimers();
-      timers.current.resume = window.setTimeout(() => {
-        flags.current.interaction = false;
-        scheduleAdvance();
-      }, RESUME_MS);
-    }
-  };
+  const selectIndex = useCallback(
+    (index: number, manual = false) => {
+      setActiveIndex(index);
+      if (manual) {
+        flags.current.interaction = true;
+        clearTimers();
+        timers.current.resume = window.setTimeout(() => {
+          flags.current.interaction = false;
+          scheduleAdvance();
+        }, RESUME_MS);
+      }
+    },
+    [clearTimers, scheduleAdvance],
+  );
+
+  // Ouvre le domaine désigné par l'ancre (chargement, hashchange ou lien interne à la page).
+  useEffect(() => {
+    const sync = () => {
+      const domainId = DOMAIN_HASHES[window.location.hash.slice(1)];
+      const index = items.findIndex((item) => item.id === domainId);
+      if (index < 0) return;
+      selectIndex(index, true);
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      rootRef.current?.scrollIntoView({ block: "start", behavior: reduced ? "auto" : "smooth" });
+    };
+    const onClick = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest?.("a[href*='#']");
+      if (link) window.setTimeout(sync, 80);
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    document.addEventListener("click", onClick);
+    return () => {
+      window.removeEventListener("hashchange", sync);
+      document.removeEventListener("click", onClick);
+    };
+  }, [items, selectIndex]);
 
   const togglePause = () => {
     flags.current.userPaused = !flags.current.userPaused;
@@ -146,7 +179,7 @@ export function ProjectDomainsShowcase() {
   return (
     <section
       id={projectsDomains.id}
-      className="proj-domains section-spacing bg-brand-paper"
+      className="proj-domains section-spacing scroll-mt-20 bg-brand-paper"
       aria-labelledby="proj-domains-title"
       ref={rootRef}
       onMouseEnter={() => {

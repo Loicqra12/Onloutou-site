@@ -62,7 +62,7 @@ export function ProcessTimeline({ id, title, description, phases }: ProcessTimel
           <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:pt-4">
             {phases.map((phase, index) => (
               <Reveal key={phase.step} delay={index * 80} as="li">
-                <article className="interactive-card relative h-full rounded-[var(--radius-card)] border border-brand-border bg-brand-white p-6 shadow-[var(--shadow-card)]">
+                <article id={phase.id} className="interactive-card relative h-full scroll-mt-28 rounded-[var(--radius-card)] border border-brand-border bg-brand-white p-6 shadow-[var(--shadow-card)]">
                   <span className="font-display text-3xl font-extrabold text-[#dedede]">{phase.step}</span>
                   <h3 className="mt-3 font-display text-lg font-extrabold">{phase.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-brand-muted">{phase.description}</p>

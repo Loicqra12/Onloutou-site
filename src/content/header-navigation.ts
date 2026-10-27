@@ -177,7 +177,7 @@ const equipmentMenu: MegaMenuConfig = {
   promo: {
     iconId: "document",
     title: "Location ou achat ?",
-    cta: { label: "Comparer les options", href: "/solutions/vente" },
+    cta: { label: "Comparer les options", href: "/solutions/vente#acheter-ou-louer" },
   },
   visual: {
     image: equipmentMenuImage,
@@ -207,7 +207,7 @@ const expertiseMenu: MegaMenuConfig = {
       description: "Poser les bonnes bases.",
       items: [
         { type: "link", label: "Étude & préparation du projet", href: "/expertise#approche" },
-        { type: "link", label: "Déploiement terrain", href: "/projets#terrain-methode" },
+        { type: "link", label: "Déploiement terrain", href: "/expertise#deploiement" },
         { type: "link", label: "Installation & paramétrage", href: "/expertise#installation" },
       ],
     },
@@ -223,7 +223,7 @@ const expertiseMenu: MegaMenuConfig = {
           label: "Supervision & reporting",
           href: "/solutions/gestion-de-flotte#tableaux-de-bord",
         },
-        { type: "link", label: "Formation & accompagnement", href: "/expertise#formation" },
+        { type: "link", label: "Formation & accompagnement", href: "/expertise#transfert-suivi" },
       ],
     },
   ],
@@ -266,7 +266,7 @@ const projectsMenu: MegaMenuConfig = {
       id: "plateformes",
       title: "Plateformes sur mesure",
       description: "Connecter les équipes et les usages.",
-      href: "/projets#domaines-projets",
+      href: "/projets#plateformes",
       image: digitalImage,
     },
   ],
@@ -321,10 +321,20 @@ const partnersMenu: MegaMenuConfig = {
     title: "Vos futurs espaces",
     description: "Des outils pour simplifier les échanges.",
     items: [
-      { type: "info", label: "Espace partenaire", badge: "En préparation" },
-      { type: "info", label: "Espace livreur", badge: "En préparation" },
+      {
+        type: "link",
+        label: "Découvrir le futur espace partenaire",
+        href: "/espace-partenaire",
+        badge: "En préparation",
+      },
+      {
+        type: "link",
+        label: "Découvrir le futur espace livreur",
+        href: "/espace-livreur",
+        badge: "En préparation",
+      },
     ],
-    note: "Aperçus conceptuels des futurs portails.",
+    note: "Pages de présentation : aucune connexion n'est encore possible.",
   },
   footer: {
     iconId: "handshake",

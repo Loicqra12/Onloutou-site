@@ -14,6 +14,11 @@ export function EquipmentFamilies() {
 
   useEffect(() => {
     shellRef.current?.classList.add("sales-families--enhanced");
+    // L'activation raccourcit cette section : on réaligne une éventuelle ancre située plus bas.
+    const hash = decodeURIComponent(window.location.hash.slice(1));
+    if (hash && !salesFamilies.items.some((item) => item.id === hash)) {
+      document.getElementById(hash)?.scrollIntoView();
+    }
   }, []);
 
   useEffect(() => {

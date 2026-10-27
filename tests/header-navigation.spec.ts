@@ -206,14 +206,21 @@ test.describe("navigation — desktop", () => {
     await expect(page.locator("#mega-solutions")).toBeHidden();
   });
 
-  test("Partenaires : espaces « En préparation » compacts et non cliquables", async ({ page }) => {
+  test("Partenaires : futurs espaces cliquables, badge conservé, carte compacte", async ({ page }) => {
     await openHome(page);
     await hoverOpen(page, "partenaires");
     const card = page.locator("#mega-partenaires .mega-aside-card");
     await expect(card).toBeVisible();
     await expect(card.getByText("En préparation")).toHaveCount(2);
-    await expect(card.locator("a")).toHaveCount(0);
-    expect((await card.boundingBox())!.height).toBeLessThan(270);
+    await expect(card.getByRole("link", { name: /Découvrir le futur espace partenaire/ })).toHaveAttribute("href", "/espace-partenaire");
+    await expect(card.getByRole("link", { name: /Découvrir le futur espace livreur/ })).toHaveAttribute("href", "/espace-livreur");
+    await expect(card).toContainText("Pages de présentation");
+    expect((await card.boundingBox())!.height).toBeLessThan(250);
+    await shot(page, "partenaires-espaces.png");
+    await card.getByRole("link", { name: /futur espace livreur/ }).click();
+    await expect(page).toHaveURL(/\/espace-livreur$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Un outil simple pour organiser le terrain." })).toBeVisible();
+    await expect(page.getByText("Espace livreur en préparation").first()).toBeVisible();
   });
 
   test("mouvement réduit : pas d'animation d'ouverture", async ({ page }) => {
@@ -224,6 +231,9 @@ test.describe("navigation — desktop", () => {
     expect(animation).toBe("none");
   });
 });
+
+/** Ancres résolues par script (ouvrent un onglet de la page cible) : vérifiées dans le navigateur plus bas. */
+const SCRIPTED_ANCHORS = new Set(["/projets#plateformes", "/projets#mobilite", "/projets#supervision"]);
 
 test.describe("navigation — contenu, liens et ancres", () => {
   test.beforeEach(({}, testInfo) => {
@@ -257,11 +267,100 @@ test.describe("navigation — contenu, liens et ancres", () => {
         }
         pages.set(route, await response.text());
       }
-      if (hash && !new RegExp(`\\sid="${hash}"`).test(pages.get(route) ?? "")) {
+      if (hash && !SCRIPTED_ANCHORS.has(href) && !new RegExp(`\\sid="${hash}"`).test(pages.get(route) ?? "")) {
         failures.push(`${href} → ancre #${hash} introuvable`);
       }
     }
     expect(failures, failures.join("\n")).toEqual([]);
+  });
+});
+
+test.describe("navigation — le contenu atteint correspond au libellé", () => {
+  test.beforeEach(({}, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "vérification de contenu");
+  });
+
+  /** Le titre cible doit être lisible : sous l'en-tête fixe et dans la fenêtre. */
+  async function expectInViewport(page: Page, selector: string) {
+    await page.waitForTimeout(2000); // laisse la mise en page se stabiliser (sections améliorées à l'hydratation)
+    await expect(async () => {
+      const headerBottom = (await page.locator("header.site-header").boundingBox())!.y + (await page.locator("header.site-header").boundingBox())!.height;
+      const box = await page.locator(selector).first().boundingBox();
+      expect(box, `${selector} introuvable`).not.toBeNull();
+      expect(box!.y).toBeGreaterThanOrEqual(headerBottom - 1);
+      expect(box!.y).toBeLessThan(700);
+    }).toPass({ timeout: 10_000 });
+  }
+
+  test("Équipements › Comparer les options → comparaison acheter / louer", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/solutions/vente#acheter-ou-louer");
+    await expect(page.getByRole("heading", { level: 2, name: /Acheter ou louer : partir de l.usage/ })).toBeVisible();
+    await expectInViewport(page, "#acheter-ou-louer h2");
+    const section = page.locator("#acheter-ou-louer");
+    await expect(section).toContainText("Acquisition");
+    await expect(section).toContainText("Location");
+    await expect(section).toContainText("Investissement");
+  });
+
+  test("Expertise › Déploiement terrain → étape « 04 Déploiement »", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/expertise#deploiement");
+    const card = page.locator("#deploiement");
+    await expect(card.getByRole("heading", { name: "Déploiement" })).toBeVisible();
+    await expect(card).toContainText("Installation sur le terrain");
+    await expectInViewport(page, "#deploiement h3");
+  });
+
+  test("Expertise › Formation & accompagnement → étape « 06 Transfert et suivi »", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/expertise#transfert-suivi");
+    const card = page.locator("#transfert-suivi");
+    await expect(card.getByRole("heading", { name: "Transfert et suivi" })).toBeVisible();
+    await expect(card).toContainText("Formation");
+    await expectInViewport(page, "#transfert-suivi h3");
+  });
+
+  test("Projets › Plateformes sur mesure → domaine « Plateformes et outils métier »", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/projets#plateformes");
+    const tab = page.getByRole("tab", { name: /Plateformes et outils métier/ });
+    await expect(tab).toHaveAttribute("aria-selected", "true");
+    const panel = page.locator(".proj-domains__panel--active");
+    await expect(panel).toContainText("Plateformes et outils métier");
+    await expect(panel).toContainText("Application mobile");
+    await expect(panel.getByRole("link", { name: "Plateformes sur mesure" })).toBeVisible();
+    await expectInViewport(page, "#domaines-projets h2");
+  });
+
+  test("Projets : le lien du menu ouvre le bon domaine depuis la page elle-même", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/projets");
+    await page.getByRole("tab", { name: /Supervision de flotte/ }).click();
+    await expect(page.getByRole("tab", { name: /Supervision de flotte/ })).toHaveAttribute("aria-selected", "true");
+    await hoverOpen(page, "projets");
+    await page.locator("#mega-projets").getByRole("link", { name: /Plateformes sur mesure/ }).click();
+    await expect(page.getByRole("tab", { name: /Plateformes et outils métier/ })).toHaveAttribute("aria-selected", "true");
+    await expectInViewport(page, "#domaines-projets h2");
+  });
+
+  test("Projets : « Supervision de flotte » et « Mobilité professionnelle » ouvrent leur domaine", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/projets#supervision");
+    await expect(page.getByRole("tab", { name: /Supervision de flotte/ })).toHaveAttribute("aria-selected", "true");
+    await page.goto("/projets#mobilite");
+    await expect(page.getByRole("tab", { name: /Mobilité professionnelle/ })).toHaveAttribute("aria-selected", "true");
+  });
+
+  test("futurs espaces : pages de présentation explicites", async ({ page }) => {
+    await page.goto("/espace-partenaire");
+    await expect(page.getByRole("heading", { level: 1, name: /Piloter ses offres/ })).toBeVisible();
+    await expect(page.getByText("Espace partenaire en préparation").first()).toBeVisible();
+    await expect(page.getByText("sans connexion ni données réelles")).toBeVisible();
+    await page.goto("/espace-livreur");
+    await expect(page.getByRole("heading", { level: 1, name: /outil simple pour organiser le terrain/ })).toBeVisible();
+    await expect(page.getByText("Espace livreur en préparation").first()).toBeVisible();
+    await expect(page.getByText("sans connexion, sans mission ni position réelle")).toBeVisible();
   });
 });
 

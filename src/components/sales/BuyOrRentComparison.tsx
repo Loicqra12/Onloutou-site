@@ -7,7 +7,7 @@ import { salesBuyRentComparison } from "@/content/sales-page";
 
 export function BuyOrRentComparison() {
   return (
-    <section className="sales-compare section-spacing" aria-labelledby="sales-compare-title">
+    <section id="acheter-ou-louer" className="sales-compare section-spacing scroll-mt-20" aria-labelledby="sales-compare-title">
       <div className="container-content">
         <Reveal>
           <p className="sales-eyebrow">Choisir la bonne approche</p>

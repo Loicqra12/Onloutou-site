@@ -47,7 +47,6 @@ function EntryItem({
   pathname: string;
   onNavigate: () => void;
 }) {
-  if (entry.type === "info") return null;
   const current = isCurrentPage(pathname, entry.href);
 
   return (
@@ -98,8 +97,16 @@ function GroupColumn({
   );
 }
 
-/** Carte compacte « En préparation » (entrées non cliquables). */
-function AsideCard({ group }: { group: NavGroup }) {
+/** Carte compacte « futurs espaces » : pages de présentation, avec badge d'état. */
+function AsideCard({
+  group,
+  pathname,
+  onNavigate,
+}: {
+  group: NavGroup;
+  pathname: string;
+  onNavigate: () => void;
+}) {
   const titleId = `mega-aside-${group.id}`;
 
   return (
@@ -112,17 +119,26 @@ function AsideCard({ group }: { group: NavGroup }) {
       </div>
       {group.description ? <p className="mega-group-desc">{group.description}</p> : null}
       <ul className="mega-space-list">
-        {group.items.map((entry, index) =>
-          entry.type === "info" ? (
-            <li key={`${group.id}-${index}`} className="mega-space">
-              <NavIcon id="lock" className="mega-space-icon" />
-              <span>
+        {group.items.map((entry, index) => (
+          <li key={`${group.id}-${index}`} className="mega-space">
+            <Link
+              href={entry.href}
+              prefetch={false}
+              className="mega-space-link"
+              aria-current={isCurrentPage(pathname, entry.href) ? "page" : undefined}
+              onClick={onNavigate}
+            >
+              <NavIcon id="preview" className="mega-space-icon" />
+              <span className="mega-space-text">
                 <span className="mega-space-label">{entry.label}</span>
                 {entry.badge ? <span className="mega-badge">{entry.badge}</span> : null}
               </span>
-            </li>
-          ) : null,
-        )}
+              <span aria-hidden className="mega-link-arrow">
+                →
+              </span>
+            </Link>
+          </li>
+        ))}
       </ul>
       {group.note ? <p className="mega-group-note">{group.note}</p> : null}
     </section>
@@ -194,7 +210,7 @@ export function MegaMenu({ menu, panelId, open, pathname, onNavigate }: MegaMenu
                 </div>
               ) : menu.aside ? (
                 <div className="mega-aside">
-                  <AsideCard group={menu.aside} />
+                  <AsideCard group={menu.aside} pathname={pathname} onNavigate={onNavigate} />
                 </div>
               ) : null}
             </div>

@@ -44,7 +44,7 @@ function buildSections(
   const seen = new Set<string>();
   const sections: MobileSection[] = [];
 
-  const link = (key: string, label: string, href: string, cta = false) => {
+  const link = (key: string, label: string, href: string, cta = false, badge?: string) => {
     if (seen.has(href)) return null;
     seen.add(href);
     return (
@@ -56,7 +56,8 @@ function buildSections(
           aria-current={!href.includes("#") && href === pathname ? "page" : undefined}
           onClick={onNavigate}
         >
-          {label}
+          <span>{label}</span>
+          {badge ? <span className="mega-badge">{badge}</span> : null}
         </Link>
       </li>
     );
@@ -77,15 +78,15 @@ function buildSections(
     nodes: [
       ...(group.href && group.items.length === 0 ? [link(`${group.id}-self`, group.title, group.href)] : []),
       ...group.items.map((entry, index) =>
-        entry.type === "link" ? (
-          link(`${group.id}-${index}`, entry.label, entry.href)
-        ) : (
-          <li key={`${group.id}-${index}`} className="site-mobile-info">
-            <span>{entry.label}</span>
-            {entry.badge ? <span className="mega-badge">{entry.badge}</span> : null}
-          </li>
-        ),
+        link(`${group.id}-${index}`, entry.label, entry.href, false, entry.badge),
       ),
+      ...(group.id === menu.aside?.id && group.note
+        ? [
+            <li key={`${group.id}-note`} className="site-mobile-note">
+              {group.note}
+            </li>,
+          ]
+        : []),
     ],
   });
 

@@ -100,6 +100,7 @@ export const projectApproachPhases: DeploymentPhase[] = [
       "Planification des installations, des intégrations et des jalons de validation avec le client.",
   },
   {
+    id: "deploiement",
     step: "04",
     title: "Déploiement",
     description:
@@ -112,6 +113,7 @@ export const projectApproachPhases: DeploymentPhase[] = [
       "Validation fonctionnelle, vérification des alertes, des rapports et des droits avant mise en exploitation.",
   },
   {
+    id: "transfert-suivi",
     step: "06",
     title: "Transfert et suivi",
     description:
