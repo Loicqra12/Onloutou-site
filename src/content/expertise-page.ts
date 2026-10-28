@@ -82,6 +82,7 @@ export const prestationTypes = [
 
 export const projectApproachPhases: DeploymentPhase[] = [
   {
+    id: "cadrage",
     step: "01",
     title: "Cadrage",
     description:

@@ -65,8 +65,8 @@ const solutionsMenu: MegaMenuConfig = {
   label: "Solutions",
   variant: "columns",
   eyebrow: "Nos solutions",
-  width: 1180,
-  asideWeight: 1.05,
+  width: 1156,
+  asideWeight: 1.2,
   overview: { label: "Toutes les solutions", href: "/solutions" },
   groups: [
     {
@@ -130,7 +130,7 @@ const equipmentMenu: MegaMenuConfig = {
   variant: "icon-grid",
   eyebrow: "Les équipements",
   width: 1100,
-  asideWeight: 0.68,
+  asideWeight: 0.56,
   overview: { label: "Vue d'ensemble", href: "/equipements" },
   groups: [
     {
@@ -206,9 +206,9 @@ const expertiseMenu: MegaMenuConfig = {
       title: "Préparer & déployer",
       description: "Poser les bonnes bases.",
       items: [
-        { type: "link", label: "Étude & préparation du projet", href: "/expertise#approche" },
+        { type: "link", label: "Cadrage du projet", href: "/expertise#cadrage" },
         { type: "link", label: "Déploiement terrain", href: "/expertise#deploiement" },
-        { type: "link", label: "Installation & paramétrage", href: "/expertise#installation" },
+        { type: "link", label: "Installation & paramétrage", href: "/solutions/geolocalisation#installation-terrain" },
       ],
     },
     {

@@ -8,7 +8,11 @@ export function FieldInstallationStory() {
   const berline = geolocationMedia.installBerline;
 
   return (
-    <section className="geo-install-story section-spacing bg-brand-charcoal text-brand-white" aria-labelledby="geo-install-title">
+    <section
+      id="installation-terrain"
+      className="geo-install-story section-spacing scroll-mt-20 bg-brand-charcoal text-brand-white"
+      aria-labelledby="geo-install-title"
+    >
       <div className="container-content">
         <Reveal>
           <h2 id="geo-install-title" className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">

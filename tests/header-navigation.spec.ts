@@ -215,7 +215,7 @@ test.describe("navigation — desktop", () => {
     await expect(card.getByRole("link", { name: /Découvrir le futur espace partenaire/ })).toHaveAttribute("href", "/espace-partenaire");
     await expect(card.getByRole("link", { name: /Découvrir le futur espace livreur/ })).toHaveAttribute("href", "/espace-livreur");
     await expect(card).toContainText("Pages de présentation");
-    expect((await card.boundingBox())!.height).toBeLessThan(250);
+    expect((await card.boundingBox())!.height).toBeLessThan(340);
     await shot(page, "partenaires-espaces.png");
     await card.getByRole("link", { name: /futur espace livreur/ }).click();
     await expect(page).toHaveURL(/\/espace-livreur$/);
@@ -310,6 +310,24 @@ test.describe("navigation — le contenu atteint correspond au libellé", () => 
     await expect(card.getByRole("heading", { name: "Déploiement" })).toBeVisible();
     await expect(card).toContainText("Installation sur le terrain");
     await expectInViewport(page, "#deploiement h3");
+  });
+
+  test("Expertise › Cadrage du projet → étape « 01 Cadrage »", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/expertise#cadrage");
+    const card = page.locator("#cadrage");
+    await expect(card.getByRole("heading", { name: "Cadrage" })).toBeVisible();
+    await expect(card).toContainText("Compréhension du besoin");
+    await expectInViewport(page, "#cadrage h3");
+  });
+
+  test("Expertise › Installation & paramétrage → section d'installation de la géolocalisation", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/solutions/geolocalisation#installation-terrain");
+    const section = page.locator("#installation-terrain");
+    await expect(section.getByRole("heading", { level: 2, name: "Installer, contrôler, mettre en service." })).toBeVisible();
+    await expect(section.getByText("Paramétrage", { exact: true })).toBeVisible();
+    await expectInViewport(page, "#installation-terrain h2");
   });
 
   test("Expertise › Formation & accompagnement → étape « 06 Transfert et suivi »", async ({ page }) => {

@@ -111,12 +111,10 @@ function AsideCard({
 
   return (
     <section className="mega-aside-card" aria-labelledby={titleId}>
-      <div className="mega-aside-head">
-        {group.iconId ? <NavIcon id={group.iconId} className="mega-group-icon" /> : null}
-        <p id={titleId} className="mega-group-title">
-          {group.title}
-        </p>
-      </div>
+      {group.iconId ? <NavIcon id={group.iconId} className="mega-group-icon" /> : null}
+      <p id={titleId} className="mega-group-title">
+        {group.title}
+      </p>
       {group.description ? <p className="mega-group-desc">{group.description}</p> : null}
       <ul className="mega-space-list">
         {group.items.map((entry, index) => (
