@@ -41,8 +41,10 @@ export default function ProjetsPage() {
 
       <ProjectsHero />
       <ProjectsDimensionsBand />
-      <div id="mobilite" className="scroll-mt-28" />
-      <div id="supervision" className="scroll-mt-28" />
+      {/* Ancres de domaine : data-anchor-target = cible visible à aligner (carte empilée en mobile, sinon la section). */}
+      <div id="plateformes" data-anchor-target="[data-domain=platforms]|#domaines-projets" aria-hidden />
+      <div id="mobilite" data-anchor-target="[data-domain=mobility]|#domaines-projets" aria-hidden />
+      <div id="supervision" data-anchor-target="[data-domain=fleet]|#domaines-projets" aria-hidden />
       <ProjectDomainsShowcase />
       <ProjectFramingSection />
       <BazarArchiveSection />

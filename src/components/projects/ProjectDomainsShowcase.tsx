@@ -25,6 +25,7 @@ function domainLinks(domain: (typeof projectsDomains.items)[number]) {
 export function ProjectDomainsShowcase() {
   const baseId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
+  const stackRef = useRef<HTMLDivElement>(null);
   const items = projectsDomains.items;
   const [activeIndex, setActiveIndex] = useState(0);
   const [userPaused, setUserPaused] = useState(false);
@@ -72,6 +73,12 @@ export function ProjectDomainsShowcase() {
 
   useEffect(() => {
     rootRef.current?.classList.add("proj-domains--enhanced");
+
+    // La mise en page « onglets » raccourcit la page : une ancre ouverte avant l'hydratation
+    // (accès direct, lien depuis une autre page) est réalignée sur sa cible une fois la page stabilisée.
+    const hashId = decodeURIComponent(window.location.hash.slice(1));
+    if (!hashId || DOMAIN_HASHES[hashId]) return;
+    document.getElementById(hashId)?.scrollIntoView({ block: "start", behavior: "instant" });
   }, []);
 
   useEffect(() => {
@@ -138,23 +145,30 @@ export function ProjectDomainsShowcase() {
 
   // Ouvre le domaine désigné par l'ancre (chargement, hashchange ou lien interne à la page).
   useEffect(() => {
-    const sync = () => {
+    const sync = (instant = false) => {
       const domainId = DOMAIN_HASHES[window.location.hash.slice(1)];
       const index = items.findIndex((item) => item.id === domainId);
       if (index < 0) return;
       selectIndex(index, true);
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      rootRef.current?.scrollIntoView({ block: "start", behavior: reduced ? "auto" : "smooth" });
+      // En mobile les domaines sont empilés : on rejoint la carte du domaine, pas le haut de la section.
+      const stack = stackRef.current;
+      const stacked = Boolean(stack && stack.offsetParent !== null);
+      const target = stacked
+        ? stack?.querySelector<HTMLElement>(`[data-domain="${domainId}"]`)
+        : rootRef.current;
+      target?.scrollIntoView({ block: "start", behavior: instant || reduced ? "instant" : "smooth" });
     };
     const onClick = (event: MouseEvent) => {
       const link = (event.target as Element | null)?.closest?.("a[href*='#']");
-      if (link) window.setTimeout(sync, 80);
+      if (link) window.setTimeout(() => sync(), 80);
     };
-    sync();
-    window.addEventListener("hashchange", sync);
+    sync(true);
+    const onHashChange = () => sync();
+    window.addEventListener("hashchange", onHashChange);
     document.addEventListener("click", onClick);
     return () => {
-      window.removeEventListener("hashchange", sync);
+      window.removeEventListener("hashchange", onHashChange);
       document.removeEventListener("click", onClick);
     };
   }, [items, selectIndex]);
@@ -179,7 +193,7 @@ export function ProjectDomainsShowcase() {
   return (
     <section
       id={projectsDomains.id}
-      className="proj-domains section-spacing scroll-mt-20 bg-brand-paper"
+      className="proj-domains section-spacing bg-brand-paper"
       aria-labelledby="proj-domains-title"
       ref={rootRef}
       onMouseEnter={() => {
@@ -296,12 +310,16 @@ export function ProjectDomainsShowcase() {
             })}
           </div>
 
-          <div className="proj-domains__stack">
+          <div className="proj-domains__stack" ref={stackRef}>
             {items.map((domain) => {
               const media = projectImage(domain.mediaKey);
               const links = domainLinks(domain);
               return (
-                <article key={domain.id} className="proj-domains__stack-item">
+                <article
+                  key={domain.id}
+                  className="proj-domains__stack-item scroll-mt-[var(--anchor-offset)]"
+                  data-domain={domain.id}
+                >
                   <header>
                     <span className="proj-domains__panel-num">{domain.number}</span>
                     <h3>{domain.title}</h3>

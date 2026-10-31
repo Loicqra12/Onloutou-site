@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Manrope } from "next/font/google";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { HashAnchorAlign } from "@/components/navigation/HashAnchorAlign";
 import { MotionBootstrap } from "@/components/motion/MotionBootstrap";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -73,6 +74,7 @@ export default function RootLayout({
         <JsonLd id="organization-jsonld" data={organizationJsonLd()} />
         <JsonLd id="website-jsonld" data={websiteJsonLd()} />
         <MotionBootstrap />
+        <HashAnchorAlign />
         <ScrollProgress />
         <a
           href="#contenu-principal"

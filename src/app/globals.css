@@ -39,6 +39,15 @@
     scroll-behavior: smooth;
   }
 
+  /* Cibles d'ancres : repli sous l'en-tête fixe (déplié ou replié), sauf marge propre à une section. */
+  :root {
+    --anchor-offset: 6rem;
+  }
+
+  :where([id]) {
+    scroll-margin-top: var(--anchor-offset);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

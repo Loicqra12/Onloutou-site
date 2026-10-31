@@ -80,6 +80,43 @@ export const prestationTypes = [
   "Support et maintenance contractuels",
 ];
 
+export const prestationDetails = {
+  title: "Du paramétrage au reporting",
+  description:
+    "Trois interventions détaillées ici : ce qu’elles couvrent et ce qui se précise avec vous avant le démarrage.",
+  coversLabel: "Ce que couvre l’intervention",
+  defineLabel: "À définir avec vous",
+  items: [
+    {
+      id: "installation-parametrage",
+      title: "Installation et paramétrage",
+      covers:
+        "Installation des dispositifs sur les véhicules ou les équipements, configuration GPS, paramétrage du suivi, mise en service et tests de bout en bout.",
+      define:
+        "Les véhicules et actifs concernés, leur compatibilité et leur alimentation, les sites d’intervention et le calendrier.",
+      solution: { label: "Géolocalisation", href: "/solutions/geolocalisation#installation-terrain" },
+    },
+    {
+      id: "flotte-operations",
+      title: "Flotte et opérations",
+      covers:
+        "Organisation du suivi de la flotte : visibilité sur les véhicules, trajets, missions et tournées, alertes et accès des utilisateurs.",
+      define:
+        "Les rôles et droits d’accès, les règles d’alerte, les indicateurs utiles et le niveau d’assistance prévu au contrat.",
+      solution: { label: "Gestion de flotte", href: "/solutions/gestion-de-flotte#pilotage" },
+    },
+    {
+      id: "supervision-reporting",
+      title: "Supervision et reporting",
+      covers:
+        "Mise en place de tableaux de bord et de rapports opérationnels, avec vérification des alertes, des rapports et des droits avant la mise en exploitation.",
+      define:
+        "Les indicateurs à suivre, la fréquence et les destinataires des rapports, les intégrations à étudier.",
+      solution: { label: "Gestion de flotte", href: "/solutions/gestion-de-flotte#tableaux-de-bord" },
+    },
+  ],
+};
+
 export const projectApproachPhases: DeploymentPhase[] = [
   {
     id: "cadrage",

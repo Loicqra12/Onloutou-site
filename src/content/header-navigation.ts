@@ -196,7 +196,7 @@ const expertiseMenu: MegaMenuConfig = {
   label: "Expertise",
   variant: "columns",
   eyebrow: "Notre expertise",
-  width: 1110,
+  width: 1156,
   asideWeight: 1.15,
   overview: { label: "Découvrir l'expertise", href: "/expertise" },
   groups: [
@@ -208,7 +208,7 @@ const expertiseMenu: MegaMenuConfig = {
       items: [
         { type: "link", label: "Cadrage du projet", href: "/expertise#cadrage" },
         { type: "link", label: "Déploiement terrain", href: "/expertise#deploiement" },
-        { type: "link", label: "Installation & paramétrage", href: "/solutions/geolocalisation#installation-terrain" },
+        { type: "link", label: "Installation & paramétrage", href: "/expertise#installation-parametrage" },
       ],
     },
     {
@@ -217,13 +217,24 @@ const expertiseMenu: MegaMenuConfig = {
       title: "Exploiter & accompagner",
       description: "Faire vivre les solutions au quotidien.",
       items: [
-        { type: "link", label: "Flotte & opérations", href: "/solutions/gestion-de-flotte#pilotage" },
+        { type: "link", label: "Flotte & opérations", href: "/expertise#flotte-operations" },
+        { type: "link", label: "Supervision & reporting", href: "/expertise#supervision-reporting" },
+        { type: "link", label: "Formation & accompagnement", href: "/expertise#transfert-suivi" },
+      ],
+    },
+    {
+      id: "solutions-associees",
+      iconId: "pin",
+      title: "Solutions associées",
+      description: "Les solutions liées à ces prestations.",
+      items: [
+        { type: "link", label: "Géolocalisation : installation terrain", href: "/solutions/geolocalisation#installation-terrain" },
+        { type: "link", label: "Gestion de flotte : pilotage", href: "/solutions/gestion-de-flotte#pilotage" },
         {
           type: "link",
-          label: "Supervision & reporting",
+          label: "Gestion de flotte : tableaux de bord",
           href: "/solutions/gestion-de-flotte#tableaux-de-bord",
         },
-        { type: "link", label: "Formation & accompagnement", href: "/expertise#transfert-suivi" },
       ],
     },
   ],

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { ContactCtaBand } from "@/components/ui/ContactCtaBand";
 import { EditorialNotice } from "@/components/ui/EditorialNotice";
@@ -12,6 +13,7 @@ import {
   expertiseSeo,
   historicalReferences,
   interventionSectors,
+  prestationDetails,
   prestationTypes,
   projectApproachPhases,
   tenderSection,
@@ -75,6 +77,43 @@ export default function ExpertisePage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="section-spacing bg-brand-white" aria-labelledby="prestations-detail-title">
+        <div className="container-content">
+          <h2
+            id="prestations-detail-title"
+            className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl"
+          >
+            {prestationDetails.title}
+          </h2>
+          <p className="mt-3 max-w-2xl text-brand-muted">{prestationDetails.description}</p>
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            {prestationDetails.items.map((item) => (
+              <article
+                key={item.id}
+                id={item.id}
+                className="flex flex-col rounded-[var(--radius-card)] border border-brand-border bg-brand-paper p-6 shadow-[var(--shadow-card)]"
+              >
+                <h3 className="font-display text-lg font-extrabold">{item.title}</h3>
+                <p className="mt-4 text-xs font-bold uppercase tracking-wide text-brand-muted">
+                  {prestationDetails.coversLabel}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed">{item.covers}</p>
+                <p className="mt-4 text-xs font-bold uppercase tracking-wide text-brand-muted">
+                  {prestationDetails.defineLabel}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed">{item.define}</p>
+                <Link
+                  href={item.solution.href}
+                  className="link-motion mt-auto inline-flex pt-5 text-sm font-bold text-brand-ink"
+                >
+                  Solution associée : {item.solution.label} →
+                </Link>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
