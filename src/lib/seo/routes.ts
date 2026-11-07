@@ -9,6 +9,17 @@ import { discoverAppRoutes } from "@/lib/app-routes";
 /** Prévisualisations conceptuelles — public mais hors index. */
 export const PORTAL_PREVIEW_PATHS = new Set(["/espace-partenaire", "/espace-livreur"]);
 
+/** Administration et espaces connectés — hors index. */
+export const BACKOFFICE_PATH_PREFIXES = [
+  "/admin",
+  "/espace-partenaire/connexion",
+  "/espace-partenaire/inscription",
+  "/espace-partenaire/catalogue",
+  "/espace-livreur/connexion",
+  "/espace-livreur/inscription",
+  "/espace-livreur/dossier",
+];
+
 export const ROBOTS_PREVIEW_PORTAL = { index: false, follow: true } satisfies {
   index: boolean;
   follow: boolean;
@@ -40,9 +51,14 @@ function robotsForPath(path: string): { index: boolean; follow: boolean } {
       return termsOfUseIsIndexable()
         ? { index: true, follow: true }
         : { index: false, follow: true };
+    case "/conditions-commerciales":
+      return { index: false, follow: true };
     default:
       if (PORTAL_PREVIEW_PATHS.has(path)) {
         return ROBOTS_PREVIEW_PORTAL;
+      }
+      if (BACKOFFICE_PATH_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))) {
+        return { index: false, follow: false };
       }
       return { index: true, follow: true };
   }

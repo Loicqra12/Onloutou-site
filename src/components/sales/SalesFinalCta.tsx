@@ -14,7 +14,7 @@ export function SalesFinalCta() {
           src={photo.src}
           alt={photo.alt}
           fill
-          sizes="100vw"
+          sizes="(max-width: 767px) 130vw, 100vw"
           className="sales-final-cta__bg"
           style={{ objectFit: "cover", objectPosition: photo.objectPosition }}
         />

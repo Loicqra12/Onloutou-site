@@ -1,19 +1,19 @@
 import { test, expect } from "@playwright/test";
-import { bazarForbiddenContent, bazarProject, getBazarPublicTitle } from "../src/content/bazar-project";
+import { bazarForbiddenContent } from "../src/content/bazar-project";
 import { discoverAppRoutes } from "@/lib/app-routes";
 
 test.describe("Archives catalogue bazar-onloutou", () => {
-  test("section #bazar-onloutou sur /projets", async ({ page }) => {
+  test("ancre #bazar-onloutou : la page Projets refondue la dirige vers « Innovations & MVP »", async ({ page }) => {
     await page.goto("/projets#bazar-onloutou", { waitUntil: "domcontentloaded" });
-    const section = page.locator("#bazar-onloutou");
+    const section = page.locator("#innovations");
     await expect(section).toBeVisible();
-    await expect(section.getByRole("heading", { level: 2 })).toContainText(getBazarPublicTitle());
-    await expect(section).toContainText(bazarProject.disclaimer);
+    await expect(section.getByRole("heading", { level: 2 })).toContainText("prennent forme");
+    await expect(page.locator("#bazar-onloutou")).toHaveCount(1);
   });
 
-  test("lien depuis /a-propos#parcours", async ({ page }) => {
-    await page.goto("/a-propos#parcours", { waitUntil: "domcontentloaded" });
-    const link = page.getByRole("link", { name: /Explorer cette archive/i });
+  test("lien depuis /a-propos (archives)", async ({ page }) => {
+    await page.goto("/a-propos#archives", { waitUntil: "domcontentloaded" });
+    const link = page.locator("#archives").getByRole("link", { name: /Explorer nos projets/i });
     await expect(link).toHaveAttribute("href", "/projets#bazar-onloutou");
   });
 
@@ -35,12 +35,12 @@ test.describe("Archives catalogue bazar-onloutou", () => {
   test("pas de nouvelle route applicative", () => {
     const routes = discoverAppRoutes();
     expect(routes).not.toContain("/bazar");
-    expect(routes.length).toBe(33);
+    expect(routes.length).toBe(46);
   });
 
   test("contenu interdit absent sur /projets", async ({ page }) => {
     await page.goto("/projets#bazar-onloutou", { waitUntil: "domcontentloaded" });
-    const html = await page.locator("#bazar-onloutou").innerText();
+    const html = await page.locator("#innovations").innerText();
     for (const phrase of bazarForbiddenContent) {
       expect(html.toLowerCase()).not.toContain(phrase.toLowerCase());
     }
@@ -53,21 +53,6 @@ test.describe("Archives catalogue bazar-onloutou", () => {
     const joined = scripts.join("\n");
     expect(joined).not.toMatch(/"@type"\s*:\s*"Product"/);
     expect(joined).not.toMatch(/"@type"\s*:\s*"Offer"/);
-  });
-
-  test("galerie — pause et reduced motion", async ({ page }) => {
-    await page.goto("/projets#bazar-onloutou", { waitUntil: "domcontentloaded" });
-    const pause = page.locator(".bazar-gallery__pause");
-    await expect(pause).toBeVisible();
-    await pause.click();
-    await expect(pause).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator(".bazar-gallery.is-paused")).toBeVisible();
-
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.reload({ waitUntil: "domcontentloaded" });
-    const track = page.locator(".bazar-gallery__track");
-    const animation = await track.evaluate((el) => getComputedStyle(el).animationName);
-    expect(animation === "none" || animation === "").toBeTruthy();
   });
 
   test("pas de débordement horizontal", async ({ page }) => {

@@ -260,28 +260,28 @@ const projectsMenu: MegaMenuConfig = {
   groups: [],
   cards: [
     {
-      id: "mobilite",
-      title: "Mobilité professionnelle",
-      description: "Organiser les moyens de terrain.",
-      href: "/projets#mobilite",
-      image: mobilityImage,
+      id: "realisations-numeriques",
+      title: "Réalisations numériques",
+      description: "Sites, interfaces et espaces de gestion.",
+      href: "/projets#realisations-numeriques",
+      image: digitalImage,
     },
     {
-      id: "supervision",
-      title: "Supervision de flotte",
-      description: "Relier les véhicules aux opérations.",
-      href: "/projets#supervision",
+      id: "missions-terrain",
+      title: "Missions terrain",
+      description: "Géolocalisation, installation et supervision.",
+      href: "/projets#missions-terrain",
       image: supervisionImage,
     },
     {
-      id: "plateformes",
-      title: "Plateformes sur mesure",
-      description: "Connecter les équipes et les usages.",
-      href: "/projets#plateformes",
-      image: digitalImage,
+      id: "innovations",
+      title: "Innovations & MVP",
+      description: "Des initiatives à différents stades de développement.",
+      href: "/projets#innovations",
+      image: mobilityImage,
     },
   ],
-  cardsNote: "Exemples de projets et de configurations possibles.",
+  cardsNote: "Chaque projet est présenté selon son périmètre et son avancement.",
   footer: {
     iconId: "chat",
     text: "Votre projet commence par un besoin.",
@@ -403,11 +403,12 @@ export const headerNavigation: HeaderNavItem[] = [
 ];
 
 export const headerUtility = {
-  location: "Abidjan, Côte d'Ivoire",
-  phoneDisplay: site.phoneDisplay,
+  location: "Abidjan, Côte d’Ivoire",
+  phoneDisplay: "05 54 13 77 77",
   phoneTel: site.phoneTel,
-  whatsappUrl: site.whatsappUrl,
-  whatsappLabel: "WhatsApp",
+  phoneHref: `tel:${site.phoneTel}`,
+  whatsappUrl: "https://wa.me/2250554137777",
+  whatsappLabel: "Échanger sur WhatsApp",
 };
 
 export const headerCta = {

@@ -55,11 +55,11 @@ test.describe("Architecture Solutions", () => {
 
   test("comptes routes applicatives et indexables", () => {
     const routes = discoverAppRoutes();
-    expect(routes.length).toBe(33);
+    expect(routes.length).toBe(46);
     const indexable = routes.filter((p) => getRouteIndexation(p).includeInSitemap);
     const noindex = routes.filter((p) => !getRouteIndexation(p).index);
     expect(indexable.length).toBe(27);
-    expect(noindex.length).toBe(6);
+    expect(noindex.length).toBe(19);
     expect(getSitemapPaths().length).toBe(27);
   });
 

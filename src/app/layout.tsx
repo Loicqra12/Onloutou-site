@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Manrope } from "next/font/google";
+import { CookieNotice } from "@/components/layout/CookieNotice";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { HashAnchorAlign } from "@/components/navigation/HashAnchorAlign";
@@ -7,6 +8,7 @@ import { MotionBootstrap } from "@/components/motion/MotionBootstrap";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { homeDescription } from "@/app/home-metadata";
+import { siteMedia } from "@/content/media";
 import { site } from "@/content/site";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/json-ld";
 import { buildTwitterMetadata } from "@/lib/seo/social-metadata";
@@ -59,7 +61,15 @@ export const metadata: Metadata = {
     homeDescription,
   ),
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      {
+        url: siteMedia.logo.src,
+        type: "image/png",
+        sizes: `${siteMedia.logo.width}x${siteMedia.logo.height}`,
+      },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: siteMedia.logo.src,
   },
 };
 
@@ -85,6 +95,7 @@ export default function RootLayout({
         <SiteHeader />
         <main id="contenu-principal">{children}</main>
         <SiteFooter />
+        <CookieNotice />
       </body>
     </html>
   );

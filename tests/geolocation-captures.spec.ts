@@ -24,7 +24,7 @@ test.describe("captures géolocalisation", () => {
 
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/solutions/geolocalisation#plateforme", { waitUntil: "networkidle" });
-    await page.locator("#geo-platform-title").scrollIntoViewIfNeeded();
+    await page.locator("#glx-platform-title").scrollIntoViewIfNeeded();
     await page.waitForTimeout(400);
     await shot(page, "geolocation-platform-desktop.png");
 
@@ -44,6 +44,6 @@ test.describe("captures géolocalisation", () => {
     await page.setViewportSize({ width: 320, height: 568 });
     await page.goto("/solutions/geolocalisation", { waitUntil: "networkidle" });
     await shot(page, "geolocation-mobile-320.png", true);
-    await expect(page.locator("#geo-hero-title")).toBeVisible();
+    await expect(page.locator("#glx-hero-title")).toBeVisible();
   });
 });

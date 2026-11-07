@@ -19,12 +19,12 @@ test.describe("régression — sections masquées", () => {
     const fleet = page.locator("[data-section='fleet']");
     await fleet.scrollIntoViewIfNeeded();
     await page.waitForTimeout(700);
-    const caps = page.locator(".home-fleet-cap");
+    const caps = page.locator(".hom-geo-tab");
     if (await caps.count()) {
       await caps.nth(1).click();
       await page.waitForTimeout(200);
-      await expect(fleet).toHaveAttribute("data-motion-state", "visible");
-      const headingOpacity = await page.locator(".home-fleet-heading").evaluate((el) => getComputedStyle(el).opacity);
+      await expect(caps.nth(1)).toHaveAttribute("aria-selected", "true");
+      const headingOpacity = await page.locator("#hom-geo-title").evaluate((el) => getComputedStyle(el).opacity);
       expect(Number(headingOpacity)).toBeGreaterThan(0.9);
     }
 
@@ -63,8 +63,8 @@ test.describe("régression — sections masquées", () => {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /Équiper le terrain/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Un actif à connecter/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Qui loue tout/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Un équipement à trouver/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /Des projets construits pour le terrain/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /Du terrain à la supervision/i })).toBeVisible();
     const opacity = await page.locator("[data-section='projects']").evaluate((el) => getComputedStyle(el).opacity);

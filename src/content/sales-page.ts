@@ -21,11 +21,11 @@ export type SalesMedia = {
 
 export const salesMedia = {
   hero: {
-    src: "/assets/images/menu/mega-menu-equipements-onloutou.png",
-    alt: "Technicien contrôlant un groupe électrogène, avec utilitaire et moto en arrière-plan",
-    width: 1586,
-    height: 992,
-    objectPosition: "82% 68%",
+    src: "/assets/images/projects/project-b/inspection-groupe-electrogene.png",
+    alt: "Technicien examinant un groupe électrogène pendant qu’une collègue note les points de contrôle",
+    width: 1536,
+    height: 1024,
+    objectPosition: "50% 46%",
   },
   warehouse: {
     src: "/assets/images/projects/project-a/gestion-equipements-entrepot.png",
@@ -70,7 +70,7 @@ export const salesMedia = {
     objectPosition: "50% 46%",
   },
   trucks: {
-    src: "/assets/images/equipment/camions-engins/Camions et engins sur site à Abidjan-1.png",
+    src: "/assets/images/equipment/camions/Camions et engins sur site à Abidjan-1.png",
     alt: "Camion-benne, camion porteur et engin de chantier dans une cour technique",
     width: 1672,
     height: 941,
@@ -93,17 +93,17 @@ export const salesMedia = {
 };
 
 export const imageCategoryDisclaimer =
-  "Visuel représentatif d’une catégorie de besoin — modèle et disponibilité à confirmer.";
+  "Modèle et disponibilité à confirmer.";
 
 export const salesHero = {
   eyebrow: "SOLUTION · VENTE D’ÉQUIPEMENTS",
-  titleBefore: "Choisissez des équipements pensés pour ",
-  titleHighlight: "votre usage réel.",
+  titleBefore: "Acheter un équipement ",
+  titleHighlight: "adapté à votre usage",
   intro:
     "ONLOUTOU accompagne la qualification, la recherche et la proposition de véhicules, de matériels et d’équipements professionnels adaptés au contexte du projet.",
   caveat: "Les références, caractéristiques, prix et disponibilités sont confirmés après étude.",
-  primaryCta: { label: "Décrire mon besoin", href: "#demande-equipement" },
-  secondaryCta: { label: "Voir les familles d’équipements", href: "#familles-equipements" },
+  primaryCta: { label: "Décrire mon besoin d’achat", href: "#demande-equipement" },
+  secondaryCta: { label: "Voir les trois questions à se poser", href: "#conseil-achat" },
 };
 
 export const salesSelectionBand = [
@@ -438,11 +438,39 @@ export const salesFaq: ServiceFaqItem[] = [
   },
 ];
 
+export const salesAdvice = {
+  id: "conseil-achat",
+  eyebrow: "Avant d’acheter",
+  title: "Trois questions pour choisir le bon équipement.",
+  lead:
+    "Répondre à ces trois questions suffit pour démarrer : ONLOUTOU affine ensuite avec vous, sans engagement.",
+  questions: [
+    {
+      title: "À quoi servira l’équipement ?",
+      items: ["Usage principal", "Compétences des utilisateurs"],
+    },
+    {
+      title: "À quelle fréquence sera-t-il utilisé ?",
+      items: ["Fréquence d’utilisation", "Besoins de suivi", "Maintenance et pièces"],
+    },
+    {
+      title: "Dans quelles conditions ?",
+      items: ["Conditions du terrain", "Mobilité", "Alimentation disponible", "Contraintes d’installation"],
+    },
+  ],
+  cta: { label: "Décrire mon besoin d’achat", href: "#demande-equipement" },
+  rentLink: {
+    lead: "Besoin temporaire ou à tester ?",
+    label: "Étudier plutôt la location",
+    href: "/solutions/location",
+  },
+};
+
 export const salesFaqTitle = "Questions fréquentes";
 export const salesFaqHighlight = "fréquentes";
 
-export const salesRequestTitle = "Préparer ma demande d’équipement";
-export const salesRequestHighlight = "d’équipement";
+export const salesRequestTitle = "Préparer ma demande d’achat";
+export const salesRequestHighlight = "d’achat";
 
 export const salesFaqAside = {
   text: salesHero.caveat,
@@ -457,7 +485,7 @@ export const salesFinalCta = {
   titleHighlight: "vraiment à votre projet.",
   lead:
     "Décrivez l’usage, la quantité, les contraintes et l’accompagnement recherché afin de préparer une réponse plus pertinente.",
-  primary: { label: "Préparer ma demande", href: "#demande-equipement" },
+  primary: { label: "Décrire mon besoin d’achat", href: "#demande-equipement" },
   phoneLabel: "Appeler ONLOUTOU",
   phoneDisplay: site.phoneDisplay,
   phoneTel: site.phoneTel,

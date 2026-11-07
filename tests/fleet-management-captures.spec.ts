@@ -24,7 +24,7 @@ test.describe("captures gestion de flotte", () => {
 
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/solutions/gestion-de-flotte#tableaux-de-bord", { waitUntil: "networkidle" });
-    await page.locator("#fleet-dashboard-title").scrollIntoViewIfNeeded();
+    await page.locator("#flx-reporting-title").scrollIntoViewIfNeeded();
     await page.waitForTimeout(400);
     await shot(page, "fleet-management-dashboard.png");
 
@@ -44,6 +44,6 @@ test.describe("captures gestion de flotte", () => {
     await page.setViewportSize({ width: 320, height: 568 });
     await page.goto("/solutions/gestion-de-flotte", { waitUntil: "networkidle" });
     await shot(page, "fleet-management-mobile-320.png", true);
-    await expect(page.locator("#fleet-hero-title")).toBeVisible();
+    await expect(page.locator("#flx-hero-title")).toBeVisible();
   });
 });

@@ -27,6 +27,41 @@ export const mainNav: NavItem[] = [
 
 export const contactHref = "/contact";
 
+/** Liens publics déjà publiés par ONLOUTOU. Pas de compte TikTok vérifié dans les sources. */
+export const siteSocialLinks = [
+  {
+    id: "facebook",
+    label: "Facebook",
+    href: "https://www.facebook.com/Location.Sans.Caution/",
+  },
+  {
+    id: "linkedin",
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/onloutou-géolocalisation",
+  },
+  {
+    id: "mail",
+    label: "Écrire à contact@onloutou.com",
+    href: "mailto:contact@onloutou.com",
+  },
+] as const;
+
+/** Fiche publique « ONLOUTOU — N°1 de la location en Côte d’Ivoire » : 3,3/5, 25 avis. */
+export const googleReviews = {
+  title: "Avis Google",
+  score: 3.3,
+  scoreLabel: "3,3/5",
+  countLabel: "25 avis",
+  summary: "Note Google 3,3 sur 5, fondée sur 25 avis",
+  action: "Laisser un avis",
+  href: "https://www.google.com/maps/search/?api=1&query=ONLOUTOU%20N%C2%B01%20de%20la%20location%20en%20C%C3%B4te%20d%27Ivoire",
+} as const;
+
+export const siteLanguage = {
+  label: "Langue",
+  current: "Français",
+} as const;
+
 export const footerActivities = [
   "Location d’équipements",
   "Vente d’équipements",

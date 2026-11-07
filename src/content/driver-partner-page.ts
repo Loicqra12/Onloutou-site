@@ -64,7 +64,7 @@ function networkCopy() {
     eyebrow: "LIVREURS PARTENAIRES · RÉSEAU EN PRÉPARATION",
     introLead:
       "Présentez votre profil pour être informé des futures possibilités de collaboration.",
-    seoTitle: "Réseau de livreurs en préparation",
+    seoTitle: "Livreurs : présenter votre profil à ONLOUTOU",
   };
 }
 

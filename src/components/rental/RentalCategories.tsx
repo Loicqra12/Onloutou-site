@@ -119,7 +119,7 @@ export function RentalCategories() {
                           alt={cat.image.alt}
                           width={cat.image.width}
                           height={cat.image.height}
-                          sizes="(max-width: 1023px) 100vw, 58vw"
+                          sizes="(max-width: 1023px) 150vw, 80vw" quality={86}
                           className="rental-categories__visual-img"
                           style={{ objectPosition: cat.image.objectPosition }}
                         />

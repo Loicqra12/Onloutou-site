@@ -4,21 +4,27 @@ test.describe("page location", () => {
   test("H1, catégories, brief WhatsApp, FAQ, visibilité", async ({ page }) => {
     await page.goto("/solutions/location", { waitUntil: "domcontentloaded" });
     await expect(page.locator("#rental-hero-title")).toBeVisible();
-    await page.waitForSelector(".rental-categories--enhanced");
-
-    await page.locator("#categories-location").scrollIntoViewIfNeeded();
-    await page.getByRole("tab", { name: "Outils et matériels" }).click();
-    await expect(page.locator(".rental-categories__panel--active")).toContainText("Groupe électrogène");
+    await expect(page.locator("#rental-hero-title")).toContainText("Louer un véhicule ou du matériel en Côte d’Ivoire");
+    const cta = page.getByRole("link", { name: "Faire une demande de location" }).first();
+    await expect(cta).toHaveAttribute("href", "#demande-location");
+    await expect(page.locator("#etapes-location li")).toHaveCount(4);
 
     await page.locator('input[name="rental-need"][value="moto"]').check();
     await page.locator('input[name="rental-duration"][value="quelques jours"]').check();
     await expect(page.locator(".rental-builder__summary")).toContainText("moto");
     await expect(page.locator(".rental-builder__summary")).toContainText("quelques jours");
 
-    const whatsapp = page.locator(".rental-builder__whatsapp");
-    const href = await whatsapp.getAttribute("href");
+    // WhatsApp n'est proposé qu'après l'enregistrement du dossier (étape facultative, avec la référence).
+    await expect(page.locator(".rental-builder__whatsapp")).toHaveCount(0);
+    await page.getByLabel(/nom ou structure/i).fill("Awa Koné");
+    await page.getByLabel(/^téléphone/i).fill("07 12 34 56 78");
+    await page.getByRole("button", { name: "Enregistrer ma demande" }).click();
+    const saved = page.getByRole("status").filter({ hasText: "Demande enregistrée" });
+    await expect(saved).toBeVisible();
+    const href = await saved.getByRole("link", { name: /WhatsApp/ }).getAttribute("href");
     expect(href).toMatch(/^https:\/\/wa\.me\//);
-    expect(decodeURIComponent(href ?? "")).toContain("moto");
+    expect(decodeURIComponent((href ?? "").replace(/\+/g, " "))).toContain("moto");
+    expect(decodeURIComponent((href ?? "").replace(/\+/g, " "))).toMatch(/ONL-/);
 
     await page.locator("details summary", { hasText: /disponibles immédiatement/i }).click();
 

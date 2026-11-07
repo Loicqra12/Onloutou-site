@@ -21,11 +21,11 @@ export type RentalMedia = {
 
 export const rentalMedia = {
   hero: {
-    src: "/assets/images/projects/project-a/mobilite-professionnelle-cour-logistique.png",
-    alt: "Véhicule professionnel mobilisé dans une cour opérationnelle à Abidjan",
-    width: 1536,
-    height: 1024,
-    objectPosition: "48% 58%",
+    src: "/assets/images/home/hom-01-espace-mobilite.webp",
+    alt: "Véhicules garés devant le local ONLOUTOU à Abidjan",
+    width: 1200,
+    height: 900,
+    objectPosition: "50% 50%",
   },
   fleet: {
     src: "/assets/images/equipment/vehicles/Flotte professionnelle inspectée à Abidjan-2.png",
@@ -42,14 +42,14 @@ export const rentalMedia = {
     objectPosition: "50% 46%",
   },
   trucks: {
-    src: "/assets/images/equipment/camions-engins/Camions et engins sur site à Abidjan-1.png",
+    src: "/assets/images/equipment/camions/Camions et engins sur site à Abidjan-1.png",
     alt: "Camion-benne, camion porteur et engin de chantier dans une cour technique",
     width: 1672,
     height: 941,
     objectPosition: "50% 48%",
   },
   freight: {
-    src: "/assets/images/equipment/camions-engins/Camion de fret au dépôt d’Abidjan-2.png",
+    src: "/assets/images/equipment/camions/Camion de fret au dépôt d’Abidjan-2.png",
     alt: "Agents préparant le chargement d’un camion dans un dépôt à Abidjan",
     width: 1586,
     height: 992,
@@ -108,13 +108,13 @@ export const rentalMedia = {
 
 export const rentalHero = {
   eyebrow: "SOLUTION · LOCATION",
-  titleBefore: "Mobilisez les véhicules et équipements ",
-  titleHighlight: "adaptés à votre besoin.",
+  titleBefore: "Louer un véhicule ou du matériel ",
+  titleHighlight: "en Côte d’Ivoire",
   intro:
     "ONLOUTOU étudie les demandes de location pour des besoins professionnels, des opérations terrain, des projets ponctuels ou des usages récurrents.",
   caveat: "La disponibilité, les conditions et le périmètre sont confirmés après étude de la demande.",
-  primaryCta: { label: "Décrire mon besoin", href: "#demande-location" },
-  secondaryCta: { label: "Explorer les catégories", href: "#categories-location" },
+  primaryCta: { label: "Faire une demande de location", href: "#demande-location" },
+  secondaryCta: { label: "Voir comment ça se passe", href: "#etapes-location" },
 };
 
 export const rentalNeedBand = [
@@ -417,7 +417,7 @@ export const rentalFinalCta = {
   titleHighlight: "réellement.",
   lead:
     "Indiquez la catégorie, l’usage, la quantité, la durée et le lieu. ONLOUTOU pourra mieux qualifier votre demande.",
-  primary: { label: "Préparer ma demande", href: "#demande-location" },
+  primary: { label: "Faire une demande de location", href: "#demande-location" },
   phoneLabel: "Appeler ONLOUTOU",
   phoneDisplay: site.phoneDisplay,
   phoneTel: site.phoneTel,

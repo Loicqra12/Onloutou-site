@@ -1,27 +1,19 @@
+import { PageReveal } from "@/components/motion/PageReveal";
 import type { Metadata } from "next";
 import { JsonLdFromSiteUrl } from "@/components/seo/JsonLd";
-import { DeliveryAudienceSwitch } from "@/components/delivery/DeliveryAudienceSwitch";
-import { DeliveryDigitalSection } from "@/components/delivery/DeliveryDigitalSection";
-import { DeliveryFinalCta } from "@/components/delivery/DeliveryFinalCta";
-import { DeliveryHero } from "@/components/delivery/DeliveryHero";
-import { DeliveryJourney } from "@/components/delivery/DeliveryJourney";
-import { DeliveryLogisticsSection } from "@/components/delivery/DeliveryLogisticsSection";
-import { DeliveryNeedsSection } from "@/components/delivery/DeliveryNeedsSection";
-import { DeliveryRequestBuilder } from "@/components/delivery/DeliveryRequestBuilder";
-import { DeliveryRouteBand } from "@/components/delivery/DeliveryRouteBand";
-import { DeliverySafetySection } from "@/components/delivery/DeliverySafetySection";
-import { DeliveryTransparencySection } from "@/components/delivery/DeliveryTransparencySection";
-import { DeliveryDriverTeaser } from "@/components/delivery/DeliveryDriverTeaser";
-import { TransportSelector } from "@/components/delivery/TransportSelector";
-import { ServiceFaq } from "@/components/ui/ServiceFaq";
+import { PtnDeliveryForm } from "@/components/partners/redesign/PtnDeliveryForm";
+import { PtnDrvChoices, PtnDrvHero, PtnDrvSteps } from "@/components/partners/redesign/PtnDelivery";
+import { PtnFaq } from "@/components/partners/redesign/PtnFaq";
 import {
   deliveryBreadcrumbJsonLd,
-  deliveryFaq,
   deliveryPageMedia,
   deliveryPageSeo,
   deliveryServiceJsonLd,
 } from "@/content/delivery-page";
+import { ptnDrvFaq } from "@/content/partners-subpages";
 import { createPageMetadata } from "@/lib/seo/metadata";
+import "@/styles/partners-redesign.css";
+import "@/styles/partners-subpages.css";
 
 export const metadata: Metadata = createPageMetadata({
   ...deliveryPageSeo,
@@ -31,23 +23,15 @@ export const metadata: Metadata = createPageMetadata({
 
 export default function LivraisonPage() {
   return (
-    <>
+    <div className="ptn-page">
+      <PageReveal root=".ptn-page" targets=".ptn-tiles__grid > li, .ptn-cards > li, .ptn-steps > li, .ptn-sup-grid > li" />
       <JsonLdFromSiteUrl id="delivery-breadcrumb-jsonld" build={deliveryBreadcrumbJsonLd} />
       <JsonLdFromSiteUrl id="delivery-service-jsonld" build={deliveryServiceJsonLd} />
-      <DeliveryHero />
-      <DeliveryRouteBand />
-      <DeliveryAudienceSwitch />
-      <DeliveryNeedsSection />
-      <DeliveryJourney />
-      <DeliveryLogisticsSection />
-      <TransportSelector />
-      <DeliveryDigitalSection />
-      <DeliverySafetySection />
-      <DeliveryDriverTeaser />
-      <DeliveryRequestBuilder />
-      <DeliveryTransparencySection />
-      <ServiceFaq items={deliveryFaq} />
-      <DeliveryFinalCta />
-    </>
+      <PtnDrvHero />
+      <PtnDrvChoices id="devenir-livreur" />
+      <PtnDeliveryForm />
+      <PtnDrvSteps id="fonctionnement-livraison" />
+      <PtnFaq content={ptnDrvFaq} variant="cards" initialOpen={0} />
+    </div>
   );
 }

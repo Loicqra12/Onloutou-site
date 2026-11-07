@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { CommercialRequestActions } from "@/components/forms/CommercialRequestActions";
+import { attachmentPendingNotice } from "@/lib/forms/serviceRequest";
 import { site } from "@/content/site";
 import {
   buildDriverPartnerWhatsAppMessage,
@@ -285,20 +286,34 @@ export function DriverInterestForm() {
           </div>
 
           <div className="drv-form__actions">
-            {canSubmit ? (
-              <Button href={whatsappHref} variant="primary" className="whatsapp-once-pulse">
-                Envoyer mon profil par WhatsApp
-              </Button>
-            ) : (
-              <Button type="button" variant="primary" disabled aria-disabled="true">
-                Envoyer mon profil par WhatsApp
-              </Button>
-            )}
+            <CommercialRequestActions
+              source="devenir-livreur"
+              type="OTHER"
+              contactName={name.trim()}
+              contactPhone={phone.trim() || undefined}
+              zone={city.trim() || zonesDetail.trim() || undefined}
+              message={summary}
+              payload={{ ...fields, candidature: "driver-interest" }}
+              whatsappUrl={whatsappHref}
+              whatsappLabel="Envoyer mon profil par WhatsApp"
+              submitLabel="Enregistrer ma candidature"
+              disabled={!canSubmit}
+              onBeforeSubmit={() => {
+                if (!name.trim()) {
+                  setShowNameError(true);
+                  return false;
+                }
+                if (!consent) return false;
+                return true;
+              }}
+            />
             <a href={`tel:${site.phoneTel}`} className="drv-form__phone link-motion">Appeler ONLOUTOU</a>
           </div>
         </form>
 
-        <p className="drv-form__data-notice" role="note">{driverDataNotice}</p>
+        <p className="drv-form__data-notice" role="note">
+          {driverDataNotice} {attachmentPendingNotice}
+        </p>
 
         <noscript>
           <p className="drv-form__noscript">

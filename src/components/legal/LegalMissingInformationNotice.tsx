@@ -1,7 +1,3 @@
 export function LegalMissingInformationNotice({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="leg-pending">
-      <strong>Information en attente de validation.</strong> {children}
-    </p>
-  );
+  return <p className="leg-gap">{children}</p>;
 }

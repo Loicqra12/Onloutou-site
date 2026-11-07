@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { BriefContactSave } from "@/components/forms/BriefContactSave";
 import {
   buildProjectBriefSummary,
   buildProjectWhatsAppUrl,
@@ -51,7 +51,9 @@ export function ProjectBriefBuilder() {
         <h2 id="proj-brief-title" className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
           Préparer mon projet
         </h2>
-        <p className="proj-brief__lead">Structurez un premier message — aucune donnée n’est enregistrée sur ce site.</p>
+        <p className="proj-brief__lead">
+          Structurez votre besoin : la demande peut être enregistrée en ligne avec une référence (sans engagement ni devis automatique).
+        </p>
 
         <form className="proj-brief__form" onSubmit={(e) => e.preventDefault()}>
           {fieldsets.map((fs) => (
@@ -80,7 +82,16 @@ export function ProjectBriefBuilder() {
           </div>
 
           <div className="proj-brief__actions">
-            <Button href={whatsappHref} variant="primary">Envoyer le brief sur WhatsApp</Button>
+            <BriefContactSave
+              source="projets-brief"
+              type="CUSTOM_PLATFORM"
+              zone={zoneLabel}
+              message={summary}
+              payload={selection}
+              whatsappUrl={whatsappHref}
+              whatsappLabel="Envoyer le brief sur WhatsApp"
+              className="proj-brief__actions"
+            />
             <Link href="/contact" className="proj-brief__contact link-motion">Continuer sur la page contact</Link>
           </div>
         </form>

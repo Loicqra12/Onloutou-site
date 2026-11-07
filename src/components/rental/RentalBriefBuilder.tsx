@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { NeedIcon } from "@/components/rental/RentalBriefIcons";
-import { Button } from "@/components/ui/Button";
+import { BriefContactSave } from "@/components/forms/BriefContactSave";
 import {
   buildRentalBriefSummary,
   buildRentalWhatsAppUrl,
@@ -51,7 +51,7 @@ export function RentalBriefBuilder() {
           Préparer ma demande
         </h2>
         <p className="rental-builder__lead">
-          Sélectionnez les repères ci-dessous pour préparer votre message — sans réservation en ligne ni tarif affiché.
+          Sélectionnez les repères ci-dessous, enregistrez votre demande en ligne puis poursuivez sur WhatsApp si vous le souhaitez — sans réservation confirmée ni tarif affiché.
         </p>
         <p className="rental-builder__hint">{rentalBriefGuide.closing}</p>
 
@@ -145,17 +145,22 @@ export function RentalBriefBuilder() {
               ))}
             </dl>
             <p className="rental-builder__summary">{summary}</p>
-            <div className="rental-builder__actions">
-              <Button href={whatsappHref} variant="primary" className="rental-builder__whatsapp">
-                Continuer sur WhatsApp
-              </Button>
-              <a href={`tel:${site.phoneTel}`} className="rental-builder__phone">
-                {site.phoneDisplay}
-              </a>
-              <Link href="/contact" className="rental-builder__contact link-motion">
-                Voir la page contact
-              </Link>
-            </div>
+            <BriefContactSave
+              source="location-brief"
+              type="RENTAL"
+              zone={zoneLabel}
+              message={summary}
+              payload={{ needLabel, durationLabel, zoneLabel, supportLabel }}
+              whatsappUrl={whatsappHref}
+              whatsappLabel="Continuer sur WhatsApp"
+              className="rental-builder__actions"
+            />
+            <a href={`tel:${site.phoneTel}`} className="rental-builder__phone">
+              {site.phoneDisplay}
+            </a>
+            <Link href="/contact" className="rental-builder__contact link-motion">
+              Voir la page contact
+            </Link>
           </aside>
         </div>
 

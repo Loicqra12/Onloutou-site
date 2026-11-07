@@ -39,13 +39,13 @@ export const publishedProductCatalog: ProductRecord[] = [];
 
 const vehiclesBase = "/assets/images/equipment/vehicles";
 const motosBase = "/assets/images/equipment/motorcycles";
-const trucksBase = "/assets/images/equipment/camions-engins";
+const trucksBase = "/assets/images/equipment/camions";
 const projectA = "/assets/images/projects/project-a";
 const projectB = "/assets/images/projects/project-b";
 const solutionsBase = "/assets/images/solutions";
 
 export const productIllustrativeCaption =
-  "Visuel illustratif — référence et disponibilité à confirmer";
+  "Référence et disponibilité à confirmer.";
 
 export const productsPageMedia = {
   heroPrimary: {

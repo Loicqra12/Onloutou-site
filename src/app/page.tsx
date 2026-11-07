@@ -1,32 +1,37 @@
 import { homeMetadata } from "@/app/home-metadata";
-import { AboutPreviewSection } from "@/components/sections/AboutPreviewSection";
-import { ContactCtaSection } from "@/components/sections/ContactCtaSection";
-import { FleetPreviewSection } from "@/components/sections/FleetPreviewSection";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { InstitutionalLogoBand } from "@/components/sections/InstitutionalLogoBand";
-import { HomeEquipmentMosaic } from "@/components/sections/HomeEquipmentMosaic";
-import { HomeInstallationSection } from "@/components/sections/HomeInstallationSection";
-import { RecognitionHomePreview } from "@/components/recognitions/RecognitionHomePreview";
-import { HomeProjectsSection } from "@/components/sections/HomeProjectsSection";
-import { PlatformSection } from "@/components/sections/PlatformSection";
-import { HomeUniverses } from "@/components/sections/HomeUniverses";
+import { HomBuild } from "@/components/home/redesign/HomBuild";
+import { HomCompany } from "@/components/home/redesign/HomCompany";
+import { HomCta } from "@/components/home/redesign/HomCta";
+import { HomEquipment } from "@/components/home/redesign/HomEquipment";
+import { HomGeo } from "@/components/home/redesign/HomGeo";
+import { HomGestures } from "@/components/home/redesign/HomGestures";
+import { HomHero } from "@/components/home/redesign/HomHero";
+import { HomMethod } from "@/components/home/redesign/HomMethod";
+import { HomMotion } from "@/components/home/redesign/HomMotion";
+import { HomPartners } from "@/components/home/redesign/HomPartners";
+import { HomProjects } from "@/components/home/redesign/HomProjects";
+import { HomRecognition } from "@/components/home/redesign/HomRecognition";
+import { HomUniverses } from "@/components/home/redesign/HomUniverses";
+import "@/styles/home-redesign.css";
 
 export const metadata = homeMetadata;
 
 export default function HomePage() {
   return (
-    <>
-      <HeroSection />
-      <InstitutionalLogoBand />
-      <HomeUniverses />
-      <HomeEquipmentMosaic />
-      <FleetPreviewSection />
-      <HomeInstallationSection />
-      <PlatformSection />
-      <HomeProjectsSection />
-      <RecognitionHomePreview />
-      <AboutPreviewSection />
-      <ContactCtaSection />
-    </>
+    <div className="hom-page">
+      <HomMotion />
+      <HomHero />
+      <HomPartners />
+      <HomUniverses />
+      <HomEquipment />
+      <HomGeo />
+      <HomGestures />
+      <HomMethod />
+      <HomBuild />
+      <HomProjects />
+      <HomRecognition />
+      <HomCompany />
+      <HomCta />
+    </div>
   );
 }

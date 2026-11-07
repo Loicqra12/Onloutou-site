@@ -17,3 +17,10 @@ coverage
 .vercel
 .DS_Store
 Thumbs.db
+backend/dist
+backend/.env
+
+playwright-report-forms
+
+.next-lws
+lws-deploy

@@ -65,15 +65,17 @@ export const aboutTeamMembers: TeamMemberProfile[] = [
       height: 1500,
       focalPoint: "50% 35%",
     },
-    socialLinks: {},
+    socialLinks: {
+      linkedin: "https://www.linkedin.com/in/ousmane-adams-diaby-6b8a72156",
+    },
     featured: true,
     initials: "AOD",
   },
   {
     id: "seri-djati-stephane",
     name: "Seri Djati Stéphane",
-    role: "Directeur administratif et financier",
-    shortRole: "DAF",
+    role: "Sous-directeur",
+    shortRole: "CFO",
     biography:
       "Comptable de formation, Seri Djati Stéphane assure le pilotage financier, administratif et comptable d’ONLOUTOU. Il contribue également à la coordination des relations avec les partenaires de l’entreprise et à la continuité des échanges nécessaires au suivi des projets.",
     quote:
@@ -82,7 +84,7 @@ export const aboutTeamMembers: TeamMemberProfile[] = [
     expertise: ["Finance", "Comptabilité", "Administration", "Suivi des partenariats", "Coordination"],
     image: {
       src: null,
-      alt: "Portrait de Seri Djati Stéphane, directeur administratif et financier",
+      alt: "Portrait de Seri Djati Stéphane, sous-directeur",
       width: 1200,
       height: 1500,
     },
@@ -115,7 +117,8 @@ export const aboutTeamMembers: TeamMemberProfile[] = [
       height: 1500,
     },
     socialLinks: {
-      linkedin: "https://ci.linkedin.com/in/sir-sidney-jordan-39587a283",
+      linkedin: "https://www.linkedin.com/in/sir-sidney-jordan-39587a283",
+      github: "https://github.com/Loicqra12",
     },
     initials: "SJ",
   },

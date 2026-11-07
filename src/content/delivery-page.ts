@@ -81,7 +81,7 @@ function statusCopy() {
       "ONLOUTOU structure une approche de livraison et de coordination logistique reliant les besoins, les équipements, les partenaires et les opérations terrain.",
     primaryCta: { label: "Présenter mon besoin", href: "#demande-livraison" },
     secondaryCta: { label: "Rejoindre le réseau de livreurs", href: "/devenir-livreur" },
-    seoTitle: "Livraison et coordination logistique en préparation",
+    seoTitle: "Livraison : présenter votre besoin à ONLOUTOU",
   };
 }
 
@@ -90,7 +90,7 @@ const copy = statusCopy();
 export const deliveryPageSeo = {
   title: copy.seoTitle,
   description:
-    "Découvrez l’approche ONLOUTOU pour qualifier les besoins de livraison, coordonner les moyens logistiques et développer un réseau de partenaires terrain.",
+    "Présentez un besoin de livraison : ONLOUTOU le qualifie avant toute proposition. L’envoi d’une demande ne garantit ni disponibilité ni délai.",
 };
 
 export const deliveryHero = {

@@ -1,0 +1,305 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+  PARTNER
+  DRIVER
+  CLIENT
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  PENDING_EMAIL
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum PartnerType {
+  SUPPLIER
+  DELIVERY
+  TECH
+}
+
+enum ServiceRequestType {
+  CONTACT
+  PRODUCT
+  RENTAL
+  PURCHASE
+  GPS
+  ASSET_SECURITY
+  CUSTOM_PLATFORM
+  EQUIPMENT_CATALOG
+  DELIVERY
+  PARTNER_SUPPLIER
+  PARTNER_DELIVERY
+  PARTNER_TECH
+  OTHER
+}
+
+enum ServiceRequestStatus {
+  RECEIVED
+  IN_REVIEW
+  WAITING_CLIENT
+  QUOTED
+  CLOSED
+  CANCELLED
+}
+
+enum ProductCategory {
+  VEHICLES
+  MOTORCYCLES
+  TRUCKS_MACHINERY
+  TOOLS
+  CONNECTED
+  OTHER
+}
+
+enum ProductStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  DISABLED
+  ARCHIVED
+}
+
+enum PricingMode {
+  ON_QUOTE
+  FIXED
+}
+
+enum DocumentKind {
+  ID_DOCUMENT
+  REGISTRATION
+  INSURANCE
+  OTHER_CONFIDENTIAL
+}
+
+enum DocumentScanStatus {
+  PENDING
+  CLEAN
+  QUARANTINED
+  REJECTED
+}
+
+enum AuditAction {
+  USER_LOGIN
+  USER_LOGOUT
+  USER_CREATED
+  PASSWORD_RESET_REQUEST
+  PASSWORD_RESET
+  APPLICATION_SUBMITTED
+  APPLICATION_APPROVED
+  APPLICATION_REJECTED
+  REQUEST_CREATED
+  REQUEST_STATUS_CHANGED
+  PRODUCT_CREATED
+  PRODUCT_UPDATED
+  PRODUCT_SUBMITTED
+  PRODUCT_APPROVED
+  PRODUCT_REJECTED
+  PRODUCT_ARCHIVED
+  DOCUMENT_UPLOADED
+  DOCUMENT_ACCESSED
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  role         UserRole   @default(CLIENT)
+  status       UserStatus @default(ACTIVE)
+  displayName  String?
+  phone        String?
+  authEpoch    Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  lastLoginAt  DateTime?
+
+  partnerProfile PartnerProfile?
+  driverProfile  DriverProfile?
+  passwordResets PasswordResetToken[]
+  auditLogs      AuditLog[]           @relation("AuditActor")
+  products       Product[]            @relation("ProductOwner")
+  reviewedProducts Product[]          @relation("ProductReviewer")
+  assignedRequests ServiceRequest[]   @relation("RequestAssignee")
+  uploadedDocuments Document[]        @relation("DocumentUploader")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model PartnerProfile {
+  id               String            @id @default(cuid())
+  userId           String            @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationName String
+  partnerType      PartnerType
+  zone             String?
+  description      String?
+  status           ApplicationStatus @default(DRAFT)
+  rejectionReason  String?
+  reviewedAt       DateTime?
+  reviewedById     String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  products         Product[]
+  documents        Document[]
+
+  @@index([status])
+}
+
+model DriverProfile {
+  id              String            @id @default(cuid())
+  userId          String            @unique
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName        String
+  zone            String?
+  vehicleInfo     String?
+  status          ApplicationStatus @default(DRAFT)
+  rejectionReason String?
+  reviewedAt      DateTime?
+  reviewedById    String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  documents       Document[]
+
+  @@index([status])
+}
+
+model ServiceRequest {
+  id              String               @id @default(cuid())
+  reference       String               @unique
+  type            ServiceRequestType
+  status          ServiceRequestStatus @default(RECEIVED)
+  contactName     String
+  contactPhone    String?
+  contactEmail    String?
+  organization    String?
+  zone            String?
+  message         String
+  payload         Json                 @default("{}")
+  sourcePath      String?
+  clientRequestId String?              @unique
+  assigneeId      String?
+  assignee        User?                @relation("RequestAssignee", fields: [assigneeId], references: [id])
+  submitterUserId String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  events          ServiceRequestEvent[]
+
+  @@index([status, createdAt])
+  @@index([type])
+}
+
+model ServiceRequestEvent {
+  id        String               @id @default(cuid())
+  requestId String
+  request   ServiceRequest       @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  status    ServiceRequestStatus
+  note      String?
+  actorId   String?
+  createdAt DateTime             @default(now())
+
+  @@index([requestId, createdAt])
+}
+
+model Product {
+  id               String          @id @default(cuid())
+  partnerProfileId String
+  partnerProfile   PartnerProfile  @relation(fields: [partnerProfileId], references: [id], onDelete: Cascade)
+  ownerUserId      String
+  owner            User            @relation("ProductOwner", fields: [ownerUserId], references: [id])
+  category         ProductCategory
+  title            String
+  description      String?
+  pricingMode      PricingMode     @default(ON_QUOTE)
+  quantityHint     Int?
+  status           ProductStatus   @default(DRAFT)
+  rejectionReason  String?
+  reviewedAt       DateTime?
+  reviewedById     String?
+  reviewer         User?           @relation("ProductReviewer", fields: [reviewedById], references: [id])
+  publishedAt      DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  images           ProductImage[]
+
+  @@index([partnerProfileId, status])
+  @@index([status, category])
+}
+
+model ProductImage {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  storageKey String
+  mimeType   String
+  byteSize   Int
+  sortOrder  Int      @default(0)
+  isPublic   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  @@index([productId, sortOrder])
+}
+
+model Document {
+  id               String             @id @default(cuid())
+  kind             DocumentKind
+  storageKey       String
+  mimeType         String
+  byteSize         Int
+  scanStatus       DocumentScanStatus @default(PENDING)
+  partnerProfileId String?
+  partnerProfile   PartnerProfile?    @relation(fields: [partnerProfileId], references: [id], onDelete: Cascade)
+  driverProfileId  String?
+  driverProfile    DriverProfile?     @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+  uploadedById     String
+  uploadedBy       User               @relation("DocumentUploader", fields: [uploadedById], references: [id])
+  retainUntil      DateTime?
+  deletedAt        DateTime?
+  createdAt        DateTime           @default(now())
+
+  @@index([partnerProfileId])
+  @@index([driverProfileId])
+  @@index([scanStatus])
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  action     AuditAction
+  actorId    String?
+  actor      User?       @relation("AuditActor", fields: [actorId], references: [id])
+  targetType String?
+  targetId   String?
+  metadata   Json        @default("{}")
+  ip         String?
+  createdAt  DateTime    @default(now())
+
+  @@index([createdAt])
+  @@index([action])
+}

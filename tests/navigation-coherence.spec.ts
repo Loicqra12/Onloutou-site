@@ -90,43 +90,43 @@ const expertiseServices = [
     label: "Cadrage du projet",
     href: "/expertise#cadrage",
     id: "cadrage",
-    heading: "Cadrage",
-    text: "Compréhension du besoin",
+    heading: "Cadrage du projet",
+    text: "Comprendre les usages, les contraintes et les objectifs",
   },
   {
     label: "Déploiement terrain",
     href: "/expertise#deploiement",
     id: "deploiement",
-    heading: "Déploiement",
-    text: "Installation sur le terrain",
+    heading: "Déploiement terrain",
+    text: "Organiser la préparation, les interventions sur site",
   },
   {
     label: "Installation & paramétrage",
     href: "/expertise#installation-parametrage",
     id: "installation-parametrage",
-    heading: "Installation et paramétrage",
-    text: "configuration GPS",
+    heading: "Installation & paramétrage",
+    text: "Installer les équipements concernés",
   },
   {
     label: "Flotte & opérations",
     href: "/expertise#flotte-operations",
     id: "flotte-operations",
-    heading: "Flotte et opérations",
-    text: "missions et tournées",
+    heading: "Flotte & opérations",
+    text: "Structurer les informations utiles au suivi",
   },
   {
     label: "Supervision & reporting",
     href: "/expertise#supervision-reporting",
     id: "supervision-reporting",
-    heading: "Supervision et reporting",
-    text: "tableaux de bord et de rapports",
+    heading: "Supervision & reporting",
+    text: "Définir les indicateurs, les vues et les rapports",
   },
   {
     label: "Formation & accompagnement",
     href: "/expertise#transfert-suivi",
     id: "transfert-suivi",
-    heading: "Transfert et suivi",
-    text: "Formation, documentation",
+    heading: "Formation & accompagnement",
+    text: "Accompagner la prise en main des outils",
   },
 ] as const;
 
@@ -192,19 +192,19 @@ test.describe("Expertise — contenu atteint", () => {
     });
   }
 
-  test("« Installation & paramétrage » : passage dédié, avec ce qui est à définir et la solution associée", async ({ page }) => {
+  test("« Installation & paramétrage » : carte dédiée, avec ce qui est à préciser et les solutions associées", async ({ page }) => {
     await page.goto("/expertise#installation-parametrage");
     const card = page.locator("#installation-parametrage");
-    await expect(card).toContainText("Ce que couvre l’intervention");
-    await expect(card).toContainText("À définir avec vous");
-    await expect(card.getByRole("link", { name: /Solution associée : Géolocalisation/ })).toHaveAttribute(
-      "href",
-      "/solutions/geolocalisation#installation-terrain",
-    );
-    // trois passages, même gabarit, aucune solution présentée comme prestation
-    await expect(page.locator("#prestations-detail-title")).toHaveText("Du paramétrage au reporting");
+    await expect(card).toContainText("À préciser ensemble");
+    await expect(card).toContainText("Compatibilité, réglages et tests.");
+    // les solutions sont proposées dans la barre « Les solutions associées », jamais comme prestation
+    const bar = page.locator(".exp-associated");
+    await expect(bar.getByRole("link", { name: /Géolocalisation/ })).toHaveAttribute("href", "/solutions/geolocalisation");
+    await expect(bar.getByRole("link", { name: /Gestion de flotte/ })).toHaveAttribute("href", "/solutions/gestion-de-flotte");
+    await expect(bar.getByRole("link", { name: /Projets sur mesure/ })).toHaveAttribute("href", "/solutions/plateformes-sur-mesure");
+    // deux cartes d'une même rangée ont la même hauteur
     const heights = await page
-      .locator("#installation-parametrage, #flotte-operations, #supervision-reporting")
+      .locator("#installation-parametrage, #flotte-operations")
       .evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().height)));
     if (modeOf(page) === "desktop") expect(new Set(heights).size).toBe(1);
   });
@@ -249,7 +249,7 @@ test.describe("Expertise — comportement des ancres", () => {
     // en-tête déplié (haut de page)
     await clickMenuLink(page, "expertise", "Cadrage du projet");
     await expect(page).toHaveURL(/#cadrage$/);
-    await expectBelowHeader(page, page.locator("#cadrage").getByRole("heading", { name: "Cadrage", exact: true }));
+    await expectBelowHeader(page, page.locator("#cadrage").getByRole("heading", { name: "Cadrage du projet", exact: true }));
     await expectMenusClosed(page);
 
     // en-tête replié (bas de page) : lien vers un passage situé plus haut
@@ -262,7 +262,7 @@ test.describe("Expertise — comportement des ancres", () => {
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
     await clickMenuLink(page, "expertise", "Formation & accompagnement");
     await expect(page).toHaveURL(/#transfert-suivi$/);
-    await expectBelowHeader(page, page.locator("#transfert-suivi").getByRole("heading", { name: "Transfert et suivi", exact: true }));
+    await expectBelowHeader(page, page.locator("#transfert-suivi").getByRole("heading", { name: "Formation & accompagnement", exact: true }));
   });
 
   test("Précédent / Suivant entre deux ancres de la page", async ({ page }) => {
@@ -270,19 +270,19 @@ test.describe("Expertise — comportement des ancres", () => {
     await expect(page.locator("header.site-header")).toBeVisible();
     await clickMenuLink(page, "expertise", "Cadrage du projet");
     await expect(page).toHaveURL(/#cadrage$/);
-    await expectBelowHeader(page, page.locator("#cadrage").getByRole("heading", { name: "Cadrage", exact: true }));
+    await expectBelowHeader(page, page.locator("#cadrage").getByRole("heading", { name: "Cadrage du projet", exact: true }));
     await clickMenuLink(page, "expertise", "Formation & accompagnement");
     await expect(page).toHaveURL(/#transfert-suivi$/);
-    await expectBelowHeader(page, page.locator("#transfert-suivi").getByRole("heading", { name: "Transfert et suivi", exact: true }));
+    await expectBelowHeader(page, page.locator("#transfert-suivi").getByRole("heading", { name: "Formation & accompagnement", exact: true }));
 
     await waitScrollSettled(page);
     await page.goBack();
     await expect(page).toHaveURL(/#cadrage$/);
-    await expect(page.locator("#cadrage").getByRole("heading", { name: "Cadrage", exact: true })).toBeInViewport();
+    await expect(page.locator("#cadrage").getByRole("heading", { name: "Cadrage du projet", exact: true })).toBeInViewport();
     await waitScrollSettled(page);
     await page.goForward();
     await expect(page).toHaveURL(/#transfert-suivi$/);
-    await expect(page.locator("#transfert-suivi").getByRole("heading", { name: "Transfert et suivi", exact: true })).toBeInViewport();
+    await expect(page.locator("#transfert-suivi").getByRole("heading", { name: "Formation & accompagnement", exact: true })).toBeInViewport();
   });
 
   test("actualisation avec ancre : le passage reste visible sous l'en-tête", async ({ page }) => {
@@ -310,7 +310,7 @@ test.describe("Largeurs proches du breakpoint 1200 px", () => {
       }
       await clickMenuLink(page, "expertise", "Formation & accompagnement");
       await expect(page).toHaveURL(/\/expertise#transfert-suivi$/);
-      await expectBelowHeader(page, page.locator("#transfert-suivi").getByRole("heading", { name: "Transfert et suivi", exact: true }));
+      await expectBelowHeader(page, page.locator("#transfert-suivi").getByRole("heading", { name: "Formation & accompagnement", exact: true }));
       await expectMenusClosed(page);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       expect(overflow).toBeLessThanOrEqual(0);
@@ -318,77 +318,80 @@ test.describe("Largeurs proches du breakpoint 1200 px", () => {
   }
 });
 
-const projectDomains = [
-  { menu: /Mobilité professionnelle/, hash: "mobilite", tab: /Mobilité professionnelle/, title: "Mobilité professionnelle", topic: "Usage ponctuel" },
-  { menu: /Supervision de flotte/, hash: "supervision", tab: /Supervision de flotte/, title: "Supervision de flotte", topic: "Alertes" },
-  { menu: /Plateformes sur mesure/, hash: "plateformes", tab: /Plateformes et outils métier/, title: "Plateformes et outils métier", topic: "Application mobile" },
+const projectSections = [
+  { menu: /Réalisations numériques/, hash: "realisations-numeriques", heading: /Des outils pensés/, legacy: ["plateformes"] },
+  { menu: /Missions terrain/, hash: "missions-terrain", heading: /La technologie,/, legacy: ["mobilite", "supervision"] },
+  { menu: /Innovations & MVP/, hash: "innovations", heading: /Les projets qui/, legacy: ["bazar-onloutou"] },
 ] as const;
 
-/**
- * Le domaine demandé est ouvert : onglet sélectionné (≥ 1024 px) ou carte du domaine
- * placée sous l'en-tête (domaines empilés en dessous).
- */
-async function expectDomainOpen(page: Page, domain: (typeof projectDomains)[number]) {
-  if (page.viewportSize()!.width >= 1024) {
-    await expect(page.getByRole("tab", { name: domain.tab })).toHaveAttribute("aria-selected", "true");
-    await expect(page.locator(".proj-domains__panel--active")).toContainText(domain.topic);
-    await expectBelowHeader(page, page.locator("#domaines-projets h2"));
-    return;
-  }
-  const card = page.locator(".proj-domains__stack-item").filter({ hasText: domain.title });
-  await expect(card).toContainText(domain.topic);
-  await expectBelowHeader(page, card.getByRole("heading", { level: 3 }));
+/** La section demandée est atteinte : son titre de niveau 2 est visible sous l'en-tête fixe. */
+async function expectSectionOpen(page: Page, section: (typeof projectSections)[number]) {
+  const heading = page.locator(`#${section.hash}`).getByRole("heading", { level: 2, name: section.heading });
+  await expect(heading).toBeVisible();
+  await expectBelowHeader(page, heading);
 }
 
-test.describe("Projets — domaines", () => {
-  for (const domain of projectDomains) {
-    test(`accès direct, actualisation et lien du menu : ${domain.hash}`, async ({ page }) => {
-      await page.goto(`/projets#${domain.hash}`);
-      await expectDomainOpen(page, domain);
+test.describe("Projets — sections", () => {
+  for (const section of projectSections) {
+    test(`accès direct, actualisation et lien du menu : ${section.hash}`, async ({ page }) => {
+      await page.goto(`/projets#${section.hash}`);
+      await expectSectionOpen(page, section);
 
       await page.reload();
-      await expectDomainOpen(page, domain);
+      await expectSectionOpen(page, section);
 
       await openHome(page);
-      await clickMenuLink(page, "projets", domain.menu);
-      await expect(page).toHaveURL(new RegExp(`/projets#${domain.hash}$`));
-      await expectDomainOpen(page, domain);
+      await clickMenuLink(page, "projets", section.menu);
+      await expect(page).toHaveURL(new RegExp(`/projets#${section.hash}$`));
+      await expectSectionOpen(page, section);
       await expectMenusClosed(page);
     });
+
+    for (const legacy of section.legacy) {
+      test(`ancienne ancre #${legacy} → section « ${section.hash} »`, async ({ page }) => {
+        await page.goto(`/projets#${legacy}`);
+        await expectSectionOpen(page, section);
+        await page.reload();
+        await expectSectionOpen(page, section);
+      });
+    }
   }
 
-  test("depuis la page Projets : changement de domaine, Précédent / Suivant", async ({ page }) => {
-    // les panneaux sont des onglets en desktop ; en mobile, les trois domaines sont empilés
-    test.skip(modeOf(page) === "mobile", "onglets visibles en desktop");
-    await page.goto("/projets#mobilite");
-    await expect(page.getByRole("tab", { name: /Mobilité professionnelle/ })).toHaveAttribute("aria-selected", "true");
-    await clickMenuLink(page, "projets", /Supervision de flotte/);
-    await expect(page).toHaveURL(/#supervision$/);
-    await expect(page.getByRole("tab", { name: /Supervision de flotte/ })).toHaveAttribute("aria-selected", "true");
-    await clickMenuLink(page, "projets", /Plateformes sur mesure/);
-    await expect(page.getByRole("tab", { name: /Plateformes et outils métier/ })).toHaveAttribute("aria-selected", "true");
+  test("depuis la page Projets : changement de section, Précédent / Suivant", async ({ page }) => {
+    await page.goto("/projets#realisations-numeriques");
+    await expectSectionOpen(page, projectSections[0]);
+    await clickMenuLink(page, "projets", /Missions terrain/);
+    await expect(page).toHaveURL(/#missions-terrain$/);
+    await expectSectionOpen(page, projectSections[1]);
+    await clickMenuLink(page, "projets", /Innovations & MVP/);
+    await expect(page).toHaveURL(/#innovations$/);
+    await expectSectionOpen(page, projectSections[2]);
 
+    await waitScrollSettled(page);
     await page.goBack();
-    await expect(page).toHaveURL(/#supervision$/);
-    await expect(page.getByRole("tab", { name: /Supervision de flotte/ })).toHaveAttribute("aria-selected", "true");
+    await expect(page).toHaveURL(/#missions-terrain$/);
+    await expect(page.locator("#missions-terrain").getByRole("heading", { level: 2 })).toBeInViewport();
+    await waitScrollSettled(page);
     await page.goBack();
-    await expect(page).toHaveURL(/#mobilite$/);
-    await expect(page.getByRole("tab", { name: /Mobilité professionnelle/ })).toHaveAttribute("aria-selected", "true");
+    await expect(page).toHaveURL(/#realisations-numeriques$/);
+    await expect(page.locator("#realisations-numeriques").getByRole("heading", { level: 2 })).toBeInViewport();
+    await waitScrollSettled(page);
     await page.goForward();
-    await expect(page.getByRole("tab", { name: /Supervision de flotte/ })).toHaveAttribute("aria-selected", "true");
+    await expect(page).toHaveURL(/#missions-terrain$/);
   });
 
   test("les trois entrées du menu Projets ont des destinations distinctes", () => {
     const menu = headerNavigation.find((item) => item.id === "projets")!;
     if (menu.type !== "menu") throw new Error("menu Projets introuvable");
     const hrefs = (menu.menu.cards ?? []).map((card) => card.href);
-    expect(hrefs).toEqual(["/projets#mobilite", "/projets#supervision", "/projets#plateformes"]);
+    expect(hrefs).toEqual(["/projets#realisations-numeriques", "/projets#missions-terrain", "/projets#innovations"]);
   });
 
   test("« Préparer mon brief » / « Parlons de votre projet » : accès direct puis actualisation", async ({ page }) => {
     await page.goto("/projets#brief-projet");
     const heading = page.locator("#brief-projet").getByRole("heading", { level: 2 }).first();
     await expectBelowHeader(page, heading);
+    await expect(page.locator("#brief-projet form")).toBeInViewport();
     await page.reload();
     await expectBelowHeader(page, heading);
   });
@@ -481,9 +484,61 @@ test.describe("Clavier et réduction des animations", () => {
   test("prefers-reduced-motion : ancres atteintes sans défilement animé", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/projets#supervision");
-    await expectDomainOpen(page, projectDomains[1]);
+    await expectSectionOpen(page, projectSections[1]);
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe("auto");
     await page.goto("/expertise#deploiement");
-    await expectBelowHeader(page, page.locator("#deploiement").getByRole("heading", { name: "Déploiement", exact: true }));
+    await expectBelowHeader(page, page.locator("#deploiement").getByRole("heading", { name: "Déploiement terrain", exact: true }));
+  });
+});
+
+test.describe("Partenaires — entrées du menu", () => {
+  const entries = [
+    { menu: /Nos modes de collaboration/, path: "/partenaires", hash: "profils-partenaires", heading: "Quelle place souhaitez-vous prendre ?" },
+    { menu: /Présenter une proposition/, path: "/devenir-partenaire", hash: "preparer-proposition", heading: "Votre proposition, en quelques points." },
+    { menu: /Voir les partenariats/, path: "/partenaires", hash: "", heading: "Votre savoir-faire." },
+    { menu: /Devenir partenaire/, path: "/devenir-partenaire", hash: "", heading: "Présentez ce que" },
+  ];
+  for (const entry of entries) {
+    test(`${entry.menu} : ${entry.path}${entry.hash ? `#${entry.hash}` : ""}`, async ({ page }) => {
+      await openHome(page);
+      await clickMenuLink(page, "partenaires", entry.menu);
+      await expect(page).toHaveURL(new RegExp(`${entry.path}${entry.hash ? `#${entry.hash}` : ""}$`));
+      const target = entry.hash
+        ? page.locator(`#${entry.hash}`).getByRole("heading", { level: 2 }).first()
+        : page.getByRole("heading", { level: 1 });
+      await expect(target).toContainText(entry.heading);
+      if (entry.hash) await expectBelowHeader(page, target);
+      await waitScrollSettled(page);
+      await expectMenusClosed(page);
+    });
+  }
+
+  test("l’ancienne ancre /partenaires#preparer-proposition atteint le bandeau de proposition", async ({ page }) => {
+    await page.goto("/partenaires#preparer-proposition");
+    await expectBelowHeader(page, page.getByRole("heading", { level: 2, name: "Une capacité à proposer ?" }));
+  });
+});
+
+test.describe("Partenaires — pages de profils du menu", () => {
+  const profiles = [
+    { menu: /^Fournisseurs$/, path: "/partenaires/fournisseurs", heading: "Vos équipements" },
+    { menu: /Partenaires technologiques/, path: "/partenaires/technologiques", heading: "Relions vos" },
+  ];
+  for (const entry of profiles) {
+    test(`${entry.menu} : ${entry.path}`, async ({ page }) => {
+      await openHome(page);
+      await clickMenuLink(page, "partenaires", entry.menu);
+      await expect(page).toHaveURL(new RegExp(`${entry.path}$`));
+      await expect(page.getByRole("heading", { level: 1 })).toContainText(entry.heading);
+      await waitScrollSettled(page);
+      await expectMenusClosed(page);
+    });
+  }
+
+  test("« Livraison & coordination » : la page livraison est le formulaire de demande, la candidature mène à /devenir-livreur", async ({ page }) => {
+    await page.goto("/livraison");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Un besoin à");
+    await expect(page.locator("#demande-livraison")).toHaveCount(1);
+    await expect(page.getByRole("link", { name: /Devenir livreur partenaire/ })).toHaveAttribute("href", "/devenir-livreur");
   });
 });

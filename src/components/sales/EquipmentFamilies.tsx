@@ -106,7 +106,7 @@ export function EquipmentFamilies() {
                       alt=""
                       width={family.image.width}
                       height={family.image.height}
-                      sizes="(max-width: 767px) 100vw, 33vw"
+                      sizes="(max-width: 767px) 160vw, 50vw" quality={86}
                       className="sales-families__tab-img"
                       style={{ objectPosition: family.image.objectPosition }}
                     />

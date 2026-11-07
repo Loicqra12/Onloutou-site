@@ -12,7 +12,7 @@ test.describe("captures mentions légales", () => {
       await page.screenshot({ path: "docs/captures/legal-notice-tablet-768.png", fullPage: true });
 
       await page.setViewportSize({ width: 1440, height: 900 });
-      await page.locator(".leg-status").scrollIntoViewIfNeeded();
+      await page.locator(".leg-doc__header").scrollIntoViewIfNeeded();
       await page.screenshot({ path: "docs/captures/legal-notice-draft-status.png" });
 
       await page.locator(".leg-toc").scrollIntoViewIfNeeded();

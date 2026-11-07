@@ -30,7 +30,7 @@ export function RentalCatalogOriginsBand() {
             alt={photo.alt}
             width={photo.width}
             height={photo.height}
-            sizes="(max-width: 1023px) 100vw, 48vw"
+            sizes="(max-width: 1023px) 150vw, 70vw"
             className="rental-origins-band__img"
             style={{ objectPosition: photo.objectPosition }}
           />

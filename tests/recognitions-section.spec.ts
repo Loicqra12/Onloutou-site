@@ -1,11 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { expect, test } from "@playwright/test";
-import {
-  forbiddenRecognitionPhrases,
-  recognitions,
-  recognitionsIntro,
-} from "@/content/recognitions";
+import { forbiddenRecognitionPhrases, recognitions } from "@/content/recognitions";
 
 const FORBIDDEN_IMAGE_HOST_PATTERNS = [
   "media-files.abidjan.net",
@@ -14,29 +10,24 @@ const FORBIDDEN_IMAGE_HOST_PATTERNS = [
   "ssw-portal.s3.amazonaws.com",
 ];
 
-const REQUIRED_STATUSES = [
-  "Lauréate",
-  "Lauréate de la sélection",
-  "Finaliste",
-  "Startup sélectionnée",
-];
+const REQUIRED_STATUSES = ["LAURÉAT", "SÉLECTIONNÉ", "FINALISTE", "PARTICIPANT"];
 
 test.describe("Distinctions et parcours entrepreneurial", () => {
   test("section #distinctions sur /a-propos", async ({ page }) => {
     await page.goto("/a-propos#distinctions", { waitUntil: "domcontentloaded" });
     const section = page.locator("#distinctions");
     await expect(section).toBeVisible();
-    await expect(section.getByRole("heading", { name: "Distinctions et parcours entrepreneurial" })).toBeVisible();
-    await expect(section.getByText(recognitionsIntro)).toBeVisible();
+    await expect(section.getByRole("heading", { name: "Des étapes de reconnaissance." })).toBeVisible();
+    await expect(section.locator(".abt-recognition__card")).toHaveCount(4);
   });
 
-  test("lien accueil vers /a-propos#distinctions", async ({ page }) => {
+  test("lien accueil vers /a-propos#parcours", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const cta = page.getByRole("link", { name: /Découvrir notre parcours/i });
-    await expect(cta).toHaveAttribute("href", "/a-propos#distinctions");
+    await expect(cta).toHaveAttribute("href", "/a-propos#parcours");
   });
 
-  test("quatre statuts exacts sur la page À propos", async ({ page }) => {
+  test("quatre statuts sur la page À propos", async ({ page }) => {
     await page.goto("/a-propos#distinctions");
     for (const status of REQUIRED_STATUSES) {
       await expect(page.locator("#distinctions")).toContainText(status);
@@ -45,10 +36,10 @@ test.describe("Distinctions et parcours entrepreneurial", () => {
 
   test("aperçu accueil — quatre événements attendus", async ({ page }) => {
     await page.goto("/");
-    const home = page.locator(".home-recognitions");
+    const home = page.locator(".hom-recog");
     await expect(home).toBeVisible();
     await expect(home).toContainText("Fintech Challenge BCP");
-    await expect(home).toContainText("Depuis 2016");
+    await expect(home).toContainText("Parcours et distinctions");
   });
 
   test("absence des formulations interdites", async ({ page }) => {
@@ -92,10 +83,10 @@ test.describe("Distinctions et parcours entrepreneurial", () => {
     }
   });
 
-  test("textes alternatifs présents (visuels typographiques)", async ({ page }) => {
+  test("événements de la maquette présents", async ({ page }) => {
     await page.goto("/a-propos#distinctions");
-    for (const entry of recognitions) {
-      await expect(page.locator("#distinctions")).toContainText(entry.title);
+    for (const title of ["Fintech Challenge — Groupe BCP", "Impact Camp by inwi", "inwiDAYS", "Seedstars Abidjan"]) {
+      await expect(page.locator("#distinctions")).toContainText(title);
     }
   });
 
@@ -103,7 +94,7 @@ test.describe("Distinctions et parcours entrepreneurial", () => {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
     await page.goto("/a-propos#distinctions", { waitUntil: "domcontentloaded" });
-    await expect(page.locator("#distinctions")).toContainText("Fintech Challenge du Groupe BCP");
+    await expect(page.locator("#distinctions")).toContainText("Fintech Challenge — Groupe BCP");
     await context.close();
   });
 
@@ -111,7 +102,7 @@ test.describe("Distinctions et parcours entrepreneurial", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/a-propos#distinctions");
     await expect(page.locator("#distinctions")).toBeVisible();
-    await expect(page.locator(".recognition-feature")).toBeVisible();
+    await expect(page.locator(".abt-recognition__card").first()).toBeVisible();
   });
 
   test("pas de débordement horizontal sur la section", async ({ page }) => {
@@ -126,11 +117,11 @@ test.describe("Distinctions et parcours entrepreneurial", () => {
     }
   });
 
-  test("sources externes — rel noopener", async ({ page }) => {
-    await page.goto("/a-propos#distinctions");
-    const sources = page.locator(".recognition-sources a[href^='http']");
+  test("sources externes « Pour aller plus loin » — rel noopener", async ({ page }) => {
+    await page.goto("/a-propos#presse");
+    const sources = page.locator("#presse a[href^='http']");
     const count = await sources.count();
-    expect(count).toBeGreaterThan(0);
+    expect(count).toBe(3);
     for (let i = 0; i < count; i++) {
       const link = sources.nth(i);
       await expect(link).toHaveAttribute("target", "_blank");

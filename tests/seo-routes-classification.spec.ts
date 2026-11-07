@@ -5,7 +5,7 @@ import { getAllRouteIndexations, getRouteIndexation, getSitemapPaths } from "@/l
 test.describe("SEO — classification des routes", () => {
   test("chaque page.tsx est classifiée (source unique)", () => {
     const routes = discoverAppRoutes();
-    expect(routes.length).toBe(33);
+    expect(routes.length).toBe(44);
 
     const indexations = getAllRouteIndexations();
     expect(indexations.length).toBe(routes.length);
@@ -17,13 +17,13 @@ test.describe("SEO — classification des routes", () => {
     }
   });
 
-  test("27 routes indexables dans le sitemap, 6 noindex", () => {
+  test("27 routes indexables dans le sitemap, 17 noindex", () => {
     const routes = discoverAppRoutes();
     const indexable = routes.filter((p) => getRouteIndexation(p).includeInSitemap);
     const noindex = routes.filter((p) => !getRouteIndexation(p).index);
 
     expect(indexable.length).toBe(27);
-    expect(noindex.length).toBe(6);
+    expect(noindex.length).toBe(17);
     expect(getSitemapPaths().length).toBe(27);
   });
 });

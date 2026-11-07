@@ -12,8 +12,10 @@ test.describe("captures véhicules", () => {
       await page.screenshot({ path: "docs/captures/vehicles-tablet-1024.png", fullPage: true });
 
       await page.locator("#profils-vehicules").scrollIntoViewIfNeeded();
-      await page.waitForSelector(".veh-profiles--enhanced");
       await page.screenshot({ path: "docs/captures/vehicles-profiles-desktop.png" });
+
+      await page.locator("#demande-vehicule").scrollIntoViewIfNeeded();
+      await page.screenshot({ path: "docs/captures/vehicles-request-desktop.png" });
     } else {
       await page.setViewportSize({ width: 375, height: 812 });
       await page.screenshot({ path: "docs/captures/vehicles-mobile-375.png", fullPage: true });
@@ -24,10 +26,5 @@ test.describe("captures véhicules", () => {
       await page.locator("#demande-vehicule").scrollIntoViewIfNeeded();
       await page.screenshot({ path: "docs/captures/vehicles-request-mobile.png" });
     }
-
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/equipements/vehicules", { waitUntil: "domcontentloaded" });
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.screenshot({ path: "docs/captures/vehicles-reduced-motion.png", fullPage: true });
   });
 });

@@ -13,10 +13,10 @@ export const vehiclesPositioning =
   "ONLOUTOU étudie les besoins en véhicules professionnels selon l’usage, la zone, la durée, la quantité, les contraintes du terrain et les services recherchés.";
 
 export const vehiclesRepresentativeCaption =
-  "Visuel représentatif d’un usage professionnel — catégorie, modèle et disponibilité à confirmer.";
+  "Catégorie, modèle et disponibilité à confirmer.";
 
 export const vehiclesHeroCaption =
-  "Visuel représentatif de plusieurs catégories de véhicules professionnels.";
+  "Plusieurs catégories de véhicules professionnels. Modèle et disponibilité à confirmer.";
 
 export const vehiclesMedia = {
   fleetHero: {

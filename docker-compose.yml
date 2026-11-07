@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: onloutou
+      POSTGRES_PASSWORD: onloutou_dev
+      POSTGRES_DB: onloutou
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - onloutou_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U onloutou -d onloutou"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    profiles: ["storage"]
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - onloutou_minio:/data
+
+volumes:
+  onloutou_pg:
+  onloutou_minio:

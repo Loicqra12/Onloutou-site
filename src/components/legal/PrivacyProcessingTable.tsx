@@ -17,14 +17,18 @@ export function PrivacyProcessingTable() {
     >
       <table className="leg-table">
         <caption className="leg-table__caption">
-          Synthèse des traitements identifiés — fondements juridiques à valider
+          Chaque ligne relie un traitement identifié à ses données, ses finalités, le fondement retenu dans cette
+          rédaction, ses destinataires et sa conservation. Cette qualification doit encore être reprise dans la
+          formalité auprès de l’Autorité de protection.
         </caption>
         <thead>
           <tr>
             <th scope="col">Traitement</th>
             <th scope="col">Données</th>
             <th scope="col">Finalités</th>
-            <th scope="col">Stockage / destinataires</th>
+            <th scope="col">Fondement retenu</th>
+            <th scope="col">Destinataires</th>
+            <th scope="col">Conservation</th>
             <th scope="col">Statut</th>
           </tr>
         </thead>
@@ -34,9 +38,9 @@ export function PrivacyProcessingTable() {
               <td>{activity.title}</td>
               <td>{activity.dataCategories.join(" ; ")}</td>
               <td>{activity.purposes.join(" ; ")}</td>
-              <td>
-                {[activity.storage, activity.recipients.join(", ")].filter(Boolean).join(" — ") || "—"}
-              </td>
+              <td>{activity.legalBasis ?? "—"}</td>
+              <td>{activity.recipients.join(", ") || "—"}</td>
+              <td>{activity.retention ?? activity.storage ?? "—"}</td>
               <td>{statusNote[activity.status] ?? activity.status}</td>
             </tr>
           ))}

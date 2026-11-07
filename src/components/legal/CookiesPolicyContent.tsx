@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { CookieInventoryTable } from "@/components/legal/CookieInventoryTable";
 import { LegalSection } from "@/components/legal/LegalSection";
+import { LegalSubArticle } from "@/components/legal/LegalSubArticle";
+import { OpenCookieSettingsButton } from "@/components/legal/OpenCookieSettingsButton";
 import {
   cookiesAuditBrowser,
   cookiesAuditEnvironment,
@@ -12,22 +14,28 @@ import {
   cookiesLastAuditedAt,
   cookiesLastUpdatedAt,
   cookiesProse,
-  cookiesRequiresConsentManager,
   formatLegalDateFr,
   trackingStatus,
 } from "@/content/cookies";
 
 export function CookiesPolicyContent() {
   const counts = cookiesInventoryCounts();
-  const needsConsent = cookiesRequiresConsentManager();
 
   return (
-    <div className="leg-content">
-      <LegalSection id="definition" title="Qu’est-ce qu’un cookie ?">
+    <div>
+      <LegalSection id="definition" number={1} title="Qu’est-ce qu’un cookie ?">
         <p>{cookiesProse.definitionIntro}</p>
+        <LegalSubArticle id="definition-reels" number="1.1" title="Ce que le site utilise vraiment">
+          <p>
+            L’inventaire ne liste pas de cookie publicitaire, parce qu’aucun n’a été trouvé. Les technologies
+            constatées sont le sessionStorage des formulaires, le localStorage du choix de bandeau, et, seulement
+            après un clic, le lecteur YouTube d’une vidéo de la page À propos. Une autre vidéo est un fichier mp4
+            du site, lu par le navigateur sans service vidéo tiers.
+          </p>
+        </LegalSubArticle>
       </LegalSection>
 
-      <LegalSection id="audit" title="Résultat du dernier audit">
+      <LegalSection id="audit" number={2} title="Résultat du dernier audit">
         <p className="leg-cookies-audit-status" role="status">
           Statut global : {cookiesAuditStatusLabel[trackingStatus]}
         </p>
@@ -68,12 +76,12 @@ export function CookiesPolicyContent() {
         </ul>
       </LegalSection>
 
-      <LegalSection id="technologies-utilisees" title="Technologies utilisées">
+      <LegalSection id="technologies-utilisees" number={3} title="Technologies utilisées">
         <p>{cookiesProse.sessionStorageNote}</p>
         <CookieInventoryTable />
       </LegalSection>
 
-      <LegalSection id="categories" title="Catégories">
+      <LegalSection id="categories" number={4} title="Catégories">
         <h3 className="leg-privacy-cat__title">Strictement nécessaires</h3>
         <p>
           Stockages de session listés ci-dessus pour le fonctionnement des configurateurs (prefill entre pages). Aucune
@@ -88,29 +96,41 @@ export function CookiesPolicyContent() {
         </p>
       </LegalSection>
 
-      <LegalSection id="services-tiers" title="Services tiers">
+      <LegalSection id="services-tiers" number={5} title="Services tiers">
         <p>{cookiesProse.whatsapp}</p>
         <p>{cookiesProse.fonts}</p>
         <p>
-          Liens externes (WhatsApp, téléphone) : pas de chargement automatique du service tant que l’utilisateur n’active
-          pas le lien. Aucune iframe, vidéo YouTube/Vimeo ou carte intégrée détectée dans le code.
+          Liens externes (WhatsApp, téléphone) : pas de chargement automatique du service tant que l’utilisateur
+          n’active pas le lien. La vidéo YouTube de la page À propos utilise une intégration qui ne charge
+          youtube-nocookie qu’au clic. Avant ce clic, le lecteur tiers n’est pas demandé. Après le clic, YouTube
+          peut déposer ses propres traceurs selon ses règles. La vidéo locale en mp4 ne déclenche pas ce chargement.
+          Aucune carte intégrée n’a été détectée.
         </p>
         <p className="leg-note">
           Voir aussi la{" "}
-          <Link href="/confidentialite" className="link-motion">politique de confidentialité</Link>.
+          <Link href="/confidentialite">politique de confidentialité</Link>.
         </p>
       </LegalSection>
 
-      <LegalSection id="preferences" title="Préférences et consentement">
+      <LegalSection id="preferences" number={6} title="Préférences et consentement">
         <p>{cookiesProse.consentNotRequired}</p>
-        {needsConsent ? (
-          <p>Un gestionnaire de consentement serait requis si des traceurs non essentiels étaient activés.</p>
-        ) : (
+        <p>
+          Le bouton ci-dessous, comme celui du pied de page, rouvre les réglages. Aucun outil de mesure ou de publicité
+          n’est activé par ce choix dans la version actuelle du site.
+        </p>
+        <OpenCookieSettingsButton />
+        <LegalSubArticle id="consequences" number="6.1" title="Conséquences d’un refus">
           <p>
-            Aucun panneau « Gérer mes cookies » n’est affiché dans le footer tant qu’un consentement n’est pas requis
-            par l’inventaire.
+            Choisir « Uniquement les nécessaires » enregistre ce choix et laisse le site lisible. Les formulaires,
+            le téléphone et WhatsApp restent utilisables. Aucune mesure d’audience n’est perdue, puisqu’aucun outil
+            de mesure n’est branché. Refuser JavaScript empêche le bandeau, pas la lecture des pages.
           </p>
-        )}
+          <p>
+            Pour retirer un choix déjà enregistré, la personne efface les données du site dans son navigateur, ou
+            rouvre ce bouton et enregistre un autre choix. Le retrait n’efface pas un message déjà envoyé sur
+            WhatsApp.
+          </p>
+        </LegalSubArticle>
         <noscript>
           <p className="leg-pending">
             Les préférences interactives de consentement nécessitent JavaScript. Sans traceur non essentiel identifié,
@@ -119,11 +139,11 @@ export function CookiesPolicyContent() {
         </noscript>
       </LegalSection>
 
-      <LegalSection id="navigateurs" title="Réglages du navigateur">
+      <LegalSection id="navigateurs" number={7} title="Réglages du navigateur">
         <p>{cookiesProse.browser}</p>
       </LegalSection>
 
-      <LegalSection id="mise-a-jour" title="Mise à jour">
+      <LegalSection id="mise-a-jour" number={8} title="Mise à jour">
         <p>{cookiesProse.update}</p>
         <p>
           Dernière mise à jour de cette page :{" "}
@@ -135,15 +155,15 @@ export function CookiesPolicyContent() {
         </p>
       </LegalSection>
 
-      <LegalSection id="contact" title="Contact">
+      <LegalSection id="contact" number={9} title="Contact">
         <p>{cookiesProse.contact}</p>
         <p>
-          <Link href="/contact" className="link-motion">Contacter ONLOUTOU</Link>
+          <Link href="/contact">Contacter ONLOUTOU</Link>
         </p>
         <p className="leg-note">
-          <Link href="/mentions-legales" className="link-motion">Mentions légales</Link>
+          <Link href="/mentions-legales">Mentions légales</Link>
           {" · "}
-          <Link href="/confidentialite" className="link-motion">Confidentialité</Link>
+          <Link href="/confidentialite">Confidentialité</Link>
         </p>
       </LegalSection>
     </div>

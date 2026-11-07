@@ -6,7 +6,8 @@ test.describe("conditions d’utilisation", () => {
 
     await page.goto("/conditions-utilisation", { waitUntil: "domcontentloaded" });
     await expect(page.locator("#leg-hero-title")).toContainText("Conditions d’utilisation");
-    await expect(page.getByText("Document en cours de validation")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Imprimer" })).toBeVisible();
+    await expect(page.getByText("Document en cours de validation")).toHaveCount(0);
 
     const metaRobots = await page.locator('meta[name="robots"]').getAttribute("content");
     expect(metaRobots ?? "").toMatch(/noindex/i);

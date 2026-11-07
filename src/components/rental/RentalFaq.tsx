@@ -23,7 +23,7 @@ export function RentalFaq() {
                   alt={photo.alt}
                   width={photo.width}
                   height={photo.height}
-                  sizes="(max-width: 899px) 32vw, 14vw"
+                  sizes="(max-width: 899px) 60vw, 28vw"
                   className="rental-faq__portrait"
                   style={{ objectPosition: photo.objectPosition }}
                 />

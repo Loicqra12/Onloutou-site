@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { BriefContactSave } from "@/components/forms/BriefContactSave";
 import { site } from "@/content/site";
 import {
   buildDeliveryRequestWhatsAppMessage,
@@ -201,9 +201,16 @@ export function DeliveryRequestBuilder() {
           </div>
 
           <div className="dlv-request__actions">
-            <Button href={whatsappHref} variant="primary" className="whatsapp-once-pulse">
-              Envoyer ma demande par WhatsApp
-            </Button>
+            <BriefContactSave
+              source="livraison-demande"
+              type="DELIVERY"
+              zone={origin || destination || undefined}
+              message={summary}
+              payload={fields}
+              whatsappUrl={whatsappHref}
+              whatsappLabel="Envoyer ma demande par WhatsApp"
+              className="dlv-request__actions"
+            />
             <a href={`tel:${site.phoneTel}`} className="dlv-request__phone link-motion">Appeler ONLOUTOU</a>
           </div>
         </form>

@@ -12,11 +12,10 @@ test.describe("captures camions et engins", () => {
       await page.screenshot({ path: "docs/captures/trucks-machinery-tablet-1024.png", fullPage: true });
 
       await page.locator("#profils-camions-engins").scrollIntoViewIfNeeded();
-      await page.waitForSelector(".heq-profiles--enhanced");
       await page.screenshot({ path: "docs/captures/trucks-machinery-profiles-desktop.png" });
 
-      await page.locator("#heq-safety-title").scrollIntoViewIfNeeded();
-      await page.screenshot({ path: "docs/captures/trucks-machinery-safety.png" });
+      await page.locator("#demande-camion-engin").scrollIntoViewIfNeeded();
+      await page.screenshot({ path: "docs/captures/trucks-machinery-request-desktop.png" });
     } else {
       await page.setViewportSize({ width: 375, height: 812 });
       await page.screenshot({ path: "docs/captures/trucks-machinery-mobile-375.png", fullPage: true });
@@ -27,10 +26,5 @@ test.describe("captures camions et engins", () => {
       await page.locator("#demande-camion-engin").scrollIntoViewIfNeeded();
       await page.screenshot({ path: "docs/captures/trucks-machinery-request-mobile.png" });
     }
-
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/equipements/camions-engins", { waitUntil: "domcontentloaded" });
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.screenshot({ path: "docs/captures/trucks-machinery-reduced-motion.png", fullPage: true });
   });
 });

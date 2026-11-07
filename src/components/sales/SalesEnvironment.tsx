@@ -41,7 +41,7 @@ export function SalesEnvironment() {
               alt={photo.alt}
               width={photo.width}
               height={photo.height}
-              sizes="(max-width: 1024px) 100vw, 48vw"
+              sizes="(max-width: 1024px) 160vw, 85vw" quality={86}
               className="sales-env__img"
               style={{ objectPosition: photo.objectPosition }}
             />

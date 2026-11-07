@@ -10,7 +10,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "node_modules/**",
     "dist/**",
+    "backend/dist/**",
     "docs/**",
+    "playwright-report/**",
+    "playwright-report-forms/**",
+    "test-results/**",
   ]),
 ]);
 

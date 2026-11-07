@@ -1,0 +1,480 @@
+/* Pages Location et Vente - direction visuelle commune.
+   Tout est prefixe .cm- ou limite a .cm-page : aucune autre page n'est touchee.
+   Grille : meme largeur que la navigation (.container-content, 1180 px). */
+
+.cm-page {
+  --cm-ink: #111;
+  --cm-paper: #f7f5ef;
+  --cm-paper-2: #efece3;
+  --cm-line: #e2dfd5;
+  --cm-yellow: #f5c400;
+  --cm-muted: #5c5c57;
+  --cm-pad: clamp(3.5rem, 6vw, 5.5rem);
+  background: var(--cm-paper);
+  color: var(--cm-ink);
+}
+
+.cm-wrap,
+.cm-hero__inner {
+  width: min(var(--width-content, 1180px), calc(100% - clamp(1.25rem, 5vw, 2.5rem)));
+  margin-inline: auto;
+}
+
+/* ---------- Typographie commune ---------- */
+
+.cm-eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cm-yellow);
+}
+.cm-eyebrow--dark {
+  color: #7a6200;
+}
+.cm-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  font-size: clamp(2.1rem, 1.1rem + 3.2vw, 3.6rem);
+  text-wrap: balance;
+}
+.cm-accent {
+  color: var(--cm-yellow);
+}
+.cm-intro {
+  margin: 1.4rem 0 0;
+  max-width: 34rem;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba(247, 245, 240, 0.86);
+}
+.cm-h2 {
+  margin: 0;
+  max-width: 24ch;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+}
+.cm-lead {
+  margin: 1rem 0 0;
+  max-width: 36rem;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--cm-muted);
+}
+
+/* ---------- Boutons : le jaune sert l'action principale ---------- */
+
+.cm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  padding: 0 1.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cm-btn--primary {
+  background: var(--cm-yellow);
+  color: #111;
+}
+.cm-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(245, 196, 0, 0.28);
+}
+.cm-btn:focus-visible,
+.cm-link:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+.cm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: 2rem;
+}
+.cm-link {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f7f5f0;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: rgba(247, 245, 240, 0.4);
+}
+.cm-link:hover {
+  text-decoration-color: var(--cm-yellow);
+}
+.cm-note {
+  margin: 1.75rem 0 0;
+  max-width: 34rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: rgba(247, 245, 240, 0.6);
+}
+
+/* ---------- Premier ecran ---------- */
+
+.cm-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #111;
+  color: #f7f5f0;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(3rem, 6vw, 5.5rem);
+}
+.cm-hero__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 38rem;
+}
+.cm-hero--photo {
+  display: flex;
+  align-items: center;
+  min-height: min(82vh, 40rem);
+}
+.cm-hero--photo .cm-hero__inner {
+  position: relative;
+  z-index: 1;
+}
+.cm-hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  margin: 0;
+}
+.cm-hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cm-hero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(10, 10, 10, 0.94) 0%, rgba(10, 10, 10, 0.82) 34%, rgba(10, 10, 10, 0.3) 66%, rgba(10, 10, 10, 0.08) 100%),
+    linear-gradient(0deg, rgba(10, 10, 10, 0.5) 0%, rgba(10, 10, 10, 0) 35%);
+}
+.cm-hero--split .cm-hero__inner {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+}
+.cm-hero__figure {
+  position: relative;
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1c1c1c;
+}
+.cm-hero__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.cm-hero__figure figcaption {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  color: rgba(247, 245, 240, 0.65);
+}
+@media (min-width: 900px) {
+  .cm-hero--split .cm-hero__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+}
+@media (max-width: 899px) {
+  .cm-hero__veil {
+    background: linear-gradient(0deg, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0.72) 100%);
+  }
+  .cm-hero--photo {
+    min-height: 0;
+  }
+  .cm-actions .cm-btn {
+    width: 100%;
+  }
+}
+
+/* ---------- Sections : rythme et titres identiques ---------- */
+
+.cm-section,
+.cm-page .section-spacing {
+  padding-block: var(--cm-pad);
+}
+.cm-page .rental-usecases,
+.cm-page .sales-confirm {
+  background: var(--cm-paper);
+}
+.cm-page .rental-transparency,
+.cm-page .sales-faq {
+  background: #fff;
+}
+.cm-page .rental-faq,
+.cm-page .sales-builder,
+.cm-page .rental-builder {
+  background: var(--cm-paper-2);
+}
+.cm-page .rental-notice,
+.cm-page .sales-notice {
+  padding-block: 2rem;
+  background: var(--cm-paper);
+}
+.cm-page .container-content {
+  width: min(var(--width-content, 1180px), calc(100% - clamp(1.25rem, 5vw, 2.5rem)));
+}
+
+/* Un seul calibre de titre de section ; le jaune reste sur les actions. */
+.cm-page h2:not(.rental-final-cta__title):not(.sales-final-cta__title) {
+  max-width: 26ch;
+  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+.cm-page h2 .highlight-marker__ink,
+.cm-page h2 .highlight-underline::after {
+  display: none;
+}
+.cm-page h2 .highlight-marker__text {
+  color: inherit;
+}
+.cm-page .sales-eyebrow {
+  color: #7a6200;
+}
+
+/* Usages terrain (Location) */
+.cm-page .rental-usecases__intro {
+  margin-bottom: 2rem;
+}
+.cm-page .rental-usecases__lead {
+  max-width: 36rem;
+  font-size: 1.0625rem;
+  color: var(--cm-muted);
+}
+
+/* ---------- Quatre etapes (Location) ---------- */
+
+.cm-steps {
+  background: #fff;
+}
+.cm-steps__list {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px) {
+  .cm-steps__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .cm-steps__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.cm-steps__item {
+  position: relative;
+  padding: 1rem 1rem 1.5rem;
+  border: 1px solid var(--cm-line);
+  border-radius: 10px;
+  background: var(--cm-paper);
+}
+.cm-steps__item .step-illu {
+  margin-bottom: 1rem;
+  background: #fff6d2;
+}
+.cm-steps__num {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #7a6200;
+}
+.cm-steps__item h3 {
+  margin: 0.25rem 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.cm-steps__item p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--cm-muted);
+}
+
+/* ---------- Trois questions (Vente) ---------- */
+
+.cm-advice {
+  background: #fff;
+}
+.cm-advice__list {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 900px) {
+  .cm-advice__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.cm-advice__item {
+  padding: 1.5rem;
+  border: 1px solid var(--cm-line);
+  border-radius: 10px;
+  background: var(--cm-paper);
+}
+.cm-advice__num {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-weight: 800;
+}
+.cm-advice__item h3 {
+  margin: 1rem 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.cm-advice__item ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+.cm-advice__item li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--cm-muted);
+}
+.cm-advice__item li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.5rem;
+  height: 2px;
+  background: #111;
+}
+.cm-actions--row {
+  margin-top: 2.5rem;
+}
+.cm-advice .cm-btn:focus-visible {
+  outline-color: #111;
+}
+.cm-rentlink {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--cm-muted);
+}
+.cm-rentlink a {
+  color: #111;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Formulaires : lecture d'abord ---------- */
+
+.cm-page :is(.rental-builder, .sales-builder) :is(.rental-builder__layout, .sales-builder__layout) {
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+}
+@media (min-width: 1024px) {
+  .cm-page :is(.rental-builder__layout, .sales-builder__layout) {
+    grid-template-columns: minmax(0, 1.2fr) minmax(19rem, 0.8fr);
+    gap: 2.5rem;
+  }
+  .cm-page :is(.rental-builder__recap, .sales-builder__recap),
+  .cm-page .rental-builder__summary-wrap {
+    position: sticky;
+    top: 6.5rem;
+  }
+}
+.cm-page :is(.rental-builder__form, .sales-builder__form) {
+  gap: 1.25rem;
+}
+.cm-page :is(.rental-builder__fieldset, .sales-builder__fieldset) {
+  padding: 1.25rem 1.25rem 1.5rem;
+  border: 1px solid var(--cm-line);
+  border-radius: 10px;
+  background: #fff;
+}
+.cm-page :is(.rental-builder__fieldset, .sales-builder__fieldset) legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 0.25rem;
+  padding: 0;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #111;
+}
+.cm-page :is(.rental-builder__fieldset, .sales-builder__fieldset) legend + * {
+  clear: both;
+}
+.cm-page :is(.rental-builder__option, .sales-builder__option, .rental-builder__need, .sales-builder__need) {
+  border-radius: 6px;
+  border-color: #d3cfc2;
+  background: var(--cm-paper);
+}
+.cm-page :is(.rental-builder__option, .sales-builder__option, .rental-builder__need, .sales-builder__need):has(input:checked),
+.cm-page :is(.rental-builder__need, .sales-builder__need).is-checked {
+  border-color: #111;
+  background: #fff6d2;
+  box-shadow: inset 0 0 0 1px #111;
+}
+.cm-page :is(.rental-builder__option, .sales-builder__option, .rental-builder__need, .sales-builder__need):has(input:focus-visible) {
+  outline: 3px solid #111;
+  outline-offset: 2px;
+}
+.cm-page :is(.rental-builder__lead, .sales-builder__lead, .rental-builder__hint) {
+  max-width: 36rem;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+/* Recapitulatif : proche du bouton d'envoi, champs de contact separes. */
+.cm-page :is(.rental-builder__recap, .sales-builder__recap, .rental-builder__summary-wrap) {
+  border-radius: 10px;
+}
+.cm-page .brief-contact {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+.cm-page .brief-contact label {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.cm-page .rental-builder__error {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid #ff8a7a;
+  background: rgba(255, 138, 122, 0.12);
+  font-size: 0.875rem;
+}

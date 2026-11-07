@@ -61,3 +61,20 @@ export const footerCompanyLinks = [
   { href: "/aide", label: "Centre d’aide" },
   { href: "/contact", label: "Contact" },
 ] as const;
+const footerPartnerHrefs = [
+  "/partenaires",
+  "/espace-partenaire",
+  "/livraison",
+  "/devenir-livreur",
+  "/espace-livreur",
+] as const;
+
+/** Colonne « Partenaires » du pied de page : liens existants du groupe partenaires et livraison. */
+export const footerPartnerLinks = footerPartnerHrefs.flatMap((href) =>
+  footerCompanyLinks.filter((item) => item.href === href),
+);
+
+/** Colonne « Explorer » du pied de page : les autres liens existants. */
+export const footerExploreLinks = footerCompanyLinks.filter(
+  (item) => !(footerPartnerHrefs as readonly string[]).includes(item.href),
+);

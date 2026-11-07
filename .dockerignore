@@ -1,0 +1,13 @@
+node_modules
+**/node_modules
+.next
+lws-deploy
+.git
+tests
+test-results
+docs
+public
+src
+backend/dist
+backend/.env
+.env*

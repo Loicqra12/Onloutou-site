@@ -8,7 +8,7 @@ import type {
 
 export const privacyPolicyStatus: LegalDocumentStatus = "awaiting-validation";
 
-export const privacyPolicyLastUpdated = "2026-10-19";
+export const privacyPolicyLastUpdated = "2026-11-05";
 
 export const privacyPolicySeo = {
   title: "Politique de confidentialité",
@@ -53,7 +53,7 @@ export const privacyProse = {
   portalPreview: `Les pages présentant les futurs espaces partenaire et livreur sont actuellement des prévisualisations. Elles ne permettent pas de créer un compte, de déposer un document, de recevoir une mission ou d’effectuer un paiement.`,
   whatsappForms: `Certains formulaires du site préparent un message destiné à WhatsApp. Tant que l’utilisateur n’active pas le lien d’envoi, les informations saisies restent en principe dans le navigateur (mémoire de la page) et ne sont pas transmises à un serveur ONLOUTOU identifié dans le code actuel du site. Lorsque le formulaire est rempli, le message peut être encodé dans l’adresse du lien affiché avant l’envoi. Après ouverture ou envoi dans WhatsApp, le traitement dépend du service utilisé et de ses propres conditions.`,
   noServerForms: `À la date de l’audit technique du dépôt, aucun envoi de formulaire vers une API ONLOUTOU n’a été identifié : les demandes passent par téléphone, WhatsApp ou navigation sur le site.`,
-  cookiesIntro: `Une page dédiée aux cookies pourra être publiée après validation. À ce stade, aucun outil d’analytics ou de publicité n’a été détecté dans le code source du site. Un stockage de session du navigateur peut être utilisé pour préremplir certains configurateurs entre deux pages (sans cookie dédié documenté dans le code). Les cookies éventuellement déposés par l’hébergeur ou le CDN en production restent à confirmer.`,
+  cookiesIntro: `Les cookies et stockages sont décrits dans la politique dédiée. Aucun outil de mesure d’audience ni de publicité n’est activé par le site. Un bandeau enregistre le choix du visiteur dans le navigateur. Un stockage de session peut préremplir certains configurateurs entre deux pages. Les cookies éventuellement déposés par l’hébergeur ou le CDN en production restent à confirmer.`,
   retentionPending: `Durées de conservation à formaliser avant validation juridique. Les messages conservés dans WhatsApp ou dans votre messagerie ne constituent pas un stockage géré par le site ONLOUTOU.`,
   transfersPending: `Transferts et garanties à confirmer. L’utilisation de WhatsApp, d’un hébergeur ou d’autres prestataires peut impliquer des traitements dans plusieurs pays ; la localisation exacte et les garanties applicables n’ont pas été validées dans le cadre de cette version.`,
   security: `ONLOUTOU cherche à limiter les données traitées et à appliquer des mesures adaptées au fonctionnement du site (par exemple diffusion en HTTPS lorsque l’hébergement le permet, absence de collecte serveur identifiée pour les configurateurs audités). Aucun système ne peut toutefois garantir une sécurité absolue.`,
@@ -116,8 +116,10 @@ export const dataProcessingActivities: DataProcessingActivity[] = [
     source: "Saisie utilisateur dans le navigateur",
     recipients: ["Équipe ONLOUTOU via WhatsApp", "Meta (WhatsApp)"],
     storage: "Pas de stockage serveur ONLOUTOU identifié ; message côté WhatsApp après envoi",
-    retention: null,
-    legalBasis: "À valider juridiquement",
+    retention:
+      "Non fixé côté ONLOUTOU : le message reste dans la conversation WhatsApp des participants, selon WhatsApp",
+    legalBasis:
+      "Initiative de la personne qui envoie une demande en vue d’une prestation — à reprendre dans la déclaration",
     userActionRequired: true,
   },
   {
@@ -130,7 +132,7 @@ export const dataProcessingActivities: DataProcessingActivity[] = [
     recipients: ["Aucun transfert réseau identifié"],
     storage: "sessionStorage du navigateur",
     retention: "Jusqu’à fermeture de l’onglet ou consommation par le configurateur",
-    legalBasis: "À valider juridiquement",
+    legalBasis: "Fonctionnement demandé par la navigation, limité à la session du navigateur",
     userActionRequired: false,
   },
   {
@@ -142,8 +144,8 @@ export const dataProcessingActivities: DataProcessingActivity[] = [
     source: "Clic sur lien tel:",
     recipients: ["Opérateur téléphonique"],
     storage: null,
-    retention: null,
-    legalBasis: "À valider juridiquement",
+    retention: "Hors du site : données de trafic selon l’opérateur, non gérées par ONLOUTOU",
+    legalBasis: "Appel lancé par la personne vers le numéro publié",
     userActionRequired: true,
   },
   {
@@ -155,8 +157,8 @@ export const dataProcessingActivities: DataProcessingActivity[] = [
     source: "Visite du site hébergé",
     recipients: ["Hébergeur (à identifier)"],
     storage: "Serveurs hébergeur",
-    retention: null,
-    legalBasis: "À valider juridiquement",
+    retention: "Durée non connue : l’hébergeur effectif n’est pas identifié",
+    legalBasis: "Fonctionnement et sécurité du site, si ces journaux existent — non confirmé",
     userActionRequired: false,
   },
   {
@@ -168,9 +170,35 @@ export const dataProcessingActivities: DataProcessingActivity[] = [
     source: "Non implémenté",
     recipients: [],
     storage: null,
-    retention: null,
-    legalBasis: null,
+    retention: "Sans objet : aucun compte n’est ouvert",
+    legalBasis: "Non applicable tant que l’espace n’est pas ouvert",
     userActionRequired: false,
+  },
+  {
+    id: "cookie-choice",
+    title: "Mémorisation du choix du bandeau",
+    status: "verified",
+    dataCategories: ["Choix « nécessaires » ou « tout accepter », sans identifiant nominatif"],
+    purposes: ["Ne pas redemander le même choix à chaque page"],
+    source: "Action sur le bandeau ou sur « Gérer mes cookies »",
+    recipients: ["Aucun transfert réseau identifié"],
+    storage: "localStorage du navigateur, clé onloutou-cookie-choice",
+    retention: "Jusqu’à effacement par la personne ou par le navigateur",
+    legalBasis: "Préférence enregistrée par la personne ; aucun traceur de mesure n’est activé",
+    userActionRequired: true,
+  },
+  {
+    id: "youtube-on-click",
+    title: "Lecture d’une vidéo YouTube après clic",
+    status: "verified",
+    dataCategories: ["Données que YouTube peut traiter après le clic, selon ses règles"],
+    purposes: ["Afficher la vidéo demandée sur la page À propos"],
+    source: "Clic de l’utilisateur sur le lecteur",
+    recipients: ["YouTube / Google"],
+    storage: "Chez le service vidéo, hors site ONLOUTOU",
+    retention: "Selon YouTube ; non documentée par ONLOUTOU",
+    legalBasis: "Lecture demandée par la personne ; le lecteur n’est pas chargé avant le clic",
+    userActionRequired: true,
   },
 ];
 
@@ -222,17 +250,15 @@ export function privacyPolicyBreadcrumbJsonLd(baseUrl: string) {
 }
 
 export function privacyResponsibleVerifiedFields(): { label: string; value: string }[] {
-  const rows: { label: string; value: string }[] = [];
-  if (legalEntityInformation.commercialName.status === "verified" && legalEntityInformation.commercialName.value) {
-    rows.push({ label: "Nom commercial", value: legalEntityInformation.commercialName.value });
-  }
-  if (legalEntityInformation.legalName.status === "verified" && legalEntityInformation.legalName.value) {
-    rows.push({ label: "Raison sociale", value: legalEntityInformation.legalName.value });
-  }
-  if (legalEntityInformation.publicPhone.status === "verified" && legalEntityInformation.publicPhone.value) {
-    rows.push({ label: "Téléphone public", value: legalEntityInformation.publicPhone.value });
-  }
-  return rows;
+  const specs: { label: string; field: { status: string; value: string | null } }[] = [
+    { label: "Dénomination", field: legalEntityInformation.commercialName },
+    { label: "Forme juridique", field: legalEntityInformation.legalForm },
+    { label: "Siège social", field: legalEntityInformation.registeredOffice },
+    { label: "Téléphone", field: legalEntityInformation.publicPhone },
+  ];
+  return specs.flatMap((item) =>
+    item.field.status === "verified" && item.field.value ? [{ label: item.label, value: item.field.value }] : [],
+  );
 }
 
 export function privacyValidationChecklist(): { label: string; done: boolean }[] {

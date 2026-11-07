@@ -12,11 +12,7 @@ test.describe("captures outils et matériels", () => {
       await page.screenshot({ path: "docs/captures/tools-materials-tablet-768.png", fullPage: true });
 
       await page.locator("#familles-materiels").scrollIntoViewIfNeeded();
-      await page.waitForSelector(".tem-families--enhanced");
       await page.screenshot({ path: "docs/captures/tools-materials-families-desktop.png" });
-
-      await page.locator("#tem-inspection-title").scrollIntoViewIfNeeded();
-      await page.screenshot({ path: "docs/captures/tools-materials-inspection-desktop.png" });
 
       await page.locator("#demande-materiel").scrollIntoViewIfNeeded();
       await page.screenshot({ path: "docs/captures/tools-materials-request-desktop.png" });

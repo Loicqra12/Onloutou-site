@@ -6,11 +6,15 @@ import type {
   VerifiedLegalField,
 } from "@/types/legal";
 
-/** Aucun document officiel RCCM / statuts dans le dépôt — ne pas passer à validated sans preuve. */
+/**
+ * Identité confirmée par le propriétaire le 2026-11-05.
+ * Le document n’est pas marqué validé : e-mail professionnel, représentant légal,
+ * hébergeur effectif et droit applicable restent non confirmés.
+ */
 export const legalNoticeStatus: LegalDocumentStatus = "awaiting-validation";
 
-/** Date de dernière révision du contenu de cette page (structure + textes génériques). */
-export const legalNoticeLastUpdated = "2026-10-19";
+/** Date de la mise à jour qui publie l’identité confirmée. */
+export const legalNoticeLastUpdated = "2026-11-05";
 
 export const legalNoticeSeo = {
   title: "Mentions légales",
@@ -29,29 +33,72 @@ export const legalDraftBanner = {
     "Certaines informations officielles doivent encore être confirmées avant la publication définitive de cette page.",
 };
 
+const ownerConfirmation = {
+  source: "Confirmation du propriétaire, 5 novembre 2026",
+  lastVerifiedAt: "2026-11-05",
+} as const;
+
 export const legalEntityInformation: LegalEntityInformation = {
   commercialName: {
     value: site.name,
     status: "verified",
-    source: "src/content/site.ts",
-    lastVerifiedAt: "2026-10-19",
+    source: ownerConfirmation.source,
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
   },
-  legalName: { value: null, status: "missing" },
-  legalForm: { value: null, status: "missing" },
-  capital: { value: null, status: "missing" },
-  registryNumber: { value: null, status: "missing" },
-  taxNumber: { value: null, status: "missing" },
-  registeredOffice: { value: null, status: "missing" },
+  legalName: {
+    value: "ONLOUTOU",
+    status: "verified",
+    source: ownerConfirmation.source,
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
+  },
+  legalForm: {
+    value: "Société à responsabilité limitée unipersonnelle — SARLU",
+    status: "verified",
+    source: ownerConfirmation.source,
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
+  },
+  capital: {
+    value: "3\u00a0000\u00a0000\u00a0FCFA",
+    status: "verified",
+    source: ownerConfirmation.source,
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
+  },
+  registryNumber: {
+    value: "CI-ABJ-2016-A-3617",
+    status: "verified",
+    source: ownerConfirmation.source,
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
+  },
+  taxNumber: {
+    value: "1541839S",
+    status: "verified",
+    source: ownerConfirmation.source,
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
+  },
+  registeredOffice: {
+    value: "Abidjan, Riviera Bonoumin, lot 25, îlot 18, Côte d’Ivoire",
+    status: "verified",
+    source: ownerConfirmation.source,
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
+  },
   publicPhone: {
     value: site.phoneDisplay,
     status: "verified",
-    source: "src/content/site.ts",
-    lastVerifiedAt: "2026-10-19",
+    source: "src/content/site.ts — identique à la confirmation du propriétaire",
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
   },
   publicEmail: { value: null, status: "missing" },
-  publicationDirector: { value: null, status: "missing" },
+  publicationDirector: {
+    value: "Adams Ousmane Diaby",
+    status: "verified",
+    source: ownerConfirmation.source,
+    lastVerifiedAt: ownerConfirmation.lastVerifiedAt,
+  },
   legalRepresentative: { value: null, status: "missing" },
 };
+
+/** Repère d’accès communiqué par le propriétaire. Distinct de l’adresse du siège. */
+export const legalPracticalLandmark = "À proximité de la CNPS, non loin du rond-point CGK";
 
 /** Hébergeur production non attesté dans le dépôt (.openai/hosting.json = build statique uniquement). */
 export const hostingInformation: HostingInformation = {
@@ -63,18 +110,19 @@ export const hostingInformation: HostingInformation = {
 };
 
 export const legalTocSections = [
-  { id: "editeur", title: "Éditeur du site" },
-  { id: "coordonnees", title: "Coordonnées" },
+  { id: "editeur", title: "Identité de l’éditeur" },
+  { id: "coordonnees", title: "Siège et coordonnées" },
   { id: "publication", title: "Direction de la publication" },
   { id: "hebergement", title: "Hébergement" },
+  { id: "objet", title: "Objet du site" },
+  { id: "articulation", title: "Documents applicables" },
   { id: "propriete-intellectuelle", title: "Propriété intellectuelle" },
-  { id: "utilisation", title: "Utilisation du site" },
-  { id: "responsabilite", title: "Limitation de responsabilité" },
-  { id: "liens-externes", title: "Liens vers des sites tiers" },
+  { id: "signalement", title: "Signalement" },
   { id: "donnees-personnelles", title: "Données personnelles" },
-  { id: "cookies", title: "Cookies et technologies similaires" },
-  { id: "droit-applicable", title: "Droit applicable", blocked: true },
-  { id: "mise-a-jour", title: "Mise à jour du document" },
+  { id: "cookies", title: "Cookies" },
+  { id: "droit-applicable", title: "Droit applicable" },
+  { id: "sources", title: "Sources et limites" },
+  { id: "mise-a-jour", title: "Mise à jour" },
 ] as const;
 
 export const legalEditorFieldLabels: Record<string, string> = {
@@ -83,7 +131,7 @@ export const legalEditorFieldLabels: Record<string, string> = {
   legalForm: "Forme juridique",
   capital: "Capital social",
   registryNumber: "Numéro d’immatriculation (RCCM)",
-  taxNumber: "Numéro fiscal applicable",
+  taxNumber: "Compte contribuable",
   registeredOffice: "Siège social",
   legalRepresentative: "Représentant légal",
 };
@@ -94,22 +142,26 @@ export const legalProse = {
   liability: `ONLOUTOU veille à présenter des informations aussi claires et actualisées que possible. Certaines informations peuvent toutefois évoluer ou nécessiter une confirmation spécifique. L’utilisateur est invité à vérifier les éléments déterminants avant toute décision ou engagement. La disponibilité du site, l’absence d’erreur, les interruptions temporaires ou les contenus fournis par des tiers ne peuvent être garantis de manière absolue.`,
   externalLinks: `Le site peut contenir des liens vers des services ou sites externes. ONLOUTOU n’exerce pas de contrôle sur leurs contenus, leurs conditions d’utilisation ni leurs politiques de confidentialité. L’accès à ces ressources relève de la responsabilité de l’utilisateur.`,
   personalData: `Les informations relatives à la collecte et au traitement des données personnelles sont décrites dans la politique de confidentialité du site. Cette page ne remplace pas cette politique.`,
-  cookies: `Les cookies, stockages navigateur et services tiers sont décrits dans la politique dédiée aux cookies. Aucune bannière de consentement n’est affichée tant qu’aucun traceur non essentiel n’est identifié et documenté.`,
-  hostingPending: `Les informations relatives à l’hébergeur du site en production seront publiées après confirmation de l’environnement de déploiement définitif. Aucun hébergeur n’est indiqué sur cette page tant que ces éléments ne sont pas vérifiés.`,
+  cookies: `Les cookies, stockages navigateur et services tiers sont décrits dans la politique dédiée aux cookies. Un bandeau permet d’enregistrer le choix du visiteur. Aucun cookie publicitaire ni de mesure d’audience n’est déposé par le site.`,
+  hostingPending: `L’hébergeur effectif du site en production n’est pas encore confirmé. Aucun prestataire n’est donc nommé sur cette page.`,
   applicableLawPending: `Les dispositions relatives au droit applicable et à la juridiction compétente seront ajoutées après validation juridique au regard de l’entité éditrice et des activités réelles d’ONLOUTOU.`,
-  publicationPending: `Le nom du directeur de publication sera indiqué lorsqu’il aura été confirmé par un document officiel.`,
+  publicationPending: `Le nom du responsable de la publication sera indiqué lorsqu’il aura été confirmé.`,
 };
 
 export const legalFooterLinks = [
-  { href: "/mentions-legales", label: "Mentions légales", enabled: true },
-  { href: "/confidentialite", label: "Confidentialité", enabled: true },
-  { href: "/cookies", label: "Cookies", enabled: true },
-  { href: "/conditions-utilisation", label: "Conditions d’utilisation", enabled: true },
+  { href: "/mentions-legales", label: "Mentions légales" },
+  { href: "/confidentialite", label: "Politique de confidentialité" },
+  { href: "/cookies", label: "Politique de cookies" },
+  { action: "cookies", label: "Gérer mes cookies" },
+  { href: "/conditions-utilisation", label: "Conditions d’utilisation" },
+  { href: "/mentions-legales#propriete-intellectuelle", label: "Propriété intellectuelle" },
+  { href: "/sitemap.xml", label: "Plan du site" },
+  { href: "/contact", label: "Contact / Réclamation" },
 ] as const;
 
 export const termsOfUseStatus: LegalDocumentStatus = "awaiting-validation";
 
-export const termsOfUseLastUpdated = "2026-10-19";
+export const termsOfUseLastUpdated = "2026-11-05";
 
 export const termsOfUseSeo = {
   title: "Conditions d’utilisation",
@@ -137,20 +189,29 @@ export const legalRelatedDocumentLinks = [
 ] as const;
 
 export const termsOfUseTocSections = [
-  { id: "objet", title: "Objet du site" },
+  { id: "objet", title: "Objet et champ" },
+  { id: "definitions", title: "Définitions" },
+  { id: "documents", title: "Documents applicables" },
   { id: "acces", title: "Accès au site" },
-  { id: "informations", title: "Informations présentées" },
-  { id: "fonctions-preparation", title: "Fonctions en préparation" },
-  { id: "demandes-contact", title: "Demandes et prises de contact" },
-  { id: "utilisations-interdites", title: "Utilisations interdites" },
+  { id: "services", title: "Services présentés" },
+  { id: "role", title: "Rôle d’ONLOUTOU" },
+  { id: "contenus-site", title: "Fiches, photos et démonstrations" },
+  { id: "demandes-contact", title: "Demandes et échanges" },
+  { id: "formation-contrat", title: "Demande, devis et contrat" },
+  { id: "comptes", title: "Comptes et habilitations" },
+  { id: "engagements", title: "Engagements de l’utilisateur" },
+  { id: "utilisations-interdites", title: "Usages interdits" },
+  { id: "contenus-utilisateurs", title: "Contenus transmis" },
   { id: "propriete-intellectuelle", title: "Propriété intellectuelle" },
-  { id: "liens-externes", title: "Liens externes" },
-  { id: "disponibilite", title: "Disponibilité et évolution" },
-  { id: "responsabilite", title: "Responsabilité" },
-  { id: "donnees-cookies", title: "Données personnelles et cookies" },
-  { id: "conditions-commerciales", title: "Conditions commerciales séparées" },
+  { id: "liens-externes", title: "Services et liens de tiers" },
+  { id: "disponibilite", title: "Disponibilité et maintenance" },
+  { id: "suspension", title: "Suspension des accès" },
+  { id: "responsabilite", title: "Responsabilités" },
+  { id: "donnees-cookies", title: "Données et cookies" },
+  { id: "conditions-commerciales", title: "Conditions commerciales" },
   { id: "espaces-partenaire-livreur", title: "Espaces partenaire et livreur" },
-  { id: "modification", title: "Modification des conditions" },
+  { id: "reclamations", title: "Réclamations" },
+  { id: "modification", title: "Modification" },
   { id: "droit-applicable", title: "Droit applicable" },
   { id: "contact", title: "Contact" },
 ] as const;
@@ -165,7 +226,7 @@ export const termsOfUseProse = {
   planned:
     "Certaines pages présentent des fonctionnalités en préparation ou en prévisualisation (notamment les futurs espaces partenaire et livreur). Tant qu’elles ne sont pas ouvertes officiellement, elles ne permettent pas de créer un compte, de déposer un document, de recevoir une mission ou d’effectuer un paiement.",
   contactRequests:
-    "Les formulaires et configurateurs du site peuvent préparer une demande ou un message (par exemple vers WhatsApp ou la page contact). Tant que l’utilisateur n’active pas le canal choisi, les informations saisies restent en principe dans le navigateur. L’envoi effectif est régi par les conditions du service utilisé.",
+    "Les formulaires connectés à l’API enregistrent une demande ou une candidature avec référence ONLOUTOU. Les autres configurateurs préparent encore un message (WhatsApp ou contact) sans dossier en ligne tant qu’ils ne sont pas branchés.",
   prohibited:
     "Il est notamment interdit d’utiliser le site de manière frauduleuse, de tenter d’accéder à des zones non autorisées, d’introduire du code malveillant, de surcharger volontairement l’infrastructure, de collecter des données d’autres utilisateurs sans base légale, ou d’utiliser les contenus d’une manière portant atteinte aux droits d’ONLOUTOU ou de tiers.",
   commercial:

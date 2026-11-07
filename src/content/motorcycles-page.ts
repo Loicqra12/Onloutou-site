@@ -16,10 +16,10 @@ export const motorcyclesQualificationNotice =
   "Les modèles, caractéristiques, conditions, équipements de sécurité et disponibilités sont confirmés après qualification.";
 
 export const motorcyclesRepresentativeCaption =
-  "Visuel représentatif d’un usage professionnel — catégorie, modèle et disponibilité à confirmer.";
+  "Catégorie, modèle et disponibilité à confirmer.";
 
 export const motorcyclesHeroCaption =
-  "Visuel représentatif de plusieurs profils de deux-roues professionnels.";
+  "Plusieurs profils de deux-roues professionnels. Modèle et disponibilité à confirmer.";
 
 export const motorcyclesMedia = {
   fleetHero: {

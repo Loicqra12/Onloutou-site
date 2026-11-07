@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { FamilyIcon } from "@/components/sales/SalesBriefIcons";
+import { BriefContactSave } from "@/components/forms/BriefContactSave";
 import { TitleReveal } from "@/components/motion/TitleReveal";
-import { Button } from "@/components/ui/Button";
 import { MarkedPhrase } from "@/components/sales/MarkedPhrase";
 import {
   buildSalesRequestSummary,
@@ -162,9 +162,15 @@ export function EquipmentRequestBuilder() {
             </dl>
             <p className="sales-builder__summary">{summary}</p>
             <div className="sales-builder__actions">
-              <Button href={whatsappHref} variant="primary">
-                Envoyer sur WhatsApp
-              </Button>
+              <BriefContactSave
+                source="vente-brief"
+                type="PURCHASE"
+                message={summary}
+                payload={selection}
+                whatsappUrl={whatsappHref}
+                whatsappLabel="Envoyer sur WhatsApp"
+                className="sales-builder__actions"
+              />
               <a href={`tel:${site.phoneTel}`} className="sales-builder__phone">
                 {site.phoneDisplay}
               </a>

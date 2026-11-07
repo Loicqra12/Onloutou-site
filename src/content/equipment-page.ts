@@ -13,7 +13,7 @@ export const equipmentHubPositioning =
   "ONLOUTOU accompagne les besoins en véhicules, matériels et équipements professionnels, en location ou en acquisition, selon l’usage, la zone, les caractéristiques recherchées et la disponibilité.";
 
 export const equipmentRepresentativeDisclaimer =
-  "Visuel représentatif d’une famille de besoins — modèles et disponibilités à confirmer.";
+  "Modèles et disponibilités à confirmer.";
 
 export type EquipmentFamilyId =
   | "vehicules"

@@ -1,8 +1,8 @@
 import { whatsappUrlForMessage } from "@/content/contact-page";
 import type { ServiceFaqItem } from "@/types/services";
 
-/** Images déposées sous equipment/camions-engins (dossier trucks-machinery non présent). */
-const imageBase = "/assets/images/equipment/camions-engins";
+/** Images déposées sous equipment/camions (dossier trucks-machinery non présent). */
+const imageBase = "/assets/images/equipment/camions";
 
 export const trucksMachineryPageSeo = {
   title: "Camions et engins professionnels en location ou acquisition",
@@ -17,10 +17,10 @@ export const trucksMachineryQualificationNotice =
   "Les catégories, capacités, modèles, conditions, opérateurs éventuels et disponibilités sont confirmés après qualification.";
 
 export const trucksMachineryRepresentativeCaption =
-  "Visuel représentatif d’une catégorie d’équipement — modèle, capacité et disponibilité à confirmer.";
+  "Modèle, capacité et disponibilité à confirmer.";
 
 export const trucksMachineryHeroCaption =
-  "Visuel représentatif de plusieurs catégories de camions et d’engins professionnels.";
+  "Plusieurs catégories de camions et d’engins. Modèle et disponibilité à confirmer.";
 
 export const trucksMachineryMedia = {
   fleetHero: {

@@ -19,7 +19,7 @@ test.describe("captures conditions d’utilisation", () => {
       await page.screenshot({ path: "docs/captures/terms-of-use-tablet-768.png", fullPage: true });
 
       await page.setViewportSize({ width: 1440, height: 1000 });
-      await page.locator(".leg-status").scrollIntoViewIfNeeded();
+      await page.locator(".leg-doc__header").scrollIntoViewIfNeeded();
       await page.screenshot({ path: "docs/captures/terms-of-use-draft-status.png" });
 
       await page.locator(".leg-toc").scrollIntoViewIfNeeded();

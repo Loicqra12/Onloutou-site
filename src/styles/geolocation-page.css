@@ -1,0 +1,1035 @@
+/* Page Géolocalisation — refonte d’après les écrans Figma.
+   Toutes les règles sont préfixées .glx- et n’affectent aucune autre page. */
+
+.glx-page {
+  --glx-ink: #111111;
+  --glx-dark: #121212;
+  --glx-dark-2: #1b1b1b;
+  --glx-paper: #f8f6f0;
+  --glx-paper-2: #f1eee6;
+  --glx-yellow: var(--color-brand-yellow, #f5c400);
+  --glx-yellow-soft: #fdf0bd;
+  --glx-grey: #6b6b6b;
+  --glx-line: #e3e0d6;
+  --glx-gutter: max(clamp(20px, 3.9cqw, 56px), calc((100cqw - 1328px) / 2));
+  --glx-wrap: calc(100cqw - 2 * var(--glx-gutter));
+  container-type: inline-size;
+  font-family: var(--font-sans);
+  color: var(--glx-ink);
+  background: var(--glx-paper);
+}
+.glx-page *,
+.glx-page *::before,
+.glx-page *::after {
+  box-sizing: border-box;
+}
+.glx-wrap {
+  width: var(--glx-wrap);
+  margin-inline: auto;
+}
+.glx-line {
+  display: block;
+}
+
+/* ---------- Typographie ---------- */
+
+.glx-kicker {
+  margin: 0 0 clamp(10px, 1.2cqw, 16px);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c99a00;
+}
+.glx-h1,
+.glx-h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+.glx-h1 {
+  font-size: clamp(2.5rem, 4.4cqw, 4.6rem);
+  line-height: 1.05;
+}
+.glx-h2 {
+  font-size: clamp(2rem, 3.9cqw, 3.5rem);
+  line-height: 1.06;
+}
+.glx-h2--md {
+  font-size: clamp(1.9rem, 3.5cqw, 3.2rem);
+}
+.glx-h2--cta {
+  font-size: clamp(2rem, 3.8cqw, 3.5rem);
+}
+.glx-underline {
+  background: linear-gradient(var(--glx-yellow), var(--glx-yellow)) no-repeat 0 100% / 100% 0.13em;
+  padding-bottom: 0.04em;
+}
+.glx-lead {
+  margin: clamp(10px, 1.2cqw, 18px) 0 0;
+  font-size: clamp(0.98rem, 1.3cqw, 1.15rem);
+  line-height: 1.45;
+  color: #4b4b4b;
+  max-width: 30em;
+}
+.glx-note {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--glx-grey);
+}
+.glx-note--bar {
+  border-left: 1.5px solid #5a5a5a;
+  padding-left: 14px;
+}
+.glx-note--info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.glx-note--info svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: #8c8c8c;
+}
+.glx-num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--glx-yellow);
+  font-size: clamp(1.1rem, 1.6cqw, 1.5rem);
+  flex: none;
+}
+.glx-num--lg {
+  font-size: clamp(1.7rem, 2.6cqw, 2.4rem);
+  letter-spacing: -0.03em;
+}
+
+.glx-section {
+  padding-block: clamp(40px, 4.6cqw, 68px);
+  scroll-margin-top: 96px;
+}
+
+/* ---------- Boutons ---------- */
+
+.glx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.glx-btn svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.glx-btn--yellow {
+  background: var(--glx-yellow);
+  color: var(--glx-ink);
+}
+.glx-btn--yellow:hover {
+  background: var(--color-brand-yellow-hover, #ffd72e);
+  box-shadow: 0 8px 22px rgba(245, 196, 0, 0.3);
+}
+.glx-btn--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+.glx-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.glx-page a:focus-visible,
+.glx-page button:focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+/* ---------- Hero ---------- */
+
+.glx-hero {
+  background: #0a0a0a;
+  color: #fff;
+  overflow: clip;
+}
+.glx-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr);
+  gap: clamp(8px, 1.5cqw, 24px);
+  align-items: center;
+  padding-block: clamp(24px, 2.8cqw, 40px) clamp(24px, 2.8cqw, 40px);
+  min-height: clamp(460px, 42cqw, 640px);
+}
+.glx-crumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0 0 clamp(26px, 3.4cqw, 54px);
+  padding: 0;
+  font-size: 12px;
+  color: #bdbdbd;
+}
+.glx-crumb li + li::before {
+  content: "/";
+  margin-right: 8px;
+  color: #777;
+}
+.glx-crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+.glx-crumb a:hover {
+  text-decoration: underline;
+}
+.glx-crumb [aria-current] {
+  color: #fff;
+  font-weight: 600;
+}
+.glx-hero .glx-kicker {
+  color: var(--glx-yellow);
+}
+.glx-hero .glx-h1 .glx-line {
+  white-space: nowrap;
+}
+.glx-hero__intro {
+  margin: clamp(16px, 1.8cqw, 26px) 0 0;
+  font-size: clamp(1rem, 1.35cqw, 1.2rem);
+  line-height: 1.45;
+  color: #e4e4e4;
+  max-width: 24em;
+}
+.glx-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(22px, 2.4cqw, 34px);
+}
+.glx-hero__caveat {
+  margin: clamp(22px, 3cqw, 44px) 0 0;
+  padding-left: 14px;
+  border-left: 1.5px solid #666;
+  font-size: 12px;
+  color: #b8b8b8;
+}
+.glx-hero__visual {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+}
+.glx-hero__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: lighten;
+}
+.glx-badge {
+  position: absolute;
+  top: clamp(0px, 1cqw, 14px);
+  left: clamp(8px, 4cqw, 60px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 14px 8px 10px;
+  border-radius: 8px;
+  background: var(--glx-yellow);
+  color: var(--glx-ink);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.glx-badge svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.glx-badge strong {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.glx-badge small {
+  display: block;
+  font-size: 10px;
+}
+
+/* Bande des repères */
+.glx-strip {
+  background: var(--glx-paper-2);
+  border-bottom: 1px solid var(--glx-line);
+}
+.glx-strip__list {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.glx-strip__list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: clamp(14px, 1.8cqw, 24px) 10px;
+  font-size: clamp(0.85rem, 1.1cqw, 1rem);
+  font-weight: 500;
+}
+.glx-strip__list li + li {
+  border-left: 1px solid var(--glx-line);
+}
+.glx-strip__icon {
+  display: grid;
+  place-items: center;
+  width: clamp(32px, 3cqw, 42px);
+  height: clamp(32px, 3cqw, 42px);
+  border-radius: 50%;
+  background: var(--glx-yellow-soft);
+  flex: none;
+}
+.glx-strip__icon svg {
+  width: 55%;
+  height: 55%;
+}
+
+/* ---------- Terrain ---------- */
+
+.glx-field {
+  background: var(--glx-paper);
+}
+.glx-field__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.57fr) minmax(0, 0.43fr);
+  gap: clamp(22px, 3cqw, 46px);
+  align-items: stretch;
+}
+.glx-field__media {
+  position: relative;
+  margin: 0;
+  min-height: 360px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #222;
+}
+.glx-field__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+.glx-field__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+}
+.glx-field__steps {
+  list-style: none;
+  margin: clamp(16px, 2cqw, 28px) 0 clamp(18px, 2cqw, 28px);
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+.glx-field__steps a {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 48px;
+  padding: 8px 18px;
+  border: 1px solid var(--glx-line);
+  border-radius: 3px;
+  background: #fff;
+  color: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+.glx-field__steps a:hover {
+  border-color: #b9b5a8;
+}
+.glx-field__label {
+  flex: 1;
+}
+.glx-field__steps svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+
+/* ---------- Approche ---------- */
+
+.glx-process {
+  background: #fff;
+}
+.glx-process__grid {
+  list-style: none;
+  margin: clamp(20px, 2.4cqw, 34px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.glx-process__grid li {
+  padding: 0 clamp(14px, 2cqw, 30px);
+}
+.glx-process__grid li:first-child {
+  padding-left: 0;
+}
+.glx-process__grid li + li {
+  border-left: 1px solid var(--glx-line);
+}
+.glx-process__grid h3 {
+  margin: 6px 0 0;
+  font-size: clamp(1.05rem, 1.5cqw, 1.3rem);
+  font-weight: 700;
+}
+.glx-process__grid p {
+  margin: 8px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: #555;
+  max-width: 14em;
+}
+
+/* ---------- Plateforme ---------- */
+
+.glx-platform {
+  background: var(--glx-paper);
+}
+.glx-platform__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.3fr) minmax(0, 0.7fr);
+  gap: clamp(20px, 2.8cqw, 40px);
+  align-items: center;
+}
+.glx-platform__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(20px, 2.4cqw, 34px);
+}
+.glx-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid var(--glx-line);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--glx-ink);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.glx-tab svg {
+  width: 17px;
+  height: 17px;
+  color: var(--glx-yellow);
+}
+.glx-tab[aria-selected="true"] {
+  background: var(--glx-ink);
+  border-color: var(--glx-ink);
+  color: #fff;
+}
+.glx-platform__stage .glx-note {
+  margin-top: 12px;
+  font-size: 11.5px;
+}
+
+/* Cadre de l’aperçu */
+.glx-platform__frame {
+  margin: 0;
+  border: 1px solid #d9d6cb;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  aspect-ratio: 1672 / 941;
+}
+.glx-platform__frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ---------- Fonctionnalités ---------- */
+
+.glx-features {
+  background: var(--glx-dark);
+  color: #fff;
+}
+.glx-features__grid {
+  list-style: none;
+  margin: clamp(20px, 2.4cqw, 32px) 0 clamp(16px, 1.8cqw, 24px);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.1cqw, 16px);
+}
+.glx-features__grid li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(16px, 1.8cqw, 24px) clamp(14px, 1.6cqw, 22px);
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #171717;
+}
+.glx-features__grid > li > svg:first-child {
+  width: 28px;
+  height: 28px;
+  color: var(--glx-yellow);
+  margin-bottom: clamp(12px, 1.6cqw, 22px);
+}
+.glx-features__grid h3 {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.25cqw, 1.1rem);
+  font-weight: 700;
+}
+.glx-features__grid p {
+  margin: 8px 0 0;
+  max-width: 14em;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: #cfcfcf;
+}
+.glx-features__arrow {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: 16px;
+  height: 16px;
+  color: var(--glx-yellow);
+}
+.glx-features .glx-note {
+  color: #bdbdbd;
+  font-size: 11.5px;
+}
+
+/* ---------- Usages ---------- */
+
+.glx-usages {
+  background: var(--glx-paper);
+}
+.glx-usages__grid {
+  list-style: none;
+  margin: clamp(18px, 2.2cqw, 30px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.4cqw, 20px);
+}
+.glx-usage {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--glx-line);
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.glx-usage:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+.glx-usage__media {
+  display: block;
+  aspect-ratio: 16 / 7.4;
+  overflow: hidden;
+  background: #ddd;
+}
+.glx-usage__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.glx-usage__body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+}
+.glx-usage__body strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.glx-usage__body small {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.82rem;
+  color: #666;
+}
+.glx-usage__body svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  color: #d9a900;
+}
+
+/* ---------- Installation ---------- */
+
+.glx-install {
+  background: var(--glx-paper);
+  padding-block: clamp(28px, 3.4cqw, 50px);
+}
+.glx-install__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr);
+  gap: 0;
+  align-items: stretch;
+}
+.glx-install__copy {
+  display: flex;
+  flex-direction: column;
+  padding-right: clamp(18px, 3cqw, 46px);
+  border-right: 1px solid var(--glx-line);
+  min-width: 0;
+}
+.glx-install__copy .glx-lead {
+  max-width: 22em;
+}
+.glx-install__media {
+  position: relative;
+  flex: 1;
+  min-height: 190px;
+  margin: clamp(16px, 1.8cqw, 26px) 0 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #ccc;
+}
+.glx-install__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+.glx-install__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 clamp(18px, 3cqw, 46px);
+  display: grid;
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+}
+.glx-install__steps li {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2cqw, 28px);
+  padding: 10px 4px;
+  border-top: 1px solid var(--glx-line);
+}
+.glx-install__steps li:first-child {
+  border-top: 1px solid var(--glx-line);
+}
+.glx-install__steps li:last-child {
+  border-bottom: 1px solid var(--glx-line);
+}
+.glx-install__steps li > div {
+  flex: 1;
+  min-width: 0;
+}
+.glx-install__steps h3 {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.25cqw, 1.08rem);
+  font-weight: 700;
+}
+.glx-install__steps p {
+  margin: 3px 0 0;
+  font-size: 0.86rem;
+  color: #666;
+}
+.glx-install__steps li > svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.glx-install__steps .glx-num {
+  min-width: 2.1ch;
+}
+
+/* Bandeau pilotage */
+.glx-pilotage {
+  background: var(--glx-paper);
+  padding-block: clamp(10px, 1.4cqw, 20px);
+}
+.glx-pilotage__box {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4cqw, 34px);
+  padding: clamp(18px, 2.2cqw, 30px) clamp(18px, 2.6cqw, 40px);
+  border-radius: 12px;
+  background: var(--glx-dark);
+  color: #fff;
+}
+.glx-pilotage__icon {
+  width: clamp(40px, 4.4cqw, 62px);
+  height: clamp(40px, 4.4cqw, 62px);
+  flex: none;
+  color: var(--glx-yellow);
+  padding-right: 0;
+}
+.glx-pilotage__text {
+  flex: 1;
+  min-width: 0;
+  padding-left: clamp(16px, 2.4cqw, 34px);
+  border-left: 1px solid #4a4a4a;
+}
+.glx-pilotage__text h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.8cqw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.glx-pilotage__text p {
+  margin: 4px 0 0;
+  font-size: clamp(0.9rem, 1.2cqw, 1.05rem);
+  color: #dcdcdc;
+}
+
+/* ---------- FAQ ---------- */
+
+.glx-faq {
+  background: var(--glx-paper);
+}
+.glx-faq__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.35fr) minmax(0, 0.65fr);
+  gap: clamp(20px, 3.4cqw, 52px);
+  align-items: start;
+}
+.glx-faq .glx-lead {
+  max-width: 20em;
+}
+.glx-faq__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.glx-faq__list li {
+  border: 1px solid var(--glx-line);
+  border-radius: 3px;
+  background: #fff;
+}
+.glx-faq__list h3 {
+  margin: 0;
+}
+.glx-faq__list button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 18px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.glx-faq__list button svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.glx-faq__answer {
+  padding: 0 18px 16px;
+}
+.glx-faq__answer p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #6b6b6b;
+  max-width: 44em;
+}
+
+/* ---------- Bandeau CTA ---------- */
+
+.glx-cta {
+  position: relative;
+  overflow: hidden;
+  background: #0d0d0d;
+  color: #fff;
+  min-height: clamp(280px, 25cqw, 380px);
+  display: flex;
+  align-items: center;
+}
+.glx-cta__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 80% 40%;
+}
+.glx-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0.78) 34%, rgba(10, 10, 10, 0) 62%);
+}
+.glx-cta__inner {
+  position: relative;
+  z-index: 2;
+  padding-block: clamp(26px, 3.2cqw, 48px);
+}
+.glx-cta .glx-kicker {
+  color: var(--glx-yellow);
+}
+.glx-cta__lead {
+  margin: 14px 0 0;
+  font-size: clamp(0.95rem, 1.25cqw, 1.1rem);
+  line-height: 1.45;
+  color: #e4e4e4;
+}
+.glx-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(18px, 2cqw, 28px);
+}
+
+/* ---------- À explorer aussi ---------- */
+
+.glx-explore {
+  display: block;
+  background: var(--glx-paper);
+  padding-block: clamp(22px, 2.6cqw, 36px) clamp(24px, 3cqw, 42px);
+}
+.glx-explore__list {
+  list-style: none;
+  margin: clamp(10px, 1.2cqw, 16px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.glx-explore__list li + li {
+  border-left: 1px solid var(--glx-line);
+}
+.glx-explore__list a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px clamp(10px, 1.4cqw, 20px);
+  color: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+}
+.glx-explore__list li:first-child a {
+  padding-left: 0;
+}
+.glx-explore__list a > svg:first-child {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  color: #d9a900;
+}
+.glx-explore__list a:hover span {
+  text-decoration: underline;
+}
+.glx-explore__arrow {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  margin-left: -6px;
+}
+
+/* ---------- Tablette ---------- */
+
+@container (max-width: 1100px) {
+  .glx-features__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .glx-explore__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 14px;
+  }
+  .glx-explore__list li:nth-child(4) {
+    border-left: 0;
+  }
+  .glx-explore__list li:nth-child(4) a {
+    padding-left: 0;
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@container (max-width: 900px) {
+  .glx-hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .glx-h1 {
+    font-size: clamp(2.4rem, 11cqw, 3.6rem);
+  }
+  .glx-hero .glx-h1 .glx-line {
+    white-space: normal;
+  }
+  .glx-hero__visual {
+    margin-top: 8px;
+  }
+  .glx-badge {
+    left: 8px;
+    top: 0;
+  }
+  .glx-strip__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .glx-strip__list li {
+    justify-content: flex-start;
+    padding-inline: 12px;
+  }
+  .glx-strip__list li:nth-child(3) {
+    border-left: 0;
+  }
+  .glx-strip__list li:nth-child(n + 3) {
+    border-top: 1px solid var(--glx-line);
+  }
+  .glx-h2,
+  .glx-h2--md,
+  .glx-h2--cta {
+    font-size: clamp(1.9rem, 8cqw, 2.8rem);
+  }
+  .glx-field__grid,
+  .glx-platform__grid,
+  .glx-install__grid,
+  .glx-faq__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .glx-field__media {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+  .glx-process__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 22px;
+  }
+  .glx-process__grid li:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .glx-install__copy {
+    padding-right: 0;
+    border-right: 0;
+    margin-bottom: 18px;
+  }
+  .glx-install__media {
+    flex: none;
+    aspect-ratio: 16 / 9;
+  }
+  .glx-install__steps {
+    padding-left: 0;
+    grid-template-rows: none;
+  }
+  .glx-pilotage__box {
+    flex-wrap: wrap;
+  }
+  .glx-pilotage__text {
+    flex: 1 1 220px;
+  }
+}
+
+@container (max-width: 640px) {
+  .glx-features__grid,
+  .glx-usages__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .glx-process__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .glx-process__grid li,
+  .glx-process__grid li + li {
+    padding: 0;
+    border-left: 0;
+  }
+  .glx-hero__actions .glx-btn,
+  .glx-cta__actions .glx-btn,
+  .glx-pilotage .glx-btn,
+  .glx-field .glx-btn {
+    width: 100%;
+  }
+  .glx-explore__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .glx-explore__list li {
+    border-left: 0 !important;
+  }
+  .glx-explore__list a {
+    padding-left: 0 !important;
+  }
+  .glx-cta::before {
+    background: linear-gradient(90deg, rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.7));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glx-usage,
+  .glx-btn,
+  .glx-tab {
+    transition: none;
+  }
+}
+
+/* Etape 2 (2026-11-06) - references en geolocalisation : logos deja presentes sur l'accueil, meme libelle. */
+.glx-references__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.glx-references__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 8px 18px 8px 12px;
+  border: 1px solid var(--glx-line);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--glx-ink);
+}
+
+.glx-references__logo {
+  width: auto;
+  height: 44px;
+  max-width: 96px;
+  object-fit: contain;
+}

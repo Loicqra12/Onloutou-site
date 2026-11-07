@@ -14,7 +14,7 @@ export function SalesConnected() {
           src={photo.src}
           alt={photo.alt}
           fill
-          sizes="100vw"
+          sizes="(max-width: 767px) 190vw, 100vw" quality={86}
           className="sales-connected__bg"
           style={{ objectFit: "cover", objectPosition: photo.objectPosition }}
         />

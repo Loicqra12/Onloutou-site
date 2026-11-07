@@ -25,29 +25,22 @@ test.describe("Parcours institutionnel ONLOUTOU", () => {
     }
   });
 
-  test("création 2016 et fin cycle Comoé 2021", async ({ page }) => {
+  test("création 2016 et fin du cycle Comoé 2021 (repères de la maquette)", async ({ page }) => {
     await page.goto("/a-propos#parcours");
     const section = page.locator("#parcours");
     await expect(section).toContainText("2016");
-    await expect(section).toContainText("créée en Côte d’Ivoire");
+    await expect(section).toContainText("La location de biens et d’équipements, associée à une composante technologique.");
     await expect(section).toContainText("2021");
     await expect(section).toContainText("Comoé Capital");
   });
 
-  test("référencement French Tech (pas labellisation)", async ({ page }) => {
-    await page.goto("/a-propos#parcours");
-    const text = await page.locator("#parcours").innerText();
-    expect(text).toContain("référencée");
-    expect(text).not.toMatch(/labellisée French Tech/i);
-  });
-
-  test("statuts distinctions exacts", async ({ page }) => {
+  test("statuts de reconnaissance exacts", async ({ page }) => {
     await page.goto("/a-propos#distinctions");
     const block = page.locator("#distinctions");
-    await expect(block).toContainText("Lauréate");
-    await expect(block).toContainText("Lauréate de la sélection");
-    await expect(block).toContainText("Finaliste");
-    await expect(block).toContainText("Startup sélectionnée");
+    await expect(block).toContainText("LAURÉAT");
+    await expect(block).toContainText("SÉLECTIONNÉ");
+    await expect(block).toContainText("FINALISTE");
+    await expect(block).toContainText("PARTICIPANT");
   });
 
   test("formulations interdites absentes", async ({ page }) => {
@@ -94,25 +87,26 @@ test.describe("Parcours institutionnel ONLOUTOU", () => {
   });
 
   test("SEO — pas de nouvelle route", () => {
-    expect(discoverAppRoutes().length).toBe(33);
+    expect(discoverAppRoutes().length).toBe(46);
     const indexable = discoverAppRoutes().filter((p) => getRouteIndexation(p).includeInSitemap);
     expect(indexable.length).toBe(27);
   });
 
-  test("accueil — aperçu et lien vers distinctions", async ({ page }) => {
+  test("accueil — aperçu et lien vers le parcours", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("link", { name: /Découvrir notre parcours/i })).toHaveAttribute(
       "href",
-      "/a-propos#distinctions",
+      "/a-propos#parcours",
     );
-    await expect(page.locator(".home-recognitions")).toContainText("Depuis 2016");
+    await expect(page.locator(".hom-recog")).toContainText("Fintech Challenge BCP");
   });
 
   test("contenu visible sans JavaScript", async ({ browser }) => {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
     await page.goto("/a-propos#accompagnement", { waitUntil: "domcontentloaded" });
-    await expect(page.locator("#accompagnement")).toContainText("Un accompagnement structurant");
+    await expect(page.locator("#accompagnement")).toContainText("Du Fintech Challenge à Banque Atlantique.");
+    await expect(page.locator("#parcours")).toContainText("Un accompagnement structurant");
     await context.close();
   });
 

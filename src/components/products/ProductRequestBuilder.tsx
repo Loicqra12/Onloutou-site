@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { BriefContactSave } from "@/components/forms/BriefContactSave";
 import { site } from "@/content/site";
 import {
   PRODUCT_REQUEST_PREFILL_KEY,
@@ -245,9 +245,28 @@ export function ProductRequestBuilder() {
           </div>
 
           <div className="prd-request__actions">
-            <Button href={whatsappHref} variant="primary" className="whatsapp-once-pulse">
-              Envoyer ma demande par WhatsApp
-            </Button>
+            <BriefContactSave
+              source="produits-demande"
+              type="PURCHASE"
+              zone={zone || undefined}
+              message={summary}
+              payload={{
+                familyLabel,
+                usage,
+                modeLabel,
+                quantity,
+                conditionLabel,
+                characteristics,
+                budget,
+                schedule,
+                zone,
+                services: selectedServices,
+                details,
+              }}
+              whatsappUrl={whatsappHref}
+              whatsappLabel="Envoyer ma demande par WhatsApp"
+              className="prd-request__actions"
+            />
             <a href={`tel:${site.phoneTel}`} className="prd-request__phone link-motion">Appeler ONLOUTOU</a>
           </div>
         </form>

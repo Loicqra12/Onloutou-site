@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import { JsonLdFromSiteUrl } from "@/components/seo/JsonLd";
+import { LegalDocument } from "@/components/legal/LegalDocument";
 import { LegalNoticeContent } from "@/components/legal/LegalNoticeContent";
-import { LegalPageHero } from "@/components/legal/LegalPageHero";
-import { LegalTableOfContents } from "@/components/legal/LegalTableOfContents";
 import {
-  legalDraftBanner,
   legalNoticeBreadcrumb,
   legalNoticeBreadcrumbJsonLd,
   legalNoticeIsIndexable,
+  legalNoticeLastUpdated,
   legalNoticeSeo,
-  legalNoticeStatus,
   legalTocSections,
 } from "@/content/legal";
 import { createPageMetadata } from "@/lib/seo/metadata";
@@ -26,23 +24,16 @@ export default function MentionsLegalesPage() {
   return (
     <>
       <JsonLdFromSiteUrl id="legal-notice-breadcrumb-jsonld" build={legalNoticeBreadcrumbJsonLd} />
-      <LegalPageHero
+      <LegalDocument
         breadcrumb={legalNoticeBreadcrumb}
-        eyebrow="INFORMATIONS JURIDIQUES"
         title="Mentions légales"
         intro="Cette page rassemble les informations relatives à l’édition, à l’hébergement et à l’utilisation du site ONLOUTOU."
-        status={legalNoticeStatus}
-        statusBanner={legalDraftBanner}
-      />
-      <div className="leg-layout section-spacing bg-brand-paper">
-        <div className="container-content leg-layout__grid">
-          <LegalTableOfContents
-            sections={legalTocSections}
-            ariaLabel="Sommaire des mentions légales"
-          />
-          <LegalNoticeContent />
-        </div>
-      </div>
+        updatedAt={legalNoticeLastUpdated}
+        sections={legalTocSections}
+        tocLabel="Sommaire des mentions légales"
+      >
+        <LegalNoticeContent />
+      </LegalDocument>
     </>
   );
 }

@@ -29,7 +29,7 @@ export function RentalUseCases() {
                       alt={item.image.alt}
                       width={item.image.width}
                       height={item.image.height}
-                      sizes={index === 0 ? "(max-width: 1023px) 100vw, 48vw" : "(max-width: 1023px) 100vw, 36vw"}
+                      sizes={index === 0 ? "(max-width: 1023px) 160vw, 88vw" : "(max-width: 1023px) 140vw, 50vw"} quality={86}
                       className="rental-usecases__img"
                       style={{ objectPosition: item.image.objectPosition }}
                     />

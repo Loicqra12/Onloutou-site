@@ -6,7 +6,9 @@ test.describe("politique de confidentialité", () => {
 
     await page.goto("/confidentialite", { waitUntil: "domcontentloaded" });
     await expect(page.locator("#leg-hero-title")).toContainText("Politique de confidentialité");
-    await expect(page.getByText("Document en cours de validation")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Imprimer" })).toBeVisible();
+    await expect(page.getByText("Document en cours de validation")).toHaveCount(0);
+    await expect(page.getByText("n’est pas encore publiée")).toHaveCount(0);
 
     const metaRobots = await page.locator('meta[name="robots"]').getAttribute("content");
     expect(metaRobots ?? "").toMatch(/noindex/i);

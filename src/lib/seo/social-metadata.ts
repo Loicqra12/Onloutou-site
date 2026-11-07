@@ -4,26 +4,25 @@ import { absolutePublicAssetUrl } from "@/lib/seo/site-url";
 type OgImageInput = NonNullable<Metadata["openGraph"]>["images"];
 
 /**
- * Visuel social 1200×630 validé — non disponible dans le dépôt.
- * Lorsqu’il existera, définir le chemin public ici et activer `summary_large_image`.
+ * Visuel de partage par défaut 1200×630 (façade + véhicules, logo, accroche).
+ * Utilisé uniquement par les pages sans image Open Graph propre.
  */
-export const APPROVED_SOCIAL_OG_IMAGE_PATH: string | null = null;
+export const APPROVED_SOCIAL_OG_IMAGE_PATH: string | null =
+  "/assets/images/social/onloutou-og-1200x630.jpg";
 
 /** Logo officiel (~1918×820) — ne pas utiliser comme bannière Open Graph / Twitter large. */
 export const LOGO_ASSET_PATH = "/assets/images/logo/embleme-ovale-onloutou.png";
 
 export function buildTwitterMetadata(title: string, description: string): Metadata["twitter"] {
-  const card = APPROVED_SOCIAL_OG_IMAGE_PATH ? "summary_large_image" : "summary";
-  const base = { card, title, description };
+  const imageUrl = APPROVED_SOCIAL_OG_IMAGE_PATH
+    ? absolutePublicAssetUrl(APPROVED_SOCIAL_OG_IMAGE_PATH)
+    : null;
 
-  if (APPROVED_SOCIAL_OG_IMAGE_PATH) {
-    const imageUrl = absolutePublicAssetUrl(APPROVED_SOCIAL_OG_IMAGE_PATH);
-    if (imageUrl) {
-      return { ...base, images: [imageUrl] };
-    }
+  // Grande carte uniquement si l’URL absolue de l’image est disponible.
+  if (imageUrl) {
+    return { card: "summary_large_image", title, description, images: [imageUrl] };
   }
-
-  return base;
+  return { card: "summary", title, description };
 }
 
 /** Images OG uniquement si l’origine est configurée (chemins rendus absolus). */
@@ -33,7 +32,14 @@ export function resolveOpenGraphImages(
   if (!explicit) {
     if (!APPROVED_SOCIAL_OG_IMAGE_PATH) return undefined;
     const approved = absolutePublicAssetUrl(APPROVED_SOCIAL_OG_IMAGE_PATH);
-    return approved ? [{ url: approved, alt: "ONLOUTOU" }] : undefined;
+    return approved ? [
+          {
+            url: approved,
+            width: 1200,
+            height: 630,
+            alt: "Local ONLOUTOU à Abidjan : location d’équipements et suivi GPS",
+          },
+        ] : undefined;
   }
 
   const flat = [explicit].flat();

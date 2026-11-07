@@ -8,7 +8,7 @@ export const cookiesInventoryVersion = "2026-10-19.1";
 
 export const cookiesLastAuditedAt = "2026-10-19";
 
-export const cookiesLastUpdatedAt = "2026-10-19";
+export const cookiesLastUpdatedAt = "2026-11-05";
 
 export const cookiesAuditEnvironment =
   "Build Next.js 16 en local (`npm run build` + `npm run start` sur http://localhost:3000)";
@@ -39,11 +39,14 @@ export const cookiesAuditLimits = [
 ];
 
 /**
- * Site public audité : pas d’analytics, pas de cookie HTTP applicatif, pas de localStorage ;
+ * Site public audité : pas d’analytics, pas de cookie HTTP applicatif.
  * sessionStorage fonctionnel (prefill) après navigation sur certains parcours.
+ * Le choix du bandeau est enregistré dans localStorage (onloutou-cookie-choice).
  * Hébergeur prod : à confirmer.
  */
 export const trackingStatus: TrackingStatus = "essential-only";
+
+export const cookieChoiceStorageKey = "onloutou-cookie-choice";
 
 export const cookiesPolicySeo = {
   title: "Politique relative aux cookies",
@@ -139,6 +142,20 @@ export const cookieInventory: CookieInventoryItem[] = [
     status: "verified",
   },
   {
+    id: "cookie-choice",
+    name: "onloutou-cookie-choice",
+    provider: "ONLOUTOU (site)",
+    technology: "local-storage",
+    category: "preferences",
+    purpose: "Mémoriser le choix affiché dans le bandeau cookies, sans activer de mesure ni de publicité",
+    domain: "Origine du site (localStorage)",
+    duration: "Jusqu’à effacement par le visiteur ou par le navigateur",
+    trigger: "Choix « Tout accepter », « Uniquement les nécessaires » ou enregistrement des préférences",
+    required: false,
+    active: true,
+    status: "verified",
+  },
+  {
     id: "hosting-cookies",
     name: "Cookies d’hébergement / CDN (non identifiés)",
     provider: "Hébergeur ou CDN (à confirmer)",
@@ -164,13 +181,13 @@ export const cookiesProse = {
   noNonEssential:
     "Lors du dernier audit technique, aucun cookie ou traceur non essentiel déposé directement par le site public n’a été détecté avant interaction avec un service externe. Cette situation peut évoluer si de nouvelles fonctions, mesures d’audience, vidéos, cartes ou espaces connectés sont ajoutés.",
   consentNotRequired:
-    "Aucun outil de mesure d’audience, de marketing ou de média externe intégré n’a été identifié dans le code actuel. Aucune bannière de consentement n’est affichée : les choix Accepter / Refuser ne s’appliquent pas tant qu’un tel outil n’est pas ajouté et documenté.",
+    "Le site n’utilise pas de cookie publicitaire ni d’outil de mesure d’audience. Le bandeau permet d’enregistrer votre choix dans le navigateur. Les technologies nécessaires, par exemple la reprise d’une demande dans le même onglet, restent actives.",
   whatsapp:
     "Le site ne charge pas de script WhatsApp avant votre action. Les boutons utilisent des liens (par exemple `wa.me`) ouvrant le service externe après un clic volontaire. Lorsque vous ouvrez le lien, vous quittez le site ONLOUTOU et le service applique ses propres conditions et technologies.",
   fonts:
     "Les polices sont intégrées via le mécanisme `next/font` : elles sont servies avec le site lors de l’audit local, sans requête vers des domaines Google observée au chargement des pages testées.",
   preferencesSection:
-    "Aucune préférence utilisateur (langue, thème, consentement) n’est enregistrée dans un cookie ou `localStorage` dans le code audité. Les choix dans les formulaires (par exemple case d’information avant envoi WhatsApp) restent dans la page tant qu’ils ne sont pas transmis.",
+    "Le choix affiché dans le bandeau (tout accepter ou cookies nécessaires) est enregistré dans le stockage local du navigateur, sous la clé onloutou-cookie-choice. Il ne sert pas à de la publicité. Les saisies des formulaires restent dans la page tant qu’elles ne sont pas transmises.",
   browser:
     "Vous pouvez également limiter ou supprimer les cookies et stockages depuis les paramètres de votre navigateur. Les intitulés et menus varient selon les versions ; consultez l’aide officielle de votre navigateur pour la procédure à jour.",
   contact:

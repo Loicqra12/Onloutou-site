@@ -5,12 +5,13 @@ test.describe("page vente", () => {
     await page.goto("/solutions/vente", { waitUntil: "domcontentloaded" });
     await expect(page.locator("#sales-hero-title")).toBeVisible();
 
-    await page.locator("#familles-equipements").scrollIntoViewIfNeeded();
-    await page.waitForSelector(".sales-families--enhanced");
-    await page.getByRole("tab", { name: "Outils et matériels" }).click();
-    await expect(page.locator(".sales-families__panel--active")).toContainText("Groupes électrogènes");
-
-    await expect(page.getByRole("link", { name: "Découvrir la location" })).toHaveAttribute(
+    await expect(page.getByRole("link", { name: "Décrire mon besoin d’achat" }).first()).toHaveAttribute(
+      "href",
+      "#demande-equipement",
+    );
+    await page.locator("#conseil-achat").scrollIntoViewIfNeeded();
+    await expect(page.locator("#conseil-achat h3")).toHaveCount(3);
+    await expect(page.getByRole("link", { name: "Étudier plutôt la location" })).toHaveAttribute(
       "href",
       "/solutions/location",
     );
@@ -20,10 +21,17 @@ test.describe("page vente", () => {
     await expect(page.locator(".sales-builder__summary")).toContainText("moto");
     await expect(page.locator(".sales-builder__summary")).toContainText("chantier");
 
-    const whatsapp = page.getByRole("link", { name: "Envoyer sur WhatsApp" });
-    const href = await whatsapp.getAttribute("href");
+    // WhatsApp n'est proposé qu'après l'enregistrement du dossier (étape facultative, avec la référence).
+    await expect(page.getByRole("link", { name: "Envoyer sur WhatsApp" })).toHaveCount(0);
+    await page.getByLabel(/nom ou structure/i).fill("Awa Koné");
+    await page.getByLabel(/^téléphone/i).fill("07 12 34 56 78");
+    await page.getByRole("button", { name: "Enregistrer ma demande" }).click();
+    const saved = page.getByRole("status").filter({ hasText: "Demande enregistrée" });
+    await expect(saved).toBeVisible();
+    const href = await saved.getByRole("link", { name: /WhatsApp/ }).getAttribute("href");
     expect(href).toMatch(/^https:\/\/wa\.me\//);
-    expect(decodeURIComponent(href ?? "")).toContain("moto");
+    expect(decodeURIComponent((href ?? "").replace(/\+/g, " "))).toContain("moto");
+    expect(decodeURIComponent((href ?? "").replace(/\+/g, " "))).toMatch(/ONL-/);
 
     await page.locator("details summary", { hasText: /en stock/i }).click();
     await page.locator("#sales-final-cta-title").scrollIntoViewIfNeeded();

@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
+import { HlpCenter } from "@/components/help/redesign/HlpCenter";
+import { HlpBand, HlpMedia } from "@/components/help/redesign/HlpSections";
 import { JsonLd, JsonLdFromSiteUrl } from "@/components/seo/JsonLd";
-import { HelpArticleList } from "@/components/help/HelpArticleList";
-import { HelpCategoryNavigation } from "@/components/help/HelpCategoryNavigation";
-import { HelpCenterHero } from "@/components/help/HelpCenterHero";
-import { HelpCenterProvider } from "@/components/help/HelpCenterProvider";
-import { HelpContactBand } from "@/components/help/HelpContactBand";
-import { HelpPopularQuestions } from "@/components/help/HelpPopularQuestions";
-import {
-  helpCenterBreadcrumbJsonLd,
-  helpCenterFaqJsonLd,
-  helpCenterSeo,
-} from "@/content/help-center";
+import { helpCenterBreadcrumbJsonLd, helpCenterFaqJsonLd, helpCenterSeo } from "@/content/help-center";
+import { buildHlpTopics } from "@/content/help-hub";
 import { createPageMetadata } from "@/lib/seo/metadata";
+import "@/styles/help-redesign.css";
 
 export const metadata: Metadata = createPageMetadata({
   ...helpCenterSeo,
@@ -19,23 +13,16 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function AidePage() {
+  const topics = buildHlpTopics();
   return (
     <>
       <JsonLdFromSiteUrl id="help-breadcrumb-jsonld" build={helpCenterBreadcrumbJsonLd} />
       <JsonLd id="help-faq-jsonld" data={helpCenterFaqJsonLd()} />
-      <HelpCenterProvider>
-        <div className="hlp-page">
-        <HelpCenterHero />
-        <HelpPopularQuestions />
-        <div className="hlp-layout section-spacing bg-brand-paper">
-          <div className="container-content hlp-layout__grid">
-            <HelpCategoryNavigation />
-            <HelpArticleList />
-          </div>
-        </div>
-        <HelpContactBand />
-        </div>
-      </HelpCenterProvider>
+      <div className="hlp-v2">
+        <HlpCenter topics={topics} defaultTopicId="location-acquisition" />
+        <HlpMedia />
+        <HlpBand />
+      </div>
     </>
   );
 }

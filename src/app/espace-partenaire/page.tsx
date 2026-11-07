@@ -1,26 +1,13 @@
 import type { Metadata } from "next";
 import { JsonLdFromSiteUrl } from "@/components/seo/JsonLd";
-import { PartnerModuleMatrix } from "@/components/partner-portal/PartnerModuleMatrix";
-import { PartnerPortalHero } from "@/components/partner-portal/PartnerPortalHero";
-import { PartnerPortalPreview } from "@/components/partner-portal/PartnerPortalPreview";
-import {
-  PartnerOrientationSectionBlock,
-  PartnerPortalFinalCtaBlock,
-  PartnerSecuritySectionBlock,
-  PartnerSponsoringSectionBlock,
-  PartnerSubscriptionSectionBlock,
-  partnerJourneyNotice,
-  partnerJourneySection,
-} from "@/components/partner-portal/PartnerPortalSections";
-import { ProcessTimeline } from "@/components/ui/ProcessTimeline";
-import { ServiceFaq } from "@/components/ui/ServiceFaq";
-import {
-  partnerPortalBreadcrumbJsonLd,
-  partnerPortalFaq,
-  partnerPortalJourneyPhases,
-  partnerPortalSeo,
-} from "@/content/partner-portal-page";
+import { PtnEspContact, PtnEspDashboard, PtnEspFeatures, PtnEspHero } from "@/components/partners/redesign/PtnEsp";
+import { PtnFaq } from "@/components/partners/redesign/PtnFaq";
+import { partnerPortalBreadcrumbJsonLd, partnerPortalSeo } from "@/content/partner-portal-page";
+import { ptnEspFaq } from "@/content/partner-spaces-hub";
 import { createPageMetadata, ROBOTS_PREVIEW_PORTAL } from "@/lib/seo/metadata";
+import "@/styles/partners-redesign.css";
+import "@/styles/partners-subpages.css";
+import "@/styles/partner-spaces.css";
 
 export const metadata: Metadata = createPageMetadata({
   ...partnerPortalSeo,
@@ -32,23 +19,13 @@ export default function EspacePartenairePage() {
   return (
     <>
       <JsonLdFromSiteUrl id="partner-portal-breadcrumb-jsonld" build={partnerPortalBreadcrumbJsonLd} />
-      <PartnerPortalHero />
-      <PartnerPortalPreview />
-      <PartnerSubscriptionSectionBlock />
-      <PartnerSponsoringSectionBlock />
-      <PartnerModuleMatrix />
-      <ProcessTimeline
-        id="parcours-partenaire"
-        title={partnerJourneySection.title}
-        phases={partnerPortalJourneyPhases}
-      />
-      <div className="container-content section-spacing pt-0">
-        <p className="epp-journey-notice">{partnerJourneyNotice}</p>
+      <div className="ptn-page">
+        <PtnEspHero />
+        <PtnEspDashboard />
+        <PtnEspFeatures />
+        <PtnEspContact />
+        <PtnFaq content={ptnEspFaq} variant="cards" initialOpen={0} />
       </div>
-      <PartnerSecuritySectionBlock />
-      <PartnerOrientationSectionBlock />
-      <ServiceFaq items={partnerPortalFaq} />
-      <PartnerPortalFinalCtaBlock />
     </>
   );
 }

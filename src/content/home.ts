@@ -380,7 +380,7 @@ export const projectShowcaseItems = [
     shortTitle: "Installation GPS",
     description:
       "Pose, raccordement, paramétrage et contrôle du dispositif avant sa prise en main opérationnelle.",
-    href: "/solutions/geolocalisation",
+    href: "/solutions/geolocalisation#installation-terrain",
     cta: "Voir la géolocalisation",
     src: "/assets/images/projects/project-a/installation-gps-embarque.png",
     alt: "Technicien installant un dispositif GPS embarqué dans un pick-up",
@@ -424,7 +424,7 @@ export const projectShowcaseItems = [
     shortTitle: "Plateforme",
     description:
       "Concevoir des outils numériques adaptés aux processus, aux équipes et au contexte du projet.",
-    href: "/projets",
+    href: "/projets#plateformes",
     cta: "Voir les domaines de projets",
     src: "/assets/images/projects/project-a/reunion-projet-numerique.png",
     alt: "Équipe discutant d’un outil numérique autour d’une tablette",

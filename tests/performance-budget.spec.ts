@@ -48,11 +48,11 @@ test.describe("Performance — budgets déterministes", () => {
 
   test("accueil — image hero LCP sans lazy loading", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const heroImg = page.locator("section#accueil .home-hero-photo img").first();
+    const heroImg = page.locator("section#accueil .hom-hero__photo img").first();
     await expect(heroImg).toBeVisible();
     const loading = await heroImg.getAttribute("loading");
     expect(loading).not.toBe("lazy");
-    const webpSource = page.locator("section#accueil .home-hero-photo picture source[type='image/webp']").first();
+    const webpSource = page.locator("section#accueil .hom-hero__photo picture source[type='image/webp']").first();
     await expect(webpSource).toHaveAttribute("srcset", /installation-traceur.*\.webp/);
   });
 

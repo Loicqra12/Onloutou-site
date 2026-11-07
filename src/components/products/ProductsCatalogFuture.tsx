@@ -1,5 +1,6 @@
 import { EditorialNotice } from "@/components/ui/EditorialNotice";
 import { Reveal } from "@/components/motion/Reveal";
+import { PublishedPartnerProducts } from "@/components/products/PublishedPartnerProducts";
 import { productsCatalogFuture, publishedProductCatalog } from "@/content/products-page";
 
 export function ProductsCatalogFuture() {
@@ -25,9 +26,10 @@ export function ProductsCatalogFuture() {
         </dl>
         <EditorialNotice>
           {count === 0
-            ? "Aucune fiche produit publiée pour le moment — pas de route /produits/[slug] tant qu’une référence complète n’est pas validée."
+            ? "Les fiches partenaires validées par l’équipe apparaissent ci-dessous dès leur publication. Aucune page détaillée n’existe tant qu’une référence complète n’est pas validée."
             : `${count} référence(s) validée(s) — publication à activer dans le contenu.`}
         </EditorialNotice>
+        <PublishedPartnerProducts />
       </div>
     </section>
   );

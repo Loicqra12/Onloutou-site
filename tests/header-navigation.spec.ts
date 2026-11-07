@@ -219,8 +219,8 @@ test.describe("navigation — desktop", () => {
     await shot(page, "partenaires-espaces.png");
     await card.getByRole("link", { name: /futur espace livreur/ }).click();
     await expect(page).toHaveURL(/\/espace-livreur$/);
-    await expect(page.getByRole("heading", { level: 1, name: "Un outil simple pour organiser le terrain." })).toBeVisible();
-    await expect(page.getByText("Espace livreur en préparation").first()).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /Un futur espace/ })).toBeVisible();
+    await expect(page.locator(".ptn-page .ptn-badge-inline", { hasText: "EN PRÉPARATION" })).toBeVisible();
   });
 
   test("mouvement réduit : pas d'animation d'ouverture", async ({ page }) => {
@@ -233,7 +233,7 @@ test.describe("navigation — desktop", () => {
 });
 
 /** Ancres résolues par script (ouvrent un onglet de la page cible) : vérifiées dans le navigateur plus bas. */
-const SCRIPTED_ANCHORS = new Set(["/projets#plateformes", "/projets#mobilite", "/projets#supervision"]);
+const SCRIPTED_ANCHORS = new Set<string>();
 
 test.describe("navigation — contenu, liens et ancres", () => {
   test.beforeEach(({}, testInfo) => {
@@ -303,21 +303,21 @@ test.describe("navigation — le contenu atteint correspond au libellé", () => 
     await expect(section).toContainText("Investissement");
   });
 
-  test("Expertise › Déploiement terrain → étape « 04 Déploiement »", async ({ page }) => {
+  test("Expertise › Déploiement terrain → carte « Déploiement terrain »", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/expertise#deploiement");
     const card = page.locator("#deploiement");
-    await expect(card.getByRole("heading", { name: "Déploiement" })).toBeVisible();
-    await expect(card).toContainText("Installation sur le terrain");
+    await expect(card.getByRole("heading", { name: "Déploiement terrain" })).toBeVisible();
+    await expect(card).toContainText("Organiser la préparation, les interventions sur site");
     await expectInViewport(page, "#deploiement h3");
   });
 
-  test("Expertise › Cadrage du projet → étape « 01 Cadrage »", async ({ page }) => {
+  test("Expertise › Cadrage du projet → carte « Cadrage du projet »", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/expertise#cadrage");
     const card = page.locator("#cadrage");
-    await expect(card.getByRole("heading", { name: "Cadrage" })).toBeVisible();
-    await expect(card).toContainText("Compréhension du besoin");
+    await expect(card.getByRole("heading", { name: "Cadrage du projet" })).toBeVisible();
+    await expect(card).toContainText("Comprendre les usages, les contraintes et les objectifs");
     await expectInViewport(page, "#cadrage h3");
   });
 
@@ -325,60 +325,59 @@ test.describe("navigation — le contenu atteint correspond au libellé", () => 
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/solutions/geolocalisation#installation-terrain");
     const section = page.locator("#installation-terrain");
-    await expect(section.getByRole("heading", { level: 2, name: "Installer, contrôler, mettre en service." })).toBeVisible();
-    await expect(section.getByText("Paramétrage", { exact: true })).toBeVisible();
+    await expect(section.getByRole("heading", { level: 2, name: /Installer\.\s*Contrôler\.\s*Accompagner\./ })).toBeVisible();
+    await expect(section.getByRole("heading", { level: 3, name: "Installer & paramétrer" })).toBeVisible();
     await expectInViewport(page, "#installation-terrain h2");
   });
 
-  test("Expertise › Formation & accompagnement → étape « 06 Transfert et suivi »", async ({ page }) => {
+  test("Expertise › Formation & accompagnement → carte « Formation & accompagnement »", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/expertise#transfert-suivi");
     const card = page.locator("#transfert-suivi");
-    await expect(card.getByRole("heading", { name: "Transfert et suivi" })).toBeVisible();
-    await expect(card).toContainText("Formation");
+    await expect(card.getByRole("heading", { name: "Formation & accompagnement" })).toBeVisible();
+    await expect(card).toContainText("Accompagner la prise en main des outils");
     await expectInViewport(page, "#transfert-suivi h3");
   });
 
-  test("Projets › Plateformes sur mesure → domaine « Plateformes et outils métier »", async ({ page }) => {
+  test("Projets › Réalisations numériques → section « Des outils pensés pour ceux qui les utilisent. »", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/projets#plateformes");
-    const tab = page.getByRole("tab", { name: /Plateformes et outils métier/ });
-    await expect(tab).toHaveAttribute("aria-selected", "true");
-    const panel = page.locator(".proj-domains__panel--active");
-    await expect(panel).toContainText("Plateformes et outils métier");
-    await expect(panel).toContainText("Application mobile");
-    await expect(panel.getByRole("link", { name: "Plateformes sur mesure" })).toBeVisible();
-    await expectInViewport(page, "#domaines-projets h2");
+    await page.goto("/projets#realisations-numeriques");
+    const section = page.locator("#realisations-numeriques");
+    await expect(section.getByRole("heading", { level: 2, name: /Des outils pensés/ })).toBeVisible();
+    await expect(section).toContainText("KPS Services");
+    await expect(section).toContainText("CNDPEP-CI");
+    await expectInViewport(page, "#realisations-numeriques h2");
   });
 
-  test("Projets : le lien du menu ouvre le bon domaine depuis la page elle-même", async ({ page }) => {
+  test("Projets : le lien du menu atteint la bonne section depuis la page elle-même", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/projets");
-    await page.getByRole("tab", { name: /Supervision de flotte/ }).click();
-    await expect(page.getByRole("tab", { name: /Supervision de flotte/ })).toHaveAttribute("aria-selected", "true");
     await hoverOpen(page, "projets");
-    await page.locator("#mega-projets").getByRole("link", { name: /Plateformes sur mesure/ }).click();
-    await expect(page.getByRole("tab", { name: /Plateformes et outils métier/ })).toHaveAttribute("aria-selected", "true");
-    await expectInViewport(page, "#domaines-projets h2");
+    await page.locator("#mega-projets").getByRole("link", { name: /Missions terrain/ }).click();
+    await expect(page).toHaveURL(/\/projets#missions-terrain$/);
+    await expect(page.locator("#missions-terrain").getByRole("heading", { level: 2, name: /La technologie/ })).toBeVisible();
+    await expectInViewport(page, "#missions-terrain h2");
   });
 
-  test("Projets : « Supervision de flotte » et « Mobilité professionnelle » ouvrent leur domaine", async ({ page }) => {
+  test("Projets : anciennes ancres #mobilite, #supervision et #plateformes → sections correspondantes", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/projets#supervision");
-    await expect(page.getByRole("tab", { name: /Supervision de flotte/ })).toHaveAttribute("aria-selected", "true");
+    await expectInViewport(page, "#missions-terrain h2");
     await page.goto("/projets#mobilite");
-    await expect(page.getByRole("tab", { name: /Mobilité professionnelle/ })).toHaveAttribute("aria-selected", "true");
+    await expectInViewport(page, "#missions-terrain h2");
+    await page.goto("/projets#plateformes");
+    await expectInViewport(page, "#realisations-numeriques h2");
   });
 
   test("futurs espaces : pages de présentation explicites", async ({ page }) => {
     await page.goto("/espace-partenaire");
-    await expect(page.getByRole("heading", { level: 1, name: /Piloter ses offres/ })).toBeVisible();
-    await expect(page.getByText("Espace partenaire en préparation").first()).toBeVisible();
-    await expect(page.getByText("sans connexion ni données réelles")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /Vos offres et vos/ })).toBeVisible();
+    await expect(page.locator(".ptn-page .ptn-badge-inline", { hasText: "EN PRÉPARATION" })).toBeVisible();
+    await expect(page.getByText("aucune connexion ni donnée réelle")).toBeVisible();
     await page.goto("/espace-livreur");
-    await expect(page.getByRole("heading", { level: 1, name: /outil simple pour organiser le terrain/ })).toBeVisible();
-    await expect(page.getByText("Espace livreur en préparation").first()).toBeVisible();
-    await expect(page.getByText("sans connexion, sans mission ni position réelle")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /Un futur espace/ })).toBeVisible();
+    await expect(page.locator(".ptn-page .ptn-badge-inline", { hasText: "EN PRÉPARATION" })).toBeVisible();
+    await expect(page.getByText("Sans connexion, sans mission ni position réelle.")).toBeVisible();
   });
 });
 
@@ -497,5 +496,36 @@ test.describe("navigation — mobile tactile", () => {
     await page.locator(".site-mobile-trigger", { hasText: "Solutions" }).tap();
     await page.locator(".site-nav-mobile").getByRole("link", { name: "Gestion de flotte", exact: true }).tap();
     await expect(page).toHaveURL(/\/solutions\/gestion-de-flotte$/);
+  });
+});
+
+test.describe("barre jaune supérieure", () => {
+  test("localisation, téléphone, séparateur et WhatsApp", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const bar = page.locator(".site-header-utility");
+    await expect(bar).toContainText("Abidjan, Côte d’Ivoire");
+    const phone = bar.getByRole("link", { name: "05 54 13 77 77" });
+    await expect(phone).toHaveAttribute("href", "tel:+2250554137777");
+    await expect(bar.locator(".site-header-utility-sep")).toHaveCount(1);
+    const wa = bar.getByRole("link", { name: /Échanger sur WhatsApp/ });
+    await expect(wa).toHaveAttribute("href", "https://wa.me/2250554137777");
+    await expect(wa).toHaveAttribute("target", "_blank");
+    await expect(wa).toHaveAttribute("rel", /noopener/);
+    await expect(wa).toContainText("↗");
+  });
+
+  test("mobile : une seule ligne, sans débordement, liens accessibles", async ({ page }) => {
+    for (const width of [320, 390, 480, 768]) {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const inner = page.locator(".site-header-utility-inner");
+      const box = (await inner.boundingBox())!;
+      expect(box.height, `hauteur à ${width}px`).toBeLessThanOrEqual(34);
+      const overflow = await inner.evaluate((el) => el.scrollWidth > el.clientWidth + 1);
+      expect(overflow, `débordement à ${width}px`).toBe(false);
+      await expect(page.locator(".site-header-utility").getByRole("link", { name: "05 54 13 77 77" })).toHaveAttribute("href", "tel:+2250554137777");
+      await expect(page.locator(".site-header-utility").getByRole("link", { name: /Échanger sur WhatsApp/ })).toHaveAttribute("href", /wa\.me\/2250554137777/);
+    }
   });
 });

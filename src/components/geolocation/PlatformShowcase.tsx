@@ -26,7 +26,23 @@ export function PlatformShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    showcaseRef.current?.classList.add("geo-platform--tabs-ready");
+    const node = showcaseRef.current;
+    node?.classList.add("geo-platform--tabs-ready");
+
+    // Les onglets pr?ts r?duisent la hauteur de cette section (panneaux empil?s -> un seul visible).
+    // Si l'URL cible une ancre situ?e plus bas, on la r?aligne apr?s ce changement de mise en page.
+    const hash = window.location.hash.slice(1);
+    if (!node || !hash) return;
+    const target = document.getElementById(decodeURIComponent(hash));
+    if (!target || !(node.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING)) return;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => target.scrollIntoView());
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
   }, []);
 
   const selectTab = useCallback((index: number) => {

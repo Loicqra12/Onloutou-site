@@ -1,187 +1,30 @@
+import { PageReveal } from "@/components/motion/PageReveal";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { ExpFaq } from "@/components/expertise/redesign/ExpFaq";
+import { ExpFinal } from "@/components/expertise/redesign/ExpFinal";
+import { ExpHero } from "@/components/expertise/redesign/ExpHero";
+import { ExpMethod } from "@/components/expertise/redesign/ExpMethod";
+import { ExpSectors } from "@/components/expertise/redesign/ExpSectors";
+import { ExpServices } from "@/components/expertise/redesign/ExpServices";
+import { expertiseSeo } from "@/content/expertise-page";
 import { createPageMetadata } from "@/lib/seo/metadata";
-import { ContactCtaBand } from "@/components/ui/ContactCtaBand";
-import { EditorialNotice } from "@/components/ui/EditorialNotice";
-import { HighlightedText } from "@/components/ui/HighlightedText";
-import { PageHero } from "@/components/ui/PageHero";
-import { ProcessTimeline } from "@/components/ui/ProcessTimeline";
-import { SectorCard } from "@/components/ui/SectorCard";
-import {
-  expertiseContact,
-  expertiseHero,
-  expertiseSeo,
-  historicalReferences,
-  interventionSectors,
-  prestationDetails,
-  prestationTypes,
-  projectApproachPhases,
-  tenderSection,
-} from "@/content/expertise-page";
+import "@/styles/expertise-page.css";
 
 export const metadata: Metadata = createPageMetadata({ ...expertiseSeo, path: "/expertise" });
 
 export default function ExpertisePage() {
   return (
-    <>
-      <PageHero
-        breadcrumb={[
-          { label: "Accueil", href: "/" },
-          { label: "Expertise" },
-        ]}
-        title={
-          <>
-            Une expertise adaptée aux{" "}
-            <HighlightedText tone="on-dark">opérations critiques</HighlightedText>
-          </>
-        }
-        description={expertiseHero.description}
-        primaryCta={{ label: "Parler à un expert", href: "/contact" }}
-        secondaryCta={{ label: "Découvrir nos solutions", href: "/solutions" }}
-      />
-
-      <section className="section-spacing">
-        <div className="container-content">
-          <h2 className="font-display text-3xl font-extrabold tracking-tight text-brand-ink sm:text-4xl">
-            Domaines d’intervention
-          </h2>
-          <p className="mt-3 max-w-2xl text-brand-muted">
-            Des contextes exigeants, des contraintes terrain et des exigences de traçabilité.
-          </p>
-          <div className="mt-10 grid gap-4 lg:grid-cols-2">
-            {interventionSectors.map((sector) => (
-              <SectorCard
-                key={sector.id}
-                tag={sector.tag}
-                title={sector.title}
-                points={sector.points}
-                highlight={sector.highlight}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="installation" className="section-spacing scroll-mt-28 bg-brand-paper">
-        <div className="container-content">
-          <h2 className="font-display text-3xl font-extrabold tracking-tight">
-            Types de prestations
-          </h2>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {prestationTypes.map((item) => (
-              <li
-                key={item}
-                className="rounded-[var(--radius-card)] border border-brand-border bg-brand-white px-4 py-3 text-sm font-semibold"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="section-spacing bg-brand-white" aria-labelledby="prestations-detail-title">
-        <div className="container-content">
-          <h2
-            id="prestations-detail-title"
-            className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl"
-          >
-            {prestationDetails.title}
-          </h2>
-          <p className="mt-3 max-w-2xl text-brand-muted">{prestationDetails.description}</p>
-          <div className="mt-8 grid gap-4 lg:grid-cols-3">
-            {prestationDetails.items.map((item) => (
-              <article
-                key={item.id}
-                id={item.id}
-                className="flex flex-col rounded-[var(--radius-card)] border border-brand-border bg-brand-paper p-6 shadow-[var(--shadow-card)]"
-              >
-                <h3 className="font-display text-lg font-extrabold">{item.title}</h3>
-                <p className="mt-4 text-xs font-bold uppercase tracking-wide text-brand-muted">
-                  {prestationDetails.coversLabel}
-                </p>
-                <p className="mt-1 text-sm leading-relaxed">{item.covers}</p>
-                <p className="mt-4 text-xs font-bold uppercase tracking-wide text-brand-muted">
-                  {prestationDetails.defineLabel}
-                </p>
-                <p className="mt-1 text-sm leading-relaxed">{item.define}</p>
-                <Link
-                  href={item.solution.href}
-                  className="link-motion mt-auto inline-flex pt-5 text-sm font-bold text-brand-ink"
-                >
-                  Solution associée : {item.solution.label} →
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <ProcessTimeline
-        id="approche"
-        title="Approche projet"
-        description="Une conduite de projet orientée validation, recette et transfert aux équipes client."
-        phases={projectApproachPhases}
-      />
-
-      <section className="section-spacing">
-        <div className="container-content">
-          <h2 className="font-display text-3xl font-extrabold tracking-tight">
-            {historicalReferences.title}
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm text-brand-muted">
-            {historicalReferences.disclaimer}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-4">
-            {historicalReferences.names.map((name) => (
-              <strong
-                key={name}
-                className="font-display text-sm tracking-wide text-brand-ink"
-              >
-                {name}
-              </strong>
-            ))}
-          </div>
-          <p className="mt-5 max-w-2xl text-sm text-brand-muted">
-            {historicalReferences.comoeNote}
-          </p>
-        </div>
-      </section>
-
-      <section id="formation" className="section-spacing scroll-mt-28 bg-brand-charcoal text-white">
-        <div className="container-content">
-          <h2 className="font-display text-3xl font-extrabold tracking-tight">
-            {tenderSection.title}
-          </h2>
-          <p className="mt-4 max-w-2xl text-[#cccccc]">{tenderSection.description}</p>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-            {tenderSection.points.map((point) => (
-              <li
-                key={point}
-                className="rounded-[var(--radius-card)] border border-[#333333] bg-[#171717] px-4 py-3 text-sm"
-              >
-                ↗ {point}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="pb-4 pt-8">
-        <div className="container-content max-w-3xl">
-          <EditorialNotice title="Périmètre">
-            Les fonctionnalités et niveaux de service sont définis dans chaque contrat selon le
-            besoin retenu.
-          </EditorialNotice>
-        </div>
-      </section>
-
-      <ContactCtaBand
-        id={expertiseContact.id}
-        title={expertiseContact.title}
-        description={expertiseContact.description}
-        secondaryLink={{ label: "Parcourir nos solutions", href: "/solutions" }}
-      />
-    </>
+    <div className="exp-page">
+      <PageReveal root=".exp-page" targets=".exp-cards > li, .exp-sectors__grid > li, .exp-steps > li" />
+      {/* Écran 1 — Introduction */}
+      <ExpHero />
+      <ExpSectors />
+      {/* Écran 2 — Prestations */}
+      <ExpServices />
+      {/* Écran 3 — Méthode et contact */}
+      <ExpMethod />
+      <ExpFaq />
+      <ExpFinal />
+    </div>
   );
 }

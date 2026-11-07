@@ -12,7 +12,7 @@ test.describe("captures politique confidentialité", () => {
       await page.screenshot({ path: "docs/captures/privacy-tablet-768.png", fullPage: true });
 
       await page.setViewportSize({ width: 1440, height: 900 });
-      await page.locator(".leg-status").scrollIntoViewIfNeeded();
+      await page.locator(".leg-doc__header").scrollIntoViewIfNeeded();
       await page.screenshot({ path: "docs/captures/privacy-draft-status.png" });
 
       await page.getByTestId("privacy-data-table").scrollIntoViewIfNeeded();
