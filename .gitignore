@@ -39,3 +39,6 @@ tools-mk-mob-webp.cjs
 tools-scaffold-mob.cjs
 write-dem.cjs
 .vscode/
+
+# Captures d'audit (trop lourdes pour git)
+docs/captures/audit-2026-11-06/
