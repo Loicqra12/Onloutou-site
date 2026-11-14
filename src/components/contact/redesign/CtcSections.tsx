@@ -110,16 +110,28 @@ export function CtcCards() {
 export function CtcClaims() {
   return (
     <section className="ctc-claims" id="reclamations" aria-labelledby="ctc-claims-title">
-      <h2 id="ctc-claims-title" className="ctc-h2">
+      <p className="ctc-eyebrow">{ctcClaims.eyebrow}</p>
+      <h2 id="ctc-claims-title" className="ctc-h2 ctc-h2--sm">
         {ctcClaims.title}
       </h2>
-      <p>{ctcClaims.lead}</p>
-      <ol>
-        {ctcClaims.steps.map((step) => (
-          <li key={step}>{step}</li>
+      <div className="ctc-claims__head">
+        <p className="ctc-claims__lead">{ctcClaims.lead}</p>
+        <a href={ctcClaims.cta.href} className="ctc-btn ctc-btn--yellow">
+          {ctcClaims.cta.label}
+        </a>
+      </div>
+      <ol className="ctc-claims__list">
+        {ctcClaims.steps.map((step, index) => (
+          <li key={step.title} className="ctc-claims__item">
+            <span className="ctc-step">{index + 1}</span>
+            <div>
+              <h3 className="ctc-precisions__title">{step.title}</h3>
+              <p className="ctc-precisions__text">{step.text}</p>
+            </div>
+          </li>
         ))}
       </ol>
-      <p>{ctcClaims.after}</p>
+      <p className="ctc-claims__after">{ctcClaims.after}</p>
     </section>
   );
 }

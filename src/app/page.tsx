@@ -1,4 +1,5 @@
 import { homeMetadata } from "@/app/home-metadata";
+import { HomOfferArticles } from "@/components/home/HomOfferArticles";
 import { HomBuild } from "@/components/home/redesign/HomBuild";
 import { HomCompany } from "@/components/home/redesign/HomCompany";
 import { HomCta } from "@/components/home/redesign/HomCta";
@@ -31,6 +32,7 @@ export default function HomePage() {
       <HomProjects />
       <HomRecognition />
       <HomCompany />
+      <HomOfferArticles />
       <HomCta />
     </div>
   );

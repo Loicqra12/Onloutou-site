@@ -5,7 +5,7 @@ import { getAllRouteIndexations, getRouteIndexation, getSitemapPaths } from "@/l
 test.describe("SEO — classification des routes", () => {
   test("chaque page.tsx est classifiée (source unique)", () => {
     const routes = discoverAppRoutes();
-    expect(routes.length).toBe(44);
+    expect(routes.length).toBe(43);
 
     const indexations = getAllRouteIndexations();
     expect(indexations.length).toBe(routes.length);
@@ -17,13 +17,18 @@ test.describe("SEO — classification des routes", () => {
     }
   });
 
-  test("27 routes indexables dans le sitemap, 17 noindex", () => {
+  test("routes indexables, noindex et sitemap électroménager", () => {
     const routes = discoverAppRoutes();
-    const indexable = routes.filter((p) => getRouteIndexation(p).includeInSitemap);
+    const indexable = routes.filter((p) => getRouteIndexation(p).includeInSitemap && !p.includes("["));
     const noindex = routes.filter((p) => !getRouteIndexation(p).index);
+    const sitemap = getSitemapPaths();
 
-    expect(indexable.length).toBe(27);
-    expect(noindex.length).toBe(17);
-    expect(getSitemapPaths().length).toBe(27);
+    expect(indexable.length).toBe(28);
+    expect(noindex.length).toBe(13);
+    expect(sitemap).toContain("/articles/electromenager");
+    expect(sitemap).toContain("/articles/electromenager/froid-conservation");
+    expect(sitemap).toContain("/articles/electromenager/froid-conservation/refrigerateur-250-l");
+    expect(sitemap.every((path) => !path.includes("["))).toBe(true);
+    expect(sitemap.length).toBe(47);
   });
 });

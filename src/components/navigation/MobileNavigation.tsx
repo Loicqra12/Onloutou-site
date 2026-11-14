@@ -3,7 +3,9 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { headerCta, headerNavigation, isNavActive } from "@/content/header-navigation";
-import type { MegaMenuConfig, NavGroup } from "@/types/navigation";
+import { HeaderAccessLinks } from "@/components/partners/HeaderAccessLinks";
+import { NavIcon } from "@/components/navigation/NavIcon";
+import type { MegaMenuConfig, NavGroup, NavIconId } from "@/types/navigation";
 
 type MobileNavigationProps = {
   id: string;
@@ -44,7 +46,12 @@ function buildSections(
   const seen = new Set<string>();
   const sections: MobileSection[] = [];
 
-  const link = (key: string, label: string, href: string, cta = false, badge?: string) => {
+  const link = (
+    key: string,
+    label: string,
+    href: string,
+    options: { cta?: boolean; badge?: string; iconId?: NavIconId; yellow?: boolean } = {},
+  ) => {
     if (seen.has(href)) return null;
     seen.add(href);
     return (
@@ -52,12 +59,13 @@ function buildSections(
         <Link
           href={href}
           prefetch={false}
-          className={`site-mobile-sublink${cta ? " is-cta" : ""}`}
+          className={`site-mobile-sublink${options.cta ? " is-cta" : ""}${options.yellow ? " is-yellow" : ""}${options.iconId ? " has-icon" : ""}`}
           aria-current={!href.includes("#") && href === pathname ? "page" : undefined}
           onClick={onNavigate}
         >
+          {options.iconId ? <NavIcon id={options.iconId} className="site-mobile-subicon" /> : null}
           <span>{label}</span>
-          {badge ? <span className="mega-badge">{badge}</span> : null}
+          {options.badge ? <span className="mega-badge">{options.badge}</span> : null}
         </Link>
       </li>
     );
@@ -78,7 +86,7 @@ function buildSections(
     nodes: [
       ...(group.href && group.items.length === 0 ? [link(`${group.id}-self`, group.title, group.href)] : []),
       ...group.items.map((entry, index) =>
-        link(`${group.id}-${index}`, entry.label, entry.href, false, entry.badge),
+        link(`${group.id}-${index}`, entry.label, entry.href, { badge: entry.badge }),
       ),
       ...(group.id === menu.aside?.id && group.note
         ? [
@@ -90,12 +98,33 @@ function buildSections(
     ],
   });
 
-  // Familles à titre cliquable (Équipements) : une seule liste, sans titre répété.
-  const linkedFamilies = menu.groups.filter((g) => g.href && g.items.length === 0);
-  if (linkedFamilies.length) {
-    push({ key: "families", nodes: linkedFamilies.map((g) => link(g.id, g.title, g.href as string)) });
+  if (menu.variant === "split-families" && menu.sections?.length) {
+    menu.sections.forEach((section) => {
+      const families = menu.groups.filter((group) => group.sectionId === section.id);
+      push({
+        key: section.id,
+        title: section.title,
+        nodes: [
+          ...(section.hint
+            ? [
+                <li key={`${section.id}-hint`} className="site-mobile-note">
+                  {section.hint}
+                </li>,
+              ]
+            : []),
+          ...families.map((group) =>
+            link(group.id, group.title, group.href as string, { iconId: group.iconId }),
+          ),
+        ],
+      });
+    });
+  } else {
+    const linkedFamilies = menu.groups.filter((g) => g.href && g.items.length === 0);
+    if (linkedFamilies.length) {
+      push({ key: "families", nodes: linkedFamilies.map((g) => link(g.id, g.title, g.href as string)) });
+    }
+    menu.groups.filter((g) => !(g.href && g.items.length === 0)).forEach((g) => push(groupSection(g)));
   }
-  menu.groups.filter((g) => !(g.href && g.items.length === 0)).forEach((g) => push(groupSection(g)));
 
   if (menu.aside) push(groupSection(menu.aside));
 
@@ -104,9 +133,18 @@ function buildSections(
   }
 
   const extras: ReactNode[] = [];
-  if (menu.promo) extras.push(link("promo", `${menu.promo.title} ${menu.promo.cta.label}`, menu.promo.cta.href));
-  if (menu.visual?.cta) extras.push(link("visual", menu.visual.cta.label, menu.visual.cta.href, true));
-  if (menu.footer?.cta) extras.push(link("footer", menu.footer.cta.label, menu.footer.cta.href, true));
+  if (menu.visual?.cta?.href && menu.visual.ctaStyle === "button") {
+    extras.push(link("visual", menu.visual.cta.label, menu.visual.cta.href, { yellow: true }));
+  }
+  if (menu.promo) {
+    extras.push(
+      link("promo", `${menu.promo.title} ${menu.promo.cta.label}`, menu.promo.cta.href, { cta: true }),
+    );
+  }
+  if (menu.visual?.cta && menu.visual.ctaStyle !== "button") {
+    extras.push(link("visual", menu.visual.cta.label, menu.visual.cta.href, { cta: true }));
+  }
+  if (menu.footer?.cta) extras.push(link("footer", menu.footer.cta.label, menu.footer.cta.href, { cta: true }));
   push({ key: "extras", nodes: extras });
 
   return sections;
@@ -132,6 +170,7 @@ export function MobileNavigation({
       style={{ "--nh-drawer-top": `${top}px` } as React.CSSProperties}
     >
       <ul className="site-mobile-list">
+        <HeaderAccessLinks variant="mobile" onNavigate={onNavigate} />
         {headerNavigation.map((item) => {
           const current = isNavActive(pathname, item.href);
 

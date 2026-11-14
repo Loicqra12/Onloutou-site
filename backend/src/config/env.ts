@@ -18,18 +18,28 @@ const envSchema = z.object({
       return Number.isInteger(n) && n >= 0 && n <= 5 ? n : 0;
     }),
   APP_ORIGIN: z.string().url().default("http://localhost:3000"),
+  /** Origine de l’app admin séparée (Vite). Vide = CORS site public seulement. */
+  ADMIN_ORIGIN: z.preprocess(
+    (v) => (v === "" || v === undefined ? undefined : v),
+    z.string().url().optional(),
+  ),
   COOKIE_SECURE: z
     .string()
     .optional()
     .transform((v) => (v === undefined || v === "" ? undefined : v === "1" || v === "true")),
   COOKIE_DOMAIN: z.string().optional(),
-  S3_ENDPOINT: z.string().url().optional(),
-  S3_REGION: z.string().default("us-east-1"),
-  S3_BUCKET_PUBLIC: z.string().optional(),
-  S3_BUCKET_PRIVATE: z.string().optional(),
-  S3_ACCESS_KEY_ID: z.string().optional(),
-  S3_SECRET_ACCESS_KEY: z.string().optional(),
-  S3_FORCE_PATH_STYLE: z
+  // Cloudinary : photos publiques (type "upload") et pièces confidentielles (type "authenticated").
+  CLOUDINARY_CLOUD_NAME: z.string().optional(),
+  CLOUDINARY_API_KEY: z.string().optional(),
+  CLOUDINARY_API_SECRET: z.string().optional(),
+  // Brevo (API HTTPS, pas SMTP : Render bloque le SMTP sortant sur le plan gratuit).
+  BREVO_API_KEY: z.string().optional(),
+  MAIL_FROM_EMAIL: z.string().email().optional(),
+  MAIL_FROM_NAME: z.string().default("ONLOUTOU"),
+  // Adresse interne qui reçoit un e-mail à chaque nouvelle demande.
+  NOTIFY_EMAIL: z.string().email().optional(),
+  // Documentation Swagger : fermée en production sauf demande explicite.
+  ENABLE_API_DOCS: z
     .string()
     .optional()
     .transform((v) => v === "1" || v === "true"),
@@ -51,12 +61,18 @@ export function loadEnv(): Env {
   return parsed.data;
 }
 
-export function s3Configured(env: Env): boolean {
-  return Boolean(
-    env.S3_ENDPOINT &&
-      env.S3_BUCKET_PUBLIC &&
-      env.S3_BUCKET_PRIVATE &&
-      env.S3_ACCESS_KEY_ID &&
-      env.S3_SECRET_ACCESS_KEY,
-  );
+export function corsOrigins(env: Env): string[] {
+  const origins = [env.APP_ORIGIN];
+  if (env.ADMIN_ORIGIN && env.ADMIN_ORIGIN !== env.APP_ORIGIN) {
+    origins.push(env.ADMIN_ORIGIN);
+  }
+  return origins;
+}
+
+export function storageConfigured(env: Env): boolean {
+  return Boolean(env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET);
+}
+
+export function mailConfigured(env: Env): boolean {
+  return Boolean(env.BREVO_API_KEY && env.MAIL_FROM_EMAIL);
 }

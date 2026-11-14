@@ -29,6 +29,11 @@ enum ApplicationStatus {
   REJECTED
 }
 
+enum PersonKind {
+  INDIVIDUAL
+  PROFESSIONAL
+}
+
 enum PartnerType {
   SUPPLIER
   DELIVERY
@@ -66,6 +71,11 @@ enum ProductCategory {
   TRUCKS_MACHINERY
   TOOLS
   CONNECTED
+  APPLIANCES
+  IT
+  FURNITURE
+  EVENTS
+  CHILDCARE
   OTHER
 }
 
@@ -81,6 +91,55 @@ enum ProductStatus {
 enum PricingMode {
   ON_QUOTE
   FIXED
+}
+
+enum PartnerDemandStatus {
+  PENDING
+  ANSWERED
+  CLOSED
+}
+
+enum PartnerDemandReply {
+  AVAILABLE
+  ADJUSTMENT
+  UNAVAILABLE
+}
+
+enum PartnerDemandOutcome {
+  WAITING
+  SELECTED
+  DECLINED
+  CANCELLED
+  EXPIRED
+}
+
+enum PartnerLocationStatus {
+  TO_PREPARE
+  IN_PROGRESS
+  TO_RETURN
+  COMPLETED
+  INCIDENT
+}
+
+enum PartnerNotificationKind {
+  DEMAND
+  LOCATION
+  ARTICLE
+  PROFILE
+  MESSAGE
+  PAYOUT
+}
+
+enum PartnerRevenueStatus {
+  PENDING
+  PAID
+}
+
+enum PartnerPayoutMethod {
+  MOBILE_MONEY
+  BANK_TRANSFER
+  CASH
+  OTHER
 }
 
 enum DocumentKind {
@@ -116,6 +175,7 @@ enum AuditAction {
   PRODUCT_ARCHIVED
   DOCUMENT_UPLOADED
   DOCUMENT_ACCESSED
+  PARTNER_DEMAND_REPLIED
 }
 
 model User {
@@ -130,15 +190,23 @@ model User {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   lastLoginAt  DateTime?
+  emailVerifiedAt DateTime?
+  termsAcceptedAt DateTime?
+  totpSecret       String?
+  totpEnabledAt    DateTime?
+  totpBackupHashes String[] @default([])
 
   partnerProfile PartnerProfile?
   driverProfile  DriverProfile?
   passwordResets PasswordResetToken[]
+  emailVerifications EmailVerificationToken[]
+  twoFactorChallenges TwoFactorChallenge[]
   auditLogs      AuditLog[]           @relation("AuditActor")
   products       Product[]            @relation("ProductOwner")
   reviewedProducts Product[]          @relation("ProductReviewer")
   assignedRequests ServiceRequest[]   @relation("RequestAssignee")
   uploadedDocuments Document[]        @relation("DocumentUploader")
+  notifications    PartnerNotification[]
 }
 
 model PasswordResetToken {
@@ -153,6 +221,19 @@ model PasswordResetToken {
   @@index([userId])
 }
 
+model TwoFactorChallenge {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  attempts   Int       @default(0)
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+}
+
 model PartnerProfile {
   id               String            @id @default(cuid())
   userId           String            @unique
@@ -161,6 +242,10 @@ model PartnerProfile {
   partnerType      PartnerType
   zone             String?
   description      String?
+  personKind       PersonKind?
+  commune          String?
+  commercialName   String?
+  legalName        String?
   status           ApplicationStatus @default(DRAFT)
   rejectionReason  String?
   reviewedAt       DateTime?
@@ -169,8 +254,25 @@ model PartnerProfile {
   updatedAt        DateTime          @updatedAt
   products         Product[]
   documents        Document[]
+  demands          PartnerDemand[]
+  locations        PartnerLocation[]
+  commissionBps    Int               @default(1500)
+  revenues         PartnerRevenue[]
+  payouts          PartnerPayout[]
 
   @@index([status])
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }
 
 model DriverProfile {
@@ -247,10 +349,32 @@ model Product {
   publishedAt      DateTime?
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
+  reference        String?         @unique
+  familySlug       String?
+  categorySlug     String?
+  categoryRequest  String?
+  condition        String?
+  specs            Json            @default("{}")
+  terms            Json            @default("{}")
+  corrections      Json            @default("{}")
   images           ProductImage[]
+  unavailabilities ProductUnavailability[]
+  demands          PartnerDemand[]
+  locations        PartnerLocation[]
+  revenues         PartnerRevenue[]
+}
 
-  @@index([partnerProfileId, status])
-  @@index([status, category])
+model ProductUnavailability {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  startDate DateTime @db.Date
+  endDate   DateTime @db.Date
+  quantity  Int
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@index([productId])
 }
 
 model ProductImage {
@@ -265,6 +389,115 @@ model ProductImage {
   createdAt  DateTime @default(now())
 
   @@index([productId, sortOrder])
+}
+
+model PartnerDemand {
+  id                 String               @id @default(cuid())
+  reference          String               @unique
+  partnerProfileId   String
+  partnerProfile     PartnerProfile       @relation(fields: [partnerProfileId], references: [id], onDelete: Cascade)
+  productId          String
+  product            Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  status             PartnerDemandStatus  @default(PENDING)
+  requestedQty       Int
+  startDate          DateTime             @db.Date
+  endDate            DateTime             @db.Date
+  commune            String
+  deliveryRequested  Boolean              @default(false)
+  brief              String?
+  toClarify          Json                 @default("[]")
+  replyKind          PartnerDemandReply?
+  replyQty           Int?
+  replyStart         DateTime?            @db.Date
+  replyEnd           DateTime?            @db.Date
+  replyDelivery      String?
+  replyFees          String?
+  replyMessage       String?
+  repliedAt          DateTime?
+  outcome            PartnerDemandOutcome @default(WAITING)
+  outcomeNote        String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  location           PartnerLocation?
+
+  @@index([partnerProfileId, status])
+  @@index([productId])
+}
+
+model PartnerLocation {
+  id                 String                 @id @default(cuid())
+  reference          String                 @unique
+  partnerProfileId   String
+  partnerProfile     PartnerProfile         @relation(fields: [partnerProfileId], references: [id], onDelete: Cascade)
+  productId          String
+  product            Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
+  demandId           String                 @unique
+  demand             PartnerDemand          @relation(fields: [demandId], references: [id], onDelete: Cascade)
+  status             PartnerLocationStatus  @default(TO_PREPARE)
+  quantity           Int
+  startDate          DateTime               @db.Date
+  endDate            DateTime               @db.Date
+  commune            String
+  delivery           String?
+  fees               String?
+  addressNote        String?
+  onloutouNote       String?
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  revenue            PartnerRevenue?
+
+  @@index([partnerProfileId, status])
+}
+
+model PartnerRevenue {
+  id                 String               @id @default(cuid())
+  reference          String               @unique
+  partnerProfileId   String
+  partnerProfile     PartnerProfile       @relation(fields: [partnerProfileId], references: [id], onDelete: Cascade)
+  locationId         String               @unique
+  location           PartnerLocation      @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  productId          String
+  product            Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  grossAmount        Int
+  commissionBps      Int
+  commissionAmount   Int
+  netAmount          Int
+  status             PartnerRevenueStatus @default(PENDING)
+  payoutId           String?
+  payout             PartnerPayout?       @relation(fields: [payoutId], references: [id], onDelete: SetNull)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  @@index([partnerProfileId, status])
+}
+
+model PartnerPayout {
+  id               String              @id @default(cuid())
+  reference        String              @unique
+  partnerProfileId String
+  partnerProfile   PartnerProfile      @relation(fields: [partnerProfileId], references: [id], onDelete: Cascade)
+  amount           Int
+  method           PartnerPayoutMethod
+  paidAt           DateTime
+  note             String?
+  createdAt        DateTime            @default(now())
+  revenues         PartnerRevenue[]
+
+  @@index([partnerProfileId, paidAt])
+}
+
+model PartnerNotification {
+  id        String                   @id @default(cuid())
+  userId    String
+  user      User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      PartnerNotificationKind
+  title     String
+  body      String
+  href      String?
+  readAt    DateTime?
+  createdAt DateTime                 @default(now())
+
+  @@index([userId, createdAt])
 }
 
 model Document {

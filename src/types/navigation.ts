@@ -15,7 +15,12 @@ export type NavIconId =
   | "handshake"
   | "network"
   | "grid"
-  | "building";
+  | "building"
+  | "fridge"
+  | "laptop"
+  | "sofa"
+  | "cloche"
+  | "stroller";
 
 export type NavImage = {
   src: string;
@@ -49,15 +54,25 @@ export type NavGroup = {
   href?: string;
   iconId?: NavIconId;
   items: NavEntry[];
+  /** Colonne dans le variant `split-families`. */
+  sectionId?: string;
   /** Mention discrète en bas d'un groupe-carte. */
   note?: string;
 };
 
 export type NavVisual = {
   image: NavImage;
-  title: string;
+  title?: string;
   subtitle?: string;
   cta?: NavCta;
+  /** `button` : bouton jaune plein, comme « Je cherche un autre article ». */
+  ctaStyle?: "link" | "button";
+};
+
+export type MegaMenuSection = {
+  id: string;
+  title: string;
+  hint?: string;
 };
 
 export type NavCard = {
@@ -83,9 +98,10 @@ export type NavFooter = {
 /**
  * - `columns` : groupes en colonnes + visuel ou carte à droite
  * - `icon-grid` : grille de familles (2 colonnes) + visuel
+ * - `split-families` : deux colonnes nommées + visuel et bouton
  * - `cards` : cartes image
  */
-export type MegaMenuVariant = "columns" | "icon-grid" | "cards";
+export type MegaMenuVariant = "columns" | "icon-grid" | "split-families" | "cards";
 
 export type MegaMenuConfig = {
   id: string;
@@ -95,6 +111,8 @@ export type MegaMenuConfig = {
   /** Largeur maximale du panneau (px), ajustée au contenu. */
   width: number;
   overview?: NavCta;
+  /** Titres des colonnes pour `split-families`. */
+  sections?: MegaMenuSection[];
   groups: NavGroup[];
   /** Carte additionnelle dans la dernière colonne (ex. « Vos futurs espaces »). */
   aside?: NavGroup;

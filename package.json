@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "backend"
+    "backend",
+    "admin"
   ],
   "scripts": {
     "dev": "next dev -p 3000",
     "dev:api": "npm run dev -w @onloutou/backend",
+    "dev:admin": "npm run dev -w @onloutou/admin",
+    "build:admin": "npm run build -w @onloutou/admin",
     "dev:stack": "docker compose up -d postgres && npm run db:migrate && npm run dev:api",
     "build": "next build",
     "build:api": "npm run build -w @onloutou/backend",

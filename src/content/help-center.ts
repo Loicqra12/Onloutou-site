@@ -169,7 +169,7 @@ export const helpArticles: HelpArticle[] = [
     status: "verified",
     relatedLinks: [
       { label: "Présenter mon besoin", href: "/contact" },
-      { label: "Produits", href: "/produits#demande-produit" },
+      { label: "Produits", href: "/produits/demande" },
     ],
   },
   {
@@ -411,7 +411,7 @@ export const helpArticles: HelpArticle[] = [
     audiences: ["all", "customer"],
     keywords: ["référence", "prix", "produit"],
     status: "verified",
-    relatedLinks: [{ label: "Demande produit", href: "/produits#demande-produit" }],
+    relatedLinks: [{ label: "Demande produit", href: "/produits/demande" }],
   },
   {
     id: "marque-precise",

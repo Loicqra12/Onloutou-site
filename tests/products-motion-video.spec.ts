@@ -13,20 +13,10 @@ test("vidéo parcours produits desktop", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/produits", { waitUntil: "networkidle" });
   await page.waitForTimeout(500);
-  await page.locator(".prd-intent__link").first().hover();
-  await page.waitForTimeout(400);
-  await page.locator("#familles-produits").scrollIntoViewIfNeeded();
+  await page.locator(".prd-univers").scrollIntoViewIfNeeded();
   await page.waitForTimeout(600);
-  await page.locator("#usage-produits").scrollIntoViewIfNeeded();
-  await page.getByRole("tab", { name: /Livrer ou transporter/i }).click();
-  await page.waitForTimeout(500);
-  await page.locator("#modes-acces").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(500);
-  await page.locator("#demande-produit").scrollIntoViewIfNeeded();
-  await page.getByRole("radio", { name: /^moto$/i }).check();
+  await page.getByRole("link", { name: "Explorer les familles" }).hover();
   await page.waitForTimeout(400);
-  await page.locator("details summary", { hasText: /fiches produit détaillées/i }).click();
-  await page.waitForTimeout(500);
 
   mkdirSync(OUT, { recursive: true });
   const video = page.video();

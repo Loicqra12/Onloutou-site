@@ -26,9 +26,11 @@ export async function validateSessionUser(req: Request, res: Response, next: Nex
     dbUser.role !== sessionUser.role ||
     dbUser.email !== sessionUser.email
   ) {
-    req.session.destroy(() => {
-      res.status(401).json({ error: "Session expirée." });
-    });
+    // Session périmée : on retire l'identité mais on laisse passer la requête.
+    // Les routes protégées répondent 401 d'elles-mêmes ; les routes publiques (catalogue, formulaires)
+    // restent utilisables au lieu d'être bloquées par un vieux cookie.
+    delete req.session.user;
+    next();
     return;
   }
   next();

@@ -33,7 +33,7 @@ Pas de rewrites, redirections ni en-têtes Next : tout passe par `.htaccess`. Le
 Fichiers : `render.yaml` (blueprint) et `backend/Dockerfile` (contexte = racine du dépôt, build vérifié en local).
 
 1. Pousser le dépôt sur GitHub, puis Render > New > Blueprint > choisir le dépôt. Render crée l'API et la base Postgres.
-2. Renseigner dans le tableau de bord les variables `S3_*` (DigitalOcean Spaces conseillé, voir ci-dessous).
+2. Renseigner dans le tableau de bord Render : `CLOUDINARY_*` (photos et pièces confidentielles) et, quand le compte Brevo existe, `BREVO_API_KEY`, `MAIL_FROM_EMAIL`, `NOTIFY_EMAIL`. L'API Brevo passe en HTTPS : le SMTP sortant est bloqué sur Render gratuit, d'où l'absence de nodemailer. Sans ces variables, les demandes sont enregistrées mais aucun e-mail ne part.
 3. Ajouter le domaine personnalisé `api.onloutou.com` au service, puis le CNAME indiqué chez LWS (zone DNS).
 4. Créer l'administrateur : shell Render, `npm run bootstrap:admin -w @onloutou/backend`.
 5. Construire le site avec `NEXT_PUBLIC_SITE_URL=https://www.onloutou.com` et `NEXT_PUBLIC_API_BASE=https://api.onloutou.com/api/v1`.
@@ -42,4 +42,4 @@ Le site (`www.onloutou.com`) et l'API (`api.onloutou.com`) sont du même site po
 
 ## Passer ensuite sur DigitalOcean
 
-C'est la même image Docker, donc simple : App Platform (ou Droplet) avec le même Dockerfile (`backend/Dockerfile`, contexte racine) et les mêmes variables d'environnement. Étapes : créer une base Postgres gérée DO, y restaurer les données (`pg_dump` depuis Render puis `pg_restore`), changer `DATABASE_URL`, puis déplacer le CNAME `api` vers DO. Le site n'est pas touché (même URL d'API). Garder les fichiers sur Spaces dès le départ : rien à migrer.
+C'est la même image Docker, donc simple : App Platform (ou Droplet) avec le même Dockerfile (`backend/Dockerfile`, contexte racine) et les mêmes variables d'environnement. Étapes : créer une base Postgres gérée DO, y restaurer les données (`pg_dump` depuis Render puis `pg_restore`), changer `DATABASE_URL`, puis déplacer le CNAME `api` vers DO. Le site n'est pas touché (même URL d'API). Les fichiers sont sur Cloudinary dès le départ : rien à migrer.

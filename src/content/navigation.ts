@@ -27,7 +27,7 @@ export const solutionsMegaMenu: MegaMenuColumn[] =
 
 export const footerNavLinks = [
   { href: "/solutions", label: "Solutions" },
-  { href: "/equipements", label: "Équipements" },
+  { href: "/equipements", label: "Articles & équipements" },
   { href: "/produits", label: "Produits" },
   { href: "/expertise", label: "Expertise" },
   { href: "/projets", label: "Projets" },
@@ -49,7 +49,7 @@ export const footerSolutionLinks = [
 
 export const footerCompanyLinks = [
   { href: "/expertise", label: "Expertise" },
-  { href: "/equipements", label: "Équipements" },
+  { href: "/equipements", label: "Articles & équipements" },
   { href: "/produits", label: "Produits" },
   { href: "/livraison", label: "Livraison" },
   { href: "/devenir-livreur", label: "Devenir livreur" },

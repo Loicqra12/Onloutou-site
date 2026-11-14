@@ -34,7 +34,7 @@ test.describe("page motos et deux-roues", () => {
     await expect(search).toContainText("Modèles, équipements et disponibilités à confirmer.");
 
     if (testInfo.project.name === "desktop") {
-      await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
+      await page.locator(".site-nav-trigger", { hasText: "Articles & équipements" }).hover();
       await expect(page.locator("#mega-equipements a", { hasText: "Motos & deux-roues" }).first()).toHaveAttribute("href", "/equipements/motos");
       await page.mouse.move(10, 600);
     }

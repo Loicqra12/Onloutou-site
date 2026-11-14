@@ -26,18 +26,22 @@ export function MegaMenuVisual({ visual, onNavigate }: MegaMenuVisualProps) {
           style={{ objectPosition: image.objectPosition }}
         />
       </div>
-      <p className="mega-visual-title">{title}</p>
+      {title ? <p className="mega-visual-title">{title}</p> : null}
       {subtitle ? <p className="mega-visual-subtitle">{subtitle}</p> : null}
       {cta ? (
         <Link
           href={cta.href}
           prefetch={false}
-          className="mega-cta mega-visual-link"
+          className={
+            visual.ctaStyle === "button"
+              ? "mega-btn-yellow"
+              : "mega-cta mega-visual-link"
+          }
           onClick={onNavigate}
         >
           <span>{cta.label}</span>
-          <span aria-hidden className="nh-arrow">
-            ↗
+          <span aria-hidden>
+            {visual.ctaStyle === "button" ? ">" : "↗"}
           </span>
         </Link>
       ) : null}

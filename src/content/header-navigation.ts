@@ -1,3 +1,10 @@
+import {
+  articleFamilies,
+  articleFamilyHint,
+  articleFamilyHref,
+  otherArticleHref,
+} from "@/content/article-families";
+import { megaMenuEquipementsImage } from "@/content/mega-menu-equipements-image";
 import { site } from "@/content/site";
 import type { HeaderNavItem, MegaMenuConfig, NavImage } from "@/types/navigation";
 
@@ -37,11 +44,11 @@ const digitalImage = img(
 );
 
 const equipmentMenuImage = img(
-  "/assets/images/menu/mega-menu-equipements-onloutou.png",
-  "Technicien contrôlant un groupe électrogène, avec un utilitaire et une moto en arrière-plan",
-  1586,
-  992,
-  "72% 55%",
+  megaMenuEquipementsImage.src,
+  megaMenuEquipementsImage.alt,
+  megaMenuEquipementsImage.width,
+  megaMenuEquipementsImage.height,
+  megaMenuEquipementsImage.objectPosition,
 );
 
 const expertiseImage = img(
@@ -126,50 +133,70 @@ const solutionsMenu: MegaMenuConfig = {
 
 const equipmentMenu: MegaMenuConfig = {
   id: "equipements",
-  label: "Équipements",
-  variant: "icon-grid",
-  eyebrow: "Les équipements",
-  width: 1100,
-  asideWeight: 0.56,
+  label: "Articles & équipements",
+  variant: "split-families",
+  eyebrow: "Articles & équipements",
+  width: 1180,
+  asideWeight: 0.78,
   overview: { label: "Vue d'ensemble", href: "/equipements" },
+  sections: [
+    {
+      id: "quotidien",
+      title: "Articles du quotidien",
+      hint: articleFamilyHint,
+    },
+    {
+      id: "professionnel",
+      title: "Véhicules & matériel professionnel",
+    },
+  ],
   groups: [
+    ...articleFamilies.map((family) => ({
+      id: family.id,
+      sectionId: "quotidien",
+      iconId: family.iconId,
+      title: family.label,
+      description: family.hint,
+      href: articleFamilyHref(family.id),
+      items: [],
+    })),
     {
       id: "vehicules",
-      iconId: "van",
+      sectionId: "professionnel",
+      iconId: "van" as const,
       title: "Véhicules professionnels",
-      description: "La mobilité au service de vos équipes.",
       href: "/equipements/vehicules",
       items: [],
     },
     {
       id: "camions",
-      iconId: "excavator",
+      sectionId: "professionnel",
+      iconId: "excavator" as const,
       title: "Camions & engins",
-      description: "Pour les chantiers et les opérations.",
       href: "/equipements/camions-engins",
       items: [],
     },
     {
       id: "connectes",
-      iconId: "signal",
+      sectionId: "professionnel",
+      iconId: "signal" as const,
       title: "Équipements connectés",
-      description: "Suivre et piloter vos actifs.",
       href: "/equipements/equipements-connectes",
       items: [],
     },
     {
       id: "motos",
-      iconId: "bike",
+      sectionId: "professionnel",
+      iconId: "bike" as const,
       title: "Motos & deux-roues",
-      description: "Pour les déplacements du quotidien.",
       href: "/equipements/motos",
       items: [],
     },
     {
       id: "outils",
-      iconId: "drill",
+      sectionId: "professionnel",
+      iconId: "drill" as const,
       title: "Outils & matériel",
-      description: "Des moyens adaptés à chaque métier.",
       href: "/equipements/outils-materiels",
       items: [],
     },
@@ -181,13 +208,12 @@ const equipmentMenu: MegaMenuConfig = {
   },
   visual: {
     image: equipmentMenuImage,
-    title: "Partons de votre usage.",
-    subtitle: "Nous vous aidons à préciser votre besoin.",
-    cta: { label: "Orienter ma demande", href: "/equipements#orientation-equipement" },
+    cta: { label: "Je cherche un autre article", href: otherArticleHref },
+    ctaStyle: "button",
   },
   footer: {
     iconId: "info",
-    text: "Références et disponibilités confirmées après qualification.",
+    text: "Disponibilité confirmée après étude du besoin.",
   },
 };
 
@@ -329,14 +355,13 @@ const partnersMenu: MegaMenuConfig = {
   aside: {
     id: "espaces",
     iconId: "grid",
-    title: "Vos futurs espaces",
+    title: "Vos espaces",
     description: "Des outils pour simplifier les échanges.",
     items: [
       {
         type: "link",
-        label: "Découvrir le futur espace partenaire",
+        label: "Espace partenaire",
         href: "/espace-partenaire",
-        badge: "En préparation",
       },
       {
         type: "link",
@@ -345,7 +370,7 @@ const partnersMenu: MegaMenuConfig = {
         badge: "En préparation",
       },
     ],
-    note: "Pages de présentation : aucune connexion n'est encore possible.",
+    note: "L’espace partenaire est accessible avec un compte. L’espace livreur est encore en préparation.",
   },
   footer: {
     iconId: "handshake",
@@ -395,7 +420,7 @@ const aboutMenu: MegaMenuConfig = {
 export const headerNavigation: HeaderNavItem[] = [
   { type: "link", id: "accueil", label: "Accueil", href: "/" },
   { type: "menu", id: "solutions", label: "Solutions", href: "/solutions", menu: solutionsMenu },
-  { type: "menu", id: "equipements", label: "Équipements", href: "/equipements", menu: equipmentMenu },
+  { type: "menu", id: "equipements", label: "Articles & équipements", href: "/equipements", menu: equipmentMenu },
   { type: "menu", id: "expertise", label: "Expertise", href: "/expertise", menu: expertiseMenu },
   { type: "menu", id: "projets", label: "Projets", href: "/projets", menu: projectsMenu },
   { type: "menu", id: "partenaires", label: "Partenaires", href: "/partenaires", menu: partnersMenu },
@@ -418,6 +443,14 @@ export const headerCta = {
 
 export function isNavActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
+  if (href === "/partenaires") {
+    return (
+      pathname === "/partenaires" ||
+      pathname.startsWith("/partenaires/") ||
+      pathname === "/devenir-partenaire" ||
+      pathname.startsWith("/devenir-partenaire/")
+    );
+  }
   const [path] = href.split("#");
   return pathname === path || pathname.startsWith(`${path}/`);
 }

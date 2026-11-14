@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { PartnerAuthChrome } from "@/components/partner-portal/PartnerAuthChrome";
 import { PartnerLoginForm } from "@/components/partner-portal/PartnerLoginForm";
-import "@/styles/admin.css";
+import { dpAuth } from "@/content/devenir-partenaire";
 
 export const metadata: Metadata = {
   title: "Connexion partenaire",
@@ -9,15 +9,15 @@ export const metadata: Metadata = {
 };
 
 export default function PartnerLoginPage() {
+  const legal = dpAuth.login.legal;
   return (
-    <main className="adm-page">
-      <div className="adm-shell">
-        <h1 className="adm-h1">Connexion partenaire</h1>
-        <PartnerLoginForm />
-        <p className="adm-note">
-          <Link href="/espace-partenaire">Présentation de l’espace</Link>
-        </p>
-      </div>
-    </main>
+    <PartnerAuthChrome>
+      <PartnerLoginForm />
+      <p className="pa-legal">
+        <a href={legal.privacy.href}>{legal.privacy.label}</a>
+        {" · "}
+        <a href={legal.terms.href}>{legal.terms.label}</a>
+      </p>
+    </PartnerAuthChrome>
   );
 }

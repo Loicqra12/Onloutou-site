@@ -1,5 +1,6 @@
 import { site } from "@/content/site";
 import { whatsappUrlForMessage } from "@/content/contact-page";
+import { megaMenuEquipementsImage } from "@/content/mega-menu-equipements-image";
 import type { ServiceFaqItem } from "@/types/services";
 
 export const rentalSeo = {
@@ -70,11 +71,11 @@ export const rentalMedia = {
     objectPosition: "64% 38%",
   },
   menuEquipment: {
-    src: "/assets/images/menu/mega-menu-equipements-onloutou.png",
-    alt: "Technicien contrôlant un groupe électrogène, avec utilitaire et moto en arrière-plan",
-    width: 1586,
-    height: 992,
-    objectPosition: "82% 68%",
+    src: megaMenuEquipementsImage.src,
+    alt: megaMenuEquipementsImage.alt,
+    width: megaMenuEquipementsImage.width,
+    height: megaMenuEquipementsImage.height,
+    objectPosition: megaMenuEquipementsImage.objectPosition,
   },
   generatorInspection: {
     src: "/assets/images/projects/project-b/inspection-groupe-electrogene.png",

@@ -6,7 +6,8 @@ Application Next.js (App Router) pour le site public, avec une API métier Expre
 
 | Dossier | Rôle |
 |---------|------|
-| `src/` | Site et interfaces Next.js (pages, composants, contenus) |
+| `src/` | Site public et espaces partenaire / livreur |
+| `admin/` | Application d’administration séparée (Vite, port 3001) |
 | `backend/` | API Express, logique métier, Prisma, migrations |
 | `public/` | Fichiers statiques servis par Next |
 | `tests/` | Tests Playwright du frontend et parcours E2E |
@@ -42,6 +43,7 @@ Voir **`docs/backend/README.md`**.
 | PostgreSQL (Docker, hôte Windows) | `127.0.0.1:5433` |
 | API Express | **4000** — http://127.0.0.1:4000/health |
 | Next.js (dev / start) | **3000** — http://localhost:3000 |
+| Admin Vite | **3001** — http://127.0.0.1:3001 (`npm run dev:admin`) |
 | Proxy API depuis Next | `/api/v1` → `API_ORIGIN` |
 
 Stack rapide (PostgreSQL + migrations + API) :

@@ -1,3 +1,8 @@
+import { electromenagerPublicPaths } from "@/content/electromenager";
+import { informatiquePublicPaths } from "@/content/informatique";
+import { mobilierPublicPaths } from "@/content/mobilier";
+import { receptionPublicPaths } from "@/content/reception";
+import { enfPublicPaths } from "@/content/enfance";
 import { cookiesPolicyIsIndexable } from "@/content/cookies";
 import {
   legalNoticeIsIndexable,
@@ -54,6 +59,9 @@ function robotsForPath(path: string): { index: boolean; follow: boolean } {
     case "/conditions-commerciales":
       return { index: false, follow: true };
     default:
+      if (path.startsWith("/produits/") && path !== "/produits") {
+        return { index: false, follow: true };
+      }
       if (PORTAL_PREVIEW_PATHS.has(path)) {
         return ROBOTS_PREVIEW_PORTAL;
       }
@@ -83,7 +91,9 @@ export function getAllRouteIndexations(): RouteIndexation[] {
 }
 
 export function getSitemapPaths(): string[] {
-  return getAllRouteIndexations()
-    .filter((r) => r.includeInSitemap)
+  const fromFiles = getAllRouteIndexations()
+    .filter((r) => r.includeInSitemap && !r.path.includes("["))
     .map((r) => r.path);
+  const extra = [...electromenagerPublicPaths(), ...informatiquePublicPaths(), ...mobilierPublicPaths(), ...receptionPublicPaths(), ...enfPublicPaths()].filter((path) => !fromFiles.includes(path));
+  return [...fromFiles, ...extra].sort((a, b) => a.localeCompare(b));
 }

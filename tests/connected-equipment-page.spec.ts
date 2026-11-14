@@ -28,7 +28,7 @@ test.describe("page équipements connectés", () => {
     await expect(page.getByRole("link", { name: /Explorer les dispositifs/ })).toBeVisible();
 
     if (testInfo.project.name === "desktop") {
-      await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
+      await page.locator(".site-nav-trigger", { hasText: "Articles & équipements" }).hover();
       await expect(page.locator("#mega-equipements a", { hasText: "Équipements connectés" }).first()).toHaveAttribute("href", "/equipements/equipements-connectes");
       await page.mouse.move(10, 600);
     }

@@ -85,13 +85,38 @@ test.describe("page hub équipements", () => {
     expect(overflow).toBeLessThanOrEqual(1);
   });
 
-  test("méga-menu Équipements", async ({ page }, testInfo) => {
+  test("méga-menu Articles & équipements", async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== "desktop", "desktop");
     await page.goto("/");
-    await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
-    await expect(page.locator("#mega-equipements a", { hasText: "Vue d'ensemble" }).first()).toHaveAttribute(
+    await page.locator(".site-nav-trigger", { hasText: "Articles & équipements" }).hover();
+    const panel = page.locator("#mega-equipements");
+    await expect(panel.getByRole("link", { name: "Vue d'ensemble" }).first()).toHaveAttribute("href", "/equipements");
+    await expect(panel.getByRole("link", { name: /Véhicules professionnels/ })).toHaveAttribute(
       "href",
-      "/equipements",
+      "/equipements/vehicules",
     );
+    await expect(panel.getByRole("link", { name: /Camions & engins/ })).toHaveAttribute(
+      "href",
+      "/equipements/camions-engins",
+    );
+    await expect(panel.getByRole("link", { name: /Équipements connectés/ })).toHaveAttribute(
+      "href",
+      "/equipements/equipements-connectes",
+    );
+    await expect(panel.getByRole("link", { name: /Motos & deux-roues/ })).toHaveAttribute("href", "/equipements/motos");
+    await expect(panel.getByRole("link", { name: /Outils & matériel/ })).toHaveAttribute(
+      "href",
+      "/equipements/outils-materiels",
+    );
+    await expect(panel.getByRole("link", { name: /Réception & événementiel/ })).toHaveAttribute(
+      "href",
+      /famille=reception/,
+    );
+    await expect(panel.getByRole("link", { name: /Je cherche un autre article/ })).toHaveAttribute(
+      "href",
+      /article=libre/,
+    );
+    await expect(panel.getByRole("link", { name: /Comparer les options/ })).toBeVisible();
+    await expect(panel.getByText(/Disponibilité confirmée après étude du besoin/)).toBeVisible();
   });
 });

@@ -30,7 +30,7 @@ test.describe("page outils et matériels", () => {
     await expect(search).toContainText("Disponibilités et conditions confirmées après étude.");
 
     if (testInfo.project.name === "desktop") {
-      await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
+      await page.locator(".site-nav-trigger", { hasText: "Articles & équipements" }).hover();
       await expect(page.locator("#mega-equipements a", { hasText: "Outils & matériel" }).first()).toHaveAttribute(
         "href",
         "/equipements/outils-materiels",

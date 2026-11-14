@@ -293,6 +293,30 @@
   background: #fff8d8;
   box-shadow: 0 0 0 1px var(--ctc-yellow);
 }
+.ctc-family {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.7rem;
+  margin: 0 0 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--ctc-yellow);
+  border-radius: 8px;
+  background: #fff8d8;
+  font-size: 0.92rem;
+}
+.ctc-family__kicker {
+  color: var(--ctc-amber);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ctc-family--free {
+  border-color: var(--ctc-line);
+  background: #faf8f2;
+  color: var(--ctc-grey);
+}
 .ctc-need.is-invalid {
   border-color: #c0392b;
 }
@@ -479,25 +503,70 @@
 }
 
 .ctc-claims {
-  width: min(46rem, calc(100% - 2.5rem));
-  margin: 2.5rem auto 0;
+  margin-top: clamp(14px, 1.6cqw, 22px);
+  padding: clamp(16px, 1.8cqw, 26px);
+  border: 1px solid var(--ctc-line);
+  border-radius: 10px;
+  background: #fff;
   scroll-margin-top: 7rem;
-  color: #1c1c1c;
-  font-size: 1.0625rem;
-  line-height: 1.7;
 }
-
-.ctc-claims ol {
-  margin: 0.75rem 0;
-  padding-left: 1.25rem;
-  list-style: decimal;
+.ctc-claims .ctc-eyebrow {
+  margin-bottom: 4px;
+  color: var(--ctc-amber);
 }
-
-.ctc-claims li {
-  list-style: decimal;
-  display: list-item;
+.ctc-claims__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 28px;
+  margin-top: 8px;
 }
-
-.ctc-claims li + li {
-  margin-top: 0.4rem;
+.ctc-claims__lead {
+  flex: 1 1 22em;
+  font-size: clamp(0.95rem, 1.15cqw, 1.05rem);
+  line-height: 1.5;
+  color: #3d3d3d;
+}
+.ctc-claims .ctc-claims__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: clamp(18px, 2cqw, 26px);
+  padding-top: clamp(16px, 1.8cqw, 22px);
+  border-top: 1px solid var(--ctc-line);
+}
+.ctc-claims__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 2px clamp(12px, 2cqw, 28px);
+}
+.ctc-claims__item:first-child {
+  padding-left: 0;
+}
+.ctc-claims__item + .ctc-claims__item {
+  border-left: 1px solid var(--ctc-line);
+}
+.ctc-claims .ctc-claims__after {
+  margin-top: clamp(16px, 1.8cqw, 22px);
+  font-size: 0.8125rem;
+  color: var(--ctc-grey);
+}
+@container (max-width: 900px) {
+  .ctc-claims .ctc-claims__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .ctc-claims__item,
+  .ctc-claims__item:first-child {
+    padding-inline: 0;
+  }
+  .ctc-claims__item + .ctc-claims__item {
+    padding-top: 12px;
+    border-left: 0;
+    border-top: 1px solid var(--ctc-line);
+  }
+  .ctc-claims__head .ctc-btn {
+    width: 100%;
+  }
 }

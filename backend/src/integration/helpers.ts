@@ -18,11 +18,11 @@ function getTestApp(): Express {
   return appInstance;
 }
 
-export function apiAgent(): SuperAgentTest {
+export function apiAgent() {
   return supertest.agent(getTestApp());
 }
 
-export async function fetchCsrf(agent: SuperAgentTest): Promise<string> {
+export async function fetchCsrf(agent: ReturnType<typeof apiAgent>): Promise<string> {
   const res = await agent.get("/api/v1/csrf");
   if (res.status !== 200) {
     throw new Error(`CSRF fetch failed: ${res.status} ${JSON.stringify(res.body)}`);
@@ -31,7 +31,7 @@ export async function fetchCsrf(agent: SuperAgentTest): Promise<string> {
 }
 
 export async function postJson(
-  agent: SuperAgentTest,
+  agent: ReturnType<typeof apiAgent>,
   path: string,
   body: Record<string, unknown>,
 ): Promise<supertest.Response> {
@@ -40,7 +40,7 @@ export async function postJson(
 }
 
 export async function patchJson(
-  agent: SuperAgentTest,
+  agent: ReturnType<typeof apiAgent>,
   path: string,
   body: Record<string, unknown>,
 ): Promise<supertest.Response> {
@@ -59,7 +59,9 @@ export async function clearExpressSessions(): Promise<void> {
 export async function resetIntegrationData(): Promise<void> {
   await prisma.auditLog.deleteMany();
   await prisma.passwordResetToken.deleteMany();
+  await prisma.emailVerificationToken.deleteMany();
   await prisma.productImage.deleteMany();
+  await prisma.productUnavailability.deleteMany();
   await prisma.product.deleteMany();
   await prisma.serviceRequest.deleteMany();
   await prisma.document.deleteMany();
@@ -78,6 +80,19 @@ export async function markDocumentCleanForIntegrationTest(documentId: string): P
     where: { id: documentId },
     data: { scanStatus: "CLEAN" },
   });
+}
+
+
+export async function postFile(
+  agent: ReturnType<typeof apiAgent>,
+  path: string,
+  field: string,
+  buffer: Buffer,
+  filename: string,
+  contentType: string,
+): Promise<supertest.Response> {
+  const csrf = await fetchCsrf(agent);
+  return agent.post(path).set("x-csrf-token", csrf).attach(field, buffer, { filename, contentType });
 }
 
 export { getTestApp, getTestApp as app, envInstance as env, prisma };

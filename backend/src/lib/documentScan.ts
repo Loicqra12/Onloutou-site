@@ -1,8 +1,20 @@
 import type { DocumentScanStatus } from "@prisma/client";
 
-/** Téléchargement autorisé uniquement après analyse antivirus réussie (statut CLEAN). */
-export function documentDownloadBlockedReason(scanStatus: DocumentScanStatus): string | null {
+/**
+ * Règle d'accès aux pièces confidentielles (aucun antivirus n'est branché pour l'instant) :
+ * - propriétaire : uniquement après analyse réussie (statut CLEAN) ;
+ * - administration : peut consulter un document en attente (PENDING), jamais un document
+ *   mis en quarantaine ou rejeté ;
+ * - dans tous les cas, ces pièces ne sont jamais publiées.
+ */
+export function documentDownloadBlockedReason(
+  scanStatus: DocumentScanStatus,
+  options: { isAdmin?: boolean } = {},
+): string | null {
   if (scanStatus === "CLEAN") {
+    return null;
+  }
+  if (options.isAdmin && scanStatus === "PENDING") {
     return null;
   }
   return "Document non disponible (analyse requise).";

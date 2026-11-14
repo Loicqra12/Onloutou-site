@@ -87,7 +87,7 @@ test.describe("Parcours institutionnel ONLOUTOU", () => {
   });
 
   test("SEO — pas de nouvelle route", () => {
-    expect(discoverAppRoutes().length).toBe(46);
+    expect(discoverAppRoutes().length).toBe(43);
     const indexable = discoverAppRoutes().filter((p) => getRouteIndexation(p).includeInSitemap);
     expect(indexable.length).toBe(27);
   });

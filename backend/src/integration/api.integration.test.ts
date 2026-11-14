@@ -1,10 +1,12 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { hashOpaqueToken, hashPassword } from "../lib/password.js";
-import { generateToken } from "../lib/tokens.js";
-import { confirmPasswordReset } from "../modules/auth/service.js";
+import { hashPassword } from "../lib/password.js";
+import { generateToken, hashResetToken } from "../lib/tokens.js";
+import { totpNow } from "../lib/totp.js";
+import { confirmPasswordReset, enableTwoFactorForUser } from "../modules/auth/service.js";
 import {
   apiAgent,
   patchJson,
+  postFile,
   postJson,
   prisma,
   resetIntegrationData,
@@ -83,6 +85,40 @@ describe("API integration (PostgreSQL)", () => {
     expect(after.status).toBe(401);
   });
 
+  it("staff with TOTP must complete 2FA before a session", async () => {
+    const password = "StaffPass12345!";
+    const secret = "ONLOUTOUADMIN2FADEVAAA";
+    const user = await prisma.user.create({
+      data: {
+        email: "staff-2fa@test.ci",
+        passwordHash: await hashPassword(password),
+        role: "STAFF",
+        status: "ACTIVE",
+      },
+    });
+    await enableTwoFactorForUser(user.id, secret);
+    const agent = apiAgent();
+    const login = await postJson(agent, "/api/v1/auth/login", { email: user.email, password });
+    expect(login.status).toBe(200);
+    expect(login.body.twoFactorRequired).toBe(true);
+    expect(login.body.challengeToken).toBeTruthy();
+    expect((await agent.get("/api/v1/auth/me")).status).toBe(401);
+
+    const denied = await postJson(agent, "/api/v1/auth/login/2fa", {
+      challengeToken: login.body.challengeToken,
+      code: "000000",
+    });
+    expect(denied.status).toBe(401);
+
+    const verified = await postJson(agent, "/api/v1/auth/login/2fa", {
+      challengeToken: login.body.challengeToken,
+      code: totpNow(secret),
+    });
+    expect(verified.status).toBe(200);
+    expect(verified.body.user.role).toBe("STAFF");
+    expect((await agent.get("/api/v1/auth/me")).status).toBe(200);
+  });
+
   it("restricts roles: CLIENT vs ADMIN vs PARTNER vs DRIVER", async () => {
     const clientAgent = apiAgent();
     await prisma.user.create({
@@ -117,12 +153,13 @@ describe("API integration (PostgreSQL)", () => {
       displayName: "Partenaire A",
       organizationName: "Org A",
       partnerType: "SUPPLIER",
+            termsAccepted: true,
     });
     expect((await partnerAgent.get("/api/v1/partner/me")).status).toBe(200);
     expect((await partnerAgent.get("/api/v1/admin/audit")).status).toBe(403);
   });
 
-  it("blocks unapproved partner catalog actions", async () => {
+  it("lets an unapproved partner create a draft but blocks submit-for-review", async () => {
     const agent = apiAgent();
     await postJson(agent, "/api/v1/auth/register/partner", {
       email: "draft-partner@test.ci",
@@ -130,14 +167,17 @@ describe("API integration (PostgreSQL)", () => {
       displayName: "Draft Partner",
       organizationName: "Draft Org",
       partnerType: "TECH",
+            termsAccepted: true,
     });
     const create = await postJson(agent, "/api/v1/partner/products", {
       category: "TOOLS",
       title: "Perceuse test",
       pricingMode: "ON_QUOTE",
     });
-    expect(create.status).toBe(400);
-    expect(create.body.error).toMatch(/validation/i);
+    expect(create.status).toBe(201);
+    const submit = await postJson(agent, `/api/v1/partner/products/${create.body.product.id}/submit`, {});
+    expect(submit.status).toBe(400);
+    expect(submit.body.error).toMatch(/validation|approuv|attente/i);
   });
 
   it("isolates partner products between accounts", async () => {
@@ -162,6 +202,7 @@ describe("API integration (PostgreSQL)", () => {
       displayName: "Partner A",
       organizationName: "Org PA",
       partnerType: "SUPPLIER",
+            termsAccepted: true,
     });
     expect(regA.status).toBe(201);
     const profileA = await prisma.partnerProfile.findFirst({ where: { user: { email: "pa@test.ci" } } });
@@ -184,6 +225,7 @@ describe("API integration (PostgreSQL)", () => {
       displayName: "Partner B",
       organizationName: "Org PB",
       partnerType: "SUPPLIER",
+            termsAccepted: true,
     });
     const tamper = await patchJson(partnerB, `/api/v1/partner/products/${productId}`, {
       title: "Vol de fiche",
@@ -213,6 +255,7 @@ describe("API integration (PostgreSQL)", () => {
       displayName: "Pub Partner",
       organizationName: "Pub Org",
       partnerType: "SUPPLIER",
+            termsAccepted: true,
     });
     const profile = await prisma.partnerProfile.findFirst({
       where: { user: { email: "pub-partner@test.ci" } },
@@ -222,11 +265,32 @@ describe("API integration (PostgreSQL)", () => {
     });
 
     const created = await postJson(partnerAgent, "/api/v1/partner/products", {
-      category: "VEHICLES",
+      category: "TRUCKS_MACHINERY",
       title: "Mini pelle",
       pricingMode: "ON_QUOTE",
     });
     const productId = created.body.product.id as string;
+    const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==","base64");
+    const photo = await postFile(partnerAgent, `/api/v1/partner/products/${productId}/images`, "file", png, "mini.png", "image/png");
+    expect(photo.status).toBe(201);
+    const filled = await patchJson(partnerAgent, `/api/v1/partner/products/${productId}`, {
+      title: "Mini pelle",
+      familySlug: "camions-engins",
+      categorySlug: "engins",
+      condition: "Bon état",
+      description: "Mini pelle pour chantier, proposée à ONLOUTOU.",
+      terms: {
+        quantity: 1,
+        rentalMode: "UNIT",
+        priceAmount: 150000,
+        pricePeriod: "WEEK",
+        minDuration: "1_WEEK",
+        depositKind: "TO_DISCUSS",
+        commune: "Cocody",
+        pickup: true,
+      },
+    });
+    expect(filled.status).toBe(200);
 
     const publicBefore = await apiAgent().get("/api/v1/catalog/products");
     expect(publicBefore.body.products.some((p: { id: string }) => p.id === productId)).toBe(false);
@@ -256,6 +320,7 @@ describe("API integration (PostgreSQL)", () => {
       displayName: "Doc",
       organizationName: "Doc Org",
       partnerType: "SUPPLIER",
+            termsAccepted: true,
     });
     const profile = await prisma.partnerProfile.findFirst({
       where: { user: { email: "doc-partner@test.ci" } },
@@ -345,7 +410,7 @@ describe("API integration (PostgreSQL)", () => {
     await prisma.passwordResetToken.create({
       data: {
         userId: user.id,
-        tokenHash: await hashOpaqueToken(plain),
+        tokenHash: hashResetToken(plain),
         expiresAt: new Date(Date.now() + 3600_000),
       },
     });
@@ -431,7 +496,7 @@ describe("API integration (PostgreSQL)", () => {
     expect(reqRes.body.devToken).toBeUndefined();
 
     const plain = generateToken(48);
-    const tokenHash = await hashOpaqueToken(plain);
+    const tokenHash = hashResetToken(plain);
     await prisma.passwordResetToken.create({
       data: { userId: user.id, tokenHash, expiresAt: new Date(Date.now() + 3600_000) },
     });
@@ -446,7 +511,7 @@ describe("API integration (PostgreSQL)", () => {
     await prisma.passwordResetToken.create({
       data: {
         userId: user.id,
-        tokenHash: await hashOpaqueToken(expiredPlain),
+        tokenHash: hashResetToken(expiredPlain),
         expiresAt: new Date(Date.now() - 1000),
       },
     });
@@ -472,7 +537,7 @@ describe("API integration (PostgreSQL)", () => {
     expect(row?.contactEmail).toBe("aya@example.ci");
   });
 
-  it("registers partner and driver applications as SUBMITTED so the admin can see them", async () => {
+  it("keeps partner applications in DRAFT until the profile is submitted, drivers stay SUBMITTED", async () => {
     const partner = apiAgent();
     const p = await postJson(partner, "/api/v1/auth/register/partner", {
       email: "p-submitted@test.ci",
@@ -480,6 +545,7 @@ describe("API integration (PostgreSQL)", () => {
       displayName: "Partenaire",
       organizationName: "Org Soumise",
       partnerType: "SUPPLIER",
+            termsAccepted: true,
     });
     expect(p.status).toBe(201);
     const driver = apiAgent();
@@ -491,6 +557,16 @@ describe("API integration (PostgreSQL)", () => {
     expect(d.status).toBe(201);
     const pp = await prisma.partnerProfile.findFirst({ where: { organizationName: "Org Soumise" } });
     const dp = await prisma.driverProfile.findFirst({ where: { fullName: "Livreur Soumis" } });
-    expect(pp?.status).toBe("SUBMITTED");
+    expect(pp?.status).toBe("DRAFT");
     expect(dp?.status).toBe("SUBMITTED");
-  });});
+    const submitted = await postJson(partner, "/api/v1/partner/profile/submit", {
+      personKind: "INDIVIDUAL",
+      phone: "05 54 13 77 77",
+      commune: "Abidjan",
+          description: "Location d’appareils à Abidjan.",
+    });
+    expect(submitted.status).toBe(200);
+    const pp2 = await prisma.partnerProfile.findFirst({ where: { organizationName: "Org Soumise" } });
+    expect(pp2?.status).toBe("SUBMITTED");
+  });
+});

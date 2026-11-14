@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Manrope } from "next/font/google";
 import { CookieNotice } from "@/components/layout/CookieNotice";
-import { SiteFooter } from "@/components/layout/SiteFooter";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import { HashAnchorAlign } from "@/components/navigation/HashAnchorAlign";
 import { MotionBootstrap } from "@/components/motion/MotionBootstrap";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
@@ -62,14 +61,14 @@ export const metadata: Metadata = {
   ),
   icons: {
     icon: [
+      { url: "/favicon.png", type: "image/png", sizes: "48x48" },
       {
         url: siteMedia.logo.src,
         type: "image/png",
         sizes: `${siteMedia.logo.width}x${siteMedia.logo.height}`,
       },
-      { url: "/favicon.svg", type: "image/svg+xml" },
     ],
-    apple: siteMedia.logo.src,
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -92,9 +91,7 @@ export default function RootLayout({
         >
           Aller au contenu principal
         </a>
-        <SiteHeader />
-        <main id="contenu-principal">{children}</main>
-        <SiteFooter />
+        <SiteChrome>{children}</SiteChrome>
         <CookieNotice />
       </body>
     </html>

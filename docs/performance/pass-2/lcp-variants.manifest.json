@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T15:39:08.679Z",
+  "generatedAt": "2026-11-08T17:01:12.351Z",
   "items": [
     {
       "source": "/assets/images/solutions/installation-traceur-gps-onloutou.png",
@@ -98,7 +98,7 @@
     },
     {
       "source": "/assets/images/menu/mega-menu-equipements-onloutou.png",
-      "sourceBytes": 2408989,
+      "sourceBytes": 2956922,
       "intrinsic": {
         "width": 1586,
         "height": 992
@@ -107,12 +107,12 @@
         {
           "width": 480,
           "file": "/assets/images/lcp/mega-menu-equipements-onloutou.w480.webp",
-          "bytes": 28732
+          "bytes": 36980
         },
         {
           "width": 640,
           "file": "/assets/images/lcp/mega-menu-equipements-onloutou.w640.webp",
-          "bytes": 45104
+          "bytes": 59950
         }
       ]
     },

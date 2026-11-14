@@ -25,18 +25,19 @@ services:
         value: "1"
       - key: TRUST_PROXY
         value: "1"
-      # Stockage des fichiers (DigitalOcean Spaces ou autre S3) : a renseigner dans le tableau de bord.
-      - key: S3_ENDPOINT
+      # Cloudinary (photos et pieces confidentielles) : a renseigner dans le tableau de bord.
+      - key: CLOUDINARY_CLOUD_NAME
         sync: false
-      - key: S3_REGION
-        value: fra1
-      - key: S3_BUCKET_PUBLIC
+      - key: CLOUDINARY_API_KEY
         sync: false
-      - key: S3_BUCKET_PRIVATE
+      - key: CLOUDINARY_API_SECRET
         sync: false
-      - key: S3_ACCESS_KEY_ID
+      # Brevo (e-mails via API HTTPS) : sans cle, l'envoi est simplement desactive.
+      - key: BREVO_API_KEY
         sync: false
-      - key: S3_SECRET_ACCESS_KEY
+      - key: MAIL_FROM_EMAIL
+        sync: false
+      - key: NOTIFY_EMAIL
         sync: false
 
 databases:

@@ -22,8 +22,14 @@ async function main() {
     console.error("Mot de passe trop court (12 caractères minimum).");
     process.exit(1);
   }
-  const user = await bootstrapAdmin(email, password, displayName);
+  const { user, twoFactor } = await bootstrapAdmin(email, password, displayName);
   console.log(`Administrateur créé : ${user.email} (${user.id})`);
+  console.log("Vérification en deux étapes à enregistrer dans l’application d’authentification :");
+  console.log(twoFactor.otpauthUrl);
+  console.log("Codes de secours (à conserver hors ligne, une seule utilisation chacun) :");
+  for (const code of twoFactor.backups) {
+    console.log(`  ${code}`);
+  }
 }
 
 main().catch((err) => {

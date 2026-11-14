@@ -1,71 +1,51 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-import { JsonLdFromSiteUrl } from "@/components/seo/JsonLd";
-import { ProductAccessComparison } from "@/components/products/ProductAccessComparison";
-import { ProductDeliveryTeaser } from "@/components/products/ProductDeliveryTeaser";
-import { ProductFamilyShowcase } from "@/components/products/ProductFamilyShowcase";
-import { ProductQualitySection } from "@/components/products/ProductQualitySection";
-import { ProductSourcingSection } from "@/components/products/ProductSourcingSection";
-import { ProductTransparencySection } from "@/components/products/ProductTransparencySection";
-import { ProductsCatalogFuture } from "@/components/products/ProductsCatalogFuture";
-import { ProductsFinalCta } from "@/components/products/ProductsFinalCta";
-import { ProductsHero } from "@/components/products/ProductsHero";
-import { ProcessTimeline } from "@/components/ui/ProcessTimeline";
-import { EditorialNotice } from "@/components/ui/EditorialNotice";
-import { ServiceFaq } from "@/components/ui/ServiceFaq";
-import {
-  productsBreadcrumbJsonLd,
-  productsCollectionJsonLd,
-  productsCommercialProcess,
-  productsFaq,
-  productsPageMedia,
-  productsPageSeo,
-  productsPositioningNote,
-} from "@/content/products-page";
-import { createPageMetadata } from "@/lib/seo/metadata";
+import Link from "next/link";
+import { PrdCrumb } from "@/components/produits/PrdCrumb";
+import { PrdArrow } from "@/components/produits/PrdIcons";
+import { PrdPicture } from "@/components/produits/PrdPicture";
+import { PrdSearchBar } from "@/components/produits/PrdSearchBar";
+import { PRD_FAMILLES_PATH, prdHubCopy } from "@/content/produits-hub";
+import { prdPageSeo } from "@/content/produits-seo";
 
-const ProductIntentRail = dynamic(() =>
-  import("@/components/products/ProductIntentRail").then((m) => m.ProductIntentRail),
-);
-const ProductUseExplorer = dynamic(() =>
-  import("@/components/products/ProductUseExplorer").then((m) => m.ProductUseExplorer),
-);
-const ProductRequestBuilder = dynamic(() =>
-  import("@/components/products/ProductRequestBuilder").then((m) => m.ProductRequestBuilder),
-);
-
-export const metadata: Metadata = createPageMetadata({
-  ...productsPageSeo,
-  path: "/produits",
-  openGraphImages: [{ url: productsPageMedia.heroPrimary.src, alt: productsPageMedia.heroPrimary.alt }],
-});
+export const metadata: Metadata = prdPageSeo.hub;
 
 export default function ProduitsPage() {
+  const copy = prdHubCopy;
   return (
-    <>
-      <JsonLdFromSiteUrl id="products-breadcrumb-jsonld" build={productsBreadcrumbJsonLd} />
-      <JsonLdFromSiteUrl id="products-collection-jsonld" build={productsCollectionJsonLd} />
-      <ProductsHero />
-      <ProductIntentRail />
-      <div className="container-content section-spacing pt-0">
-        <EditorialNotice>{productsPositioningNote}</EditorialNotice>
-      </div>
-      <ProductFamilyShowcase />
-      <ProductUseExplorer />
-      <ProductAccessComparison />
-      <ProductSourcingSection />
-      <ProductQualitySection />
-      <ProcessTimeline
-        id="processus-commercial"
-        title="De votre besoin à une proposition confirmée."
-        phases={productsCommercialProcess}
-      />
-      <ProductsCatalogFuture />
-      <ProductRequestBuilder />
-      <ProductTransparencySection />
-      <ProductDeliveryTeaser />
-      <ServiceFaq items={productsFaq} />
-      <ProductsFinalCta />
-    </>
+    <div className="prd-page prd-wrap">
+      <PrdCrumb items={[...copy.crumb]} />
+      <section className="prd-hero" aria-labelledby="prd-hero-title">
+        <div className="prd-hero__copy">
+          <span className="prd-kicker-bar" aria-hidden="true" />
+          <h1 id="prd-hero-title" className="prd-h1">
+            {copy.title}
+          </h1>
+          <p className="prd-lead">{copy.lead}</p>
+          <div>
+            <Link className="prd-btn prd-btn--black" href={PRD_FAMILLES_PATH}>
+              {copy.explore} <PrdArrow />
+            </Link>
+          </div>
+        </div>
+        <PrdPicture photo="heroHub" className="prd-hero__photo" priority />
+      </section>
+      <PrdSearchBar />
+      <section className="prd-univers" aria-labelledby="prd-univers-title">
+        <h2 id="prd-univers-title" className="prd-h2">
+          {copy.universTitle}
+        </h2>
+        <div className="prd-univers__grid">
+          {copy.univers.map((item) => (
+            <Link key={item.id} className="prd-uni-card" href={item.href}>
+              <PrdPicture photo={item.photo} />
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

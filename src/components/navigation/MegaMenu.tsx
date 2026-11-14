@@ -238,6 +238,41 @@ export function MegaMenu({ menu, panelId, open, pathname, onNavigate }: MegaMenu
             </div>
           ) : null}
 
+          {menu.variant === "split-families" ? (
+            <div className="mega-split" style={asideStyle as CSSProperties}>
+              <div className="mega-split-cols">
+                {(menu.sections ?? []).map((section) => (
+                  <section key={section.id} className="mega-split-col" aria-labelledby={`mega-sec-${section.id}`}>
+                    <p id={`mega-sec-${section.id}`} className="mega-split-title">
+                      {section.title}
+                    </p>
+                    {section.hint ? <p className="mega-split-hint">{section.hint}</p> : null}
+                    <ul className="mega-split-list">
+                      {menu.groups
+                        .filter((group) => group.sectionId === section.id)
+                        .map((group) => (
+                          <li key={group.id}>
+                            <FamilyLink group={group} pathname={pathname} onNavigate={onNavigate} />
+                          </li>
+                        ))}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+              {menu.visual ? (
+                <div className="mega-aside mega-split-aside">
+                  <MegaMenuVisual visual={menu.visual} onNavigate={onNavigate} />
+                  {menu.promo ? (
+                    <p className="mega-split-promo">
+                      <span>{menu.promo.title}</span>{" "}
+                      <CtaLink cta={menu.promo.cta} onNavigate={onNavigate} className="mega-promo-link" />
+                    </p>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+
           {menu.variant === "cards" ? (
             <>
               <ul className="mega-cards">

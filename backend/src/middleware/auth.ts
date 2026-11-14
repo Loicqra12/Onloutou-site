@@ -7,6 +7,7 @@ export type SessionUser = {
   role: UserRole;
   displayName: string | null;
   authEpoch: number;
+  emailVerified: boolean;
 };
 
 declare module "express-session" {

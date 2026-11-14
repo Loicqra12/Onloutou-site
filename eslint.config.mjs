@@ -11,6 +11,7 @@ const eslintConfig = defineConfig([
     "node_modules/**",
     "dist/**",
     "backend/dist/**",
+    "admin/**",
     "docs/**",
     "playwright-report/**",
     "playwright-report-forms/**",

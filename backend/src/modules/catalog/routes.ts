@@ -1,25 +1,38 @@
 import { Router } from "express";
 import multer from "multer";
 import type { Env } from "../../config/env.js";
-import { s3Configured } from "../../config/env.js";
+import { storageConfigured } from "../../config/env.js";
 import { requireAdmin, requirePartner } from "../../middleware/auth.js";
-import { publicSubmitLimiter } from "../../middleware/rateLimit.js";
+import { publicSubmitLimiter, uploadLimiter } from "../../middleware/rateLimit.js";
 import {
+  archivePartnerProduct,
   attachProductImage,
   createProduct,
+  deletePartnerProduct,
+  getPartnerProduct,
   getPartnerProfileForUser,
   listPartnerProducts,
   listPublicCatalog,
+  replaceProductImage,
   reviewProduct,
+  setProductPaused,
   submitPartnerProfile,
   submitProductForReview,
+  updatePartnerProfile,
   updateProduct,
+  updateProductAvailability,
 } from "./service.js";
-import { partnerProfileSubmitSchema, productCreateSchema, productReviewSchema, productUpdateSchema } from "./schemas.js";
+import { articleFamilies } from "./taxonomy.js";
+import { partnerProfileSubmitSchema, partnerProfileUpdateSchema, productAvailabilitySchema, productCreateSchema, productPauseSchema, productReviewSchema, productUpdateSchema } from "./schemas.js";
+import { createPartnerDemandsRouter } from "../demands/routes.js";
+import { createPartnerOpsRouter } from "../ops/routes.js";
+import { createPartnerFinanceRouter } from "../finance/routes.js";
+import { partnerInboxCounts } from "../ops/service.js";
 import { reviewApplicationSchema } from "../auth/schemas.js";
 import { reviewDriverApplication, reviewPartnerApplication } from "./service.js";
 import { prisma } from "../../db.js";
-import { putPublicObject, validateImageUpload } from "../documents/storage.js";
+import { getAdminOverview } from "../admin/overview.js";
+import { publicImageUrl, putPublicImage, validateImageUpload } from "../documents/storage.js";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -31,10 +44,22 @@ export function createCatalogPublicRouter() {
   router.get("/products", async (_req, res, next) => {
     try {
       const products = await listPublicCatalog();
-      res.json({ products });
+      res.json({
+        products: products.map(({ images, ...product }) => ({
+          ...product,
+          images: images.map((image) => ({
+            id: image.id,
+            sortOrder: image.sortOrder,
+            url: publicImageUrl(image.storageKey),
+          })),
+        })),
+      });
     } catch (err) {
       next(err);
     }
+  });
+  router.get("/taxonomy", (_req, res) => {
+    res.json({ families: articleFamilies });
   });
   return router;
 }
@@ -50,7 +75,23 @@ export function createPartnerRouter(env: Env) {
         res.status(404).json({ error: "Profil partenaire introuvable." });
         return;
       }
-      res.json({ profile });
+      const counts = await partnerInboxCounts(req.session.user!.id);
+      res.json({ profile, ...counts });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+
+  router.patch("/profile", async (req, res, next) => {
+    try {
+      const body = partnerProfileUpdateSchema.parse(req.body);
+      const result = await updatePartnerProfile(req.session.user!.id, body);
+      if (!result.ok) {
+        res.status(400).json({ error: result.error });
+        return;
+      }
+      res.json({ profile: result.profile });
     } catch (err) {
       next(err);
     }
@@ -70,10 +111,27 @@ export function createPartnerRouter(env: Env) {
     }
   });
 
+  router.get("/taxonomy", (_req, res) => {
+    res.json({ families: articleFamilies });
+  });
+
   router.get("/products", async (req, res, next) => {
     try {
       const products = await listPartnerProducts(req.session.user!.id);
-      res.json({ products });
+      res.json({ products, items: products });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  router.get("/products/:id", async (req, res, next) => {
+    try {
+      const result = await getPartnerProduct(req.session.user!.id, req.params.id);
+      if (!result.ok) {
+        res.status(404).json({ error: result.error });
+        return;
+      }
+      res.json({ product: result.product });
     } catch (err) {
       next(err);
     }
@@ -120,14 +178,14 @@ export function createPartnerRouter(env: Env) {
     }
   });
 
-  router.post("/products/:id/images", upload.single("file"), async (req, res, next) => {
+  router.post("/products/:id/images", uploadLimiter, upload.single("file"), async (req, res, next) => {
     try {
       const productId = req.params.id;
       if (!productId) {
         res.status(400).json({ error: "Identifiant produit manquant." });
         return;
       }
-      if (!s3Configured(env)) {
+      if (!storageConfigured(env) && env.NODE_ENV === "production") {
         res.status(503).json({ error: "Stockage fichiers non configuré." });
         return;
       }
@@ -136,20 +194,29 @@ export function createPartnerRouter(env: Env) {
         res.status(400).json({ error: "Fichier requis." });
         return;
       }
-      const check = validateImageUpload(file.mimetype, file.size, env.FILE_MAX_BYTES);
+      const check = validateImageUpload(file.mimetype, file.buffer, env.FILE_MAX_BYTES);
       if (!check.ok) {
         res.status(400).json({ error: check.error });
         return;
       }
-      const key = `catalog/${req.session.user!.id}/${productId}/${Date.now()}-${file.originalname.replace(/[^\w.-]+/g, "_")}`;
-      await putPublicObject(env, key, file.buffer, file.mimetype);
-      const attached = await attachProductImage({
-        userId: req.session.user!.id,
-        productId,
-        storageKey: key,
-        mimeType: file.mimetype,
-        byteSize: file.size,
-      });
+      const key = await putPublicImage(env, `onloutou/catalog/${productId}`, file.buffer);
+      const replaceId = typeof req.query.replace === "string" ? req.query.replace : undefined;
+      const attached = replaceId
+        ? await replaceProductImage({
+            userId: req.session.user!.id,
+            productId,
+            imageId: replaceId,
+            storageKey: key,
+            mimeType: check.mime,
+            byteSize: file.size,
+          })
+        : await attachProductImage({
+            userId: req.session.user!.id,
+            productId,
+            storageKey: key,
+            mimeType: check.mime,
+            byteSize: file.size,
+          });
       if (!attached.ok) {
         res.status(400).json({ error: attached.error });
         return;
@@ -160,12 +227,79 @@ export function createPartnerRouter(env: Env) {
     }
   });
 
+  router.patch("/products/:id/availability", async (req, res, next) => {
+    try {
+      const body = productAvailabilitySchema.parse(req.body);
+      const result = await updateProductAvailability(req.session.user!.id, req.params.id, body.unavailabilities);
+      if (!result.ok) {
+        res.status(400).json({ error: result.error });
+        return;
+      }
+      res.json({ product: result.product });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  router.post("/products/:id/pause", async (req, res, next) => {
+    try {
+      const body = productPauseSchema.parse(req.body);
+      const result = await setProductPaused(req.session.user!.id, req.params.id, body.paused);
+      if (!result.ok) {
+        res.status(400).json({ error: result.error });
+        return;
+      }
+      res.json({ product: result.product });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  router.post("/products/:id/archive", async (req, res, next) => {
+    try {
+      const result = await archivePartnerProduct(req.session.user!.id, req.params.id);
+      if (!result.ok) {
+        res.status(400).json({ error: result.error });
+        return;
+      }
+      res.json({ product: result.product });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  router.delete("/products/:id", async (req, res, next) => {
+    try {
+      const result = await deletePartnerProduct(req.session.user!.id, req.params.id);
+      if (!result.ok) {
+        res.status(400).json({ error: result.error });
+        return;
+      }
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  router.use(createPartnerDemandsRouter());
+  router.use(createPartnerOpsRouter());
+  router.use(createPartnerFinanceRouter());
+
   return router;
 }
 
 export function createAdminCatalogRouter() {
   const router = Router();
   router.use(requireAdmin);
+
+  router.get("/overview", async (req, res, next) => {
+    try {
+      const data = await getAdminOverview(req.session.user!.id);
+      res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  });
 
   router.get("/applications/partners", async (_req, res, next) => {
     try {

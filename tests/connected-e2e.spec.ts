@@ -1,4 +1,5 @@
 import { test, expect, type Browser, type BrowserContext, type Page } from "@playwright/test";
+import { adminLogin as signInAdmin, adminUrl } from "./admin-app";
 
 /**
  * Sept parcours connectés pilotés depuis l'interface (base de test explicite, voir tests/e2e-db-guard.ts).
@@ -25,11 +26,7 @@ async function newRoleContext(browser: Browser): Promise<BrowserContext> {
 }
 
 async function adminLogin(page: Page) {
-  await page.goto("/admin/login");
-  await page.locator("#adm-email").fill(adminEmail);
-  await page.locator("#adm-password").fill(adminPassword);
-  await page.getByRole("button", { name: "Se connecter" }).click();
-  await page.waitForURL(/\/admin\/(?!login)/, { timeout: 30_000 });
+  await signInAdmin(page, adminEmail, adminPassword);
 }
 
 /** Appel d'API avec la session du navigateur (cookie + jeton CSRF), pour les contrôles de droits. */
@@ -123,7 +120,7 @@ test.describe("parcours connectés depuis l'interface", () => {
   test("5 · candidatures admin : les deux dossiers partenaires sont visibles et validés", async ({}, testInfo) => {
     const admin = await ctxAdmin.newPage();
     await adminLogin(admin);
-    await admin.goto("/admin/candidatures");
+    await admin.goto(adminUrl("/candidatures"));
     for (const org of [A.org, B.org]) {
       const row = admin.getByRole("row").filter({ hasText: org });
       await expect(row).toHaveCount(1, { timeout: 30_000 });
@@ -180,7 +177,7 @@ test.describe("parcours connectés depuis l'interface", () => {
 
   test("6 · produits admin : la fiche transmise est modérée puis publiée", async ({}, testInfo) => {
     const admin = await ctxAdmin.newPage();
-    await admin.goto("/admin/produits");
+    await admin.goto(adminUrl("/produits"));
     const row = admin.getByRole("row").filter({ hasText: productTitle() });
     await expect(row).toHaveCount(1, { timeout: 30_000 });
     await expect(row).toContainText(A.org);
@@ -222,7 +219,7 @@ test.describe("parcours connectés depuis l'interface", () => {
       await expect(p.getByText(`Bonjour ${d.name}`)).toBeVisible();
     }
     const admin = await ctxAdmin.newPage();
-    await admin.goto("/admin/candidatures");
+    await admin.goto(adminUrl("/candidatures"));
     const row = admin.getByRole("row").filter({ hasText: D1.email });
     await expect(row).toHaveCount(1, { timeout: 30_000 });
     await expect(row).toContainText("SUBMITTED");
@@ -263,8 +260,8 @@ test.describe("parcours connectés depuis l'interface", () => {
     expect((await api(b, "GET", "/driver/me")).status).toBeGreaterThanOrEqual(403);
     expect((await api(b, "GET", "/admin/applications/partners")).status).toBeGreaterThanOrEqual(403);
     await b.goto("/admin/produits");
-    await expect(b.locator(".adm-error")).toBeVisible({ timeout: 30_000 });
-    await expect(b.getByRole("row")).toHaveCount(0);
+    await expect(b.getByText("Erreur 404")).toBeVisible({ timeout: 30_000 });
+    await expect(b.getByRole("heading", { name: /n’existe pas/i })).toBeVisible();
     await b.screenshot({ path: testInfo.outputPath("7a-partenaire-refuse-admin.png") });
 
     // Livreur 2 : voit uniquement son propre dossier ; pas d'accès partenaire ni admin.

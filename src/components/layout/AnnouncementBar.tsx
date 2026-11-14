@@ -1,4 +1,5 @@
 import { headerUtility } from "@/content/header-navigation";
+import { HeaderAccessLinks } from "@/components/partners/HeaderAccessLinks";
 
 function PinIcon() {
   return (
@@ -70,6 +71,7 @@ export function AnnouncementBar() {
             <span aria-hidden>↗</span>
             <span className="sr-only"> (s’ouvre dans un nouvel onglet)</span>
           </a>
+          <HeaderAccessLinks variant="utility" />
         </div>
       </div>
     </div>

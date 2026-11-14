@@ -138,4 +138,37 @@ const paths: Record<NavIconId, React.ReactNode> = {
       <path d="M8.5 14.5h2M8.5 19h2M8.5 23.5h2M18 17h4M18 22h4" />
     </>
   ),
+  fridge: (
+    <>
+      <rect x="8" y="3" width="16" height="26" rx="2.5" />
+      <path d="M8 14h16M20 7.5v4M20 18v5" />
+    </>
+  ),
+  laptop: (
+    <>
+      <rect x="6" y="6" width="20" height="14" rx="1.8" />
+      <path d="M4 24h24l-2.5-4H6.5z" />
+    </>
+  ),
+  sofa: (
+    <>
+      <path d="M5 18v-3.5a3 3 0 0 1 3-3h16a3 3 0 0 1 3 3V18" />
+      <path d="M4 18h24v5H4zM8 11.5V9.5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v2" />
+      <path d="M8 23v3M24 23v3" />
+    </>
+  ),
+  cloche: (
+    <>
+      <path d="M8 18a8 8 0 0 1 16 0H8Z" />
+      <path d="M6 18h20v2.5H6zM16 6v4" />
+      <circle cx="16" cy="5" r="1.4" />
+    </>
+  ),
+  stroller: (
+    <>
+      <circle cx="11" cy="24" r="3" />
+      <circle cx="23" cy="24" r="3" />
+      <path d="M5 8h8l3 10h9M13 8c2.5 0 5 2 6.5 5M16 18l-2 4" />
+    </>
+  ),
 };

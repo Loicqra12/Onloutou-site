@@ -33,16 +33,16 @@ export const ctcDirect = {
 };
 
 export const ctcClaims = {
-  title: "Réclamation",
-  lead:
-    "Une réclamation sur le site, sur une demande ou sur un échange en cours utilise les mêmes canaux. Il n’existe pas d’équipe séparée, de médiateur désigné ni de délai chiffré garanti.",
+  eyebrow: "En cas de problème",
+  title: "Signaler un souci",
+  lead: "Une demande, un échange ou une page ne convient pas ? Écrivez-nous par le formulaire ou WhatsApp.",
   steps: [
-    "Indiquer votre nom et un moyen de vous répondre.",
-    "Préciser la page, le message WhatsApp ou la prestation concernés.",
-    "Dire ce que vous attendez : une correction, une explication ou une suite.",
+    { title: "Qui vous êtes", text: "Nom et moyen de réponse." },
+    { title: "Le sujet", text: "Page, message ou prestation." },
+    { title: "Votre attente", text: "Correction, explication ou suite." },
   ],
-  after:
-    "ONLOUTOU lit le message reçu, peut demander un élément manquant, puis indique la suite qu’elle donne. N’envoyez pas de pièce d’identité, de mot de passe ni de coordonnées bancaires par ce formulaire.",
+  after: "N’envoyez jamais de pièce d’identité, de mot de passe ni de coordonnées bancaires.",
+  cta: { label: "Écrire depuis le formulaire", href: "#ctc-form-title" },
 };
 
 export const ctcNeeds: { id: CtcNeedId; label: string; icon: GlyphName }[] = [
@@ -84,6 +84,7 @@ export const ctcForm = {
 
 export type CtcValues = {
   need: CtcNeedId | "";
+  familyLabel: string;
   name: string;
   phone: string;
   email: string;
@@ -93,6 +94,11 @@ export type CtcValues = {
   message: string;
 };
 
+export const ctcFamilyNote = {
+  selected: "Famille sélectionnée",
+  free: "Décrivez l’article recherché dans votre message. Aucune famille n’est reprise.",
+};
+
 /** rédigé : gabarit du message prérempli (aucun fait ajouté). */
 export function buildCtcMessage(values: CtcValues): string {
   const need = ctcNeeds.find((item) => item.id === values.need)?.label ?? "";
@@ -100,6 +106,7 @@ export function buildCtcMessage(values: CtcValues): string {
     "Bonjour ONLOUTOU, je souhaite vous écrire au sujet de mon besoin.",
     "",
     `Besoin : ${need}`,
+    values.familyLabel.trim() ? `Famille : ${values.familyLabel.trim()}` : "",
     `Nom : ${values.name.trim()}`,
     values.phone.trim() ? `Téléphone : ${values.phone.trim()}` : "",
     values.organisation.trim() ? `Organisation : ${values.organisation.trim()}` : "",

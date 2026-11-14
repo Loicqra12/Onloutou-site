@@ -29,7 +29,7 @@ test.describe("page véhicules professionnels", () => {
     await expect(search).toContainText("Modèles, tarifs et disponibilités sur proposition.");
 
     if (testInfo.project.name === "desktop") {
-      await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
+      await page.locator(".site-nav-trigger", { hasText: "Articles & équipements" }).hover();
       await expect(page.locator("#mega-equipements a", { hasText: "Véhicules professionnels" }).first()).toHaveAttribute("href", "/equipements/vehicules");
       await page.mouse.move(10, 600);
     }

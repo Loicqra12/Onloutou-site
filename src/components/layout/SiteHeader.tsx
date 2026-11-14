@@ -165,6 +165,8 @@ function HeaderShell({ pathname }: { pathname: string }) {
               {item.label}
             </a>
           ))}
+          <a href="/devenir-partenaire">Mettre mes articles en location</a>
+          <a href="/espace-partenaire/connexion">Se connecter</a>
           <a href={headerCta.href}>{headerCta.label}</a>
         </nav>
       </noscript>

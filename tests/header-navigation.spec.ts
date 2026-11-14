@@ -507,7 +507,9 @@ test.describe("barre jaune supérieure", () => {
     await expect(bar).toContainText("Abidjan, Côte d’Ivoire");
     const phone = bar.getByRole("link", { name: "05 54 13 77 77" });
     await expect(phone).toHaveAttribute("href", "tel:+2250554137777");
-    await expect(bar.locator(".site-header-utility-sep")).toHaveCount(1);
+    await expect(bar.locator(".site-header-utility-sep")).toHaveCount(3);
+    await expect(bar.getByRole("link", { name: "Mettre mes articles en location" })).toHaveAttribute("href", "/devenir-partenaire");
+    await expect(bar.getByRole("link", { name: "Se connecter" })).toHaveAttribute("href", "/espace-partenaire/connexion");
     const wa = bar.getByRole("link", { name: /Échanger sur WhatsApp/ });
     await expect(wa).toHaveAttribute("href", "https://wa.me/2250554137777");
     await expect(wa).toHaveAttribute("target", "_blank");

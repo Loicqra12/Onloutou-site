@@ -28,6 +28,7 @@ export function HomPartners() {
                   height={logo.visualMaxHeight ?? logo.height}
                   sizes="180px"
                   className="hom-partners__img"
+                  style={{ width: "auto", height: "auto" }}
                 />
               </span>
               <span className="hom-partners__label">{homPartners.labels[logo.id]}</span>

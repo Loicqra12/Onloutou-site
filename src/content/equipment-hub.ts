@@ -1,4 +1,5 @@
 import { whatsappUrlForMessage } from "@/content/contact-page";
+import { megaMenuEquipementsImage } from "@/content/mega-menu-equipements-image";
 import type { EqpIconName } from "@/components/equipment/hub/EqpIcon";
 
 const media = "/assets/images/equipment/hub";
@@ -11,10 +12,10 @@ export const eqpHero = {
   secondaryCta: { label: "Présenter mon besoin", href: "#orientation-equipement" },
   caveat: "Références et disponibilités à confirmer après qualification.",
   image: {
-    src: "/assets/images/menu/mega-menu-equipements-onloutou.png",
-    alt: "Technicien accroupi contrôlant un groupe électrogène, avec un utilitaire et une moto en arrière-plan",
-    width: 1586,
-    height: 992,
+    src: megaMenuEquipementsImage.src,
+    alt: megaMenuEquipementsImage.alt,
+    width: megaMenuEquipementsImage.width,
+    height: megaMenuEquipementsImage.height,
   },
   breadcrumb: [{ label: "Accueil", href: "/" }, { label: "Équipements" }],
 };

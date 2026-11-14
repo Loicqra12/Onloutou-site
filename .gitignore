@@ -19,8 +19,23 @@ coverage
 Thumbs.db
 backend/dist
 backend/.env
+admin/dist
 
 playwright-report-forms
 
 .next-lws
 lws-deploy
+
+# Fichiers temporaires
+lws-deploy.zip
+home-320.png
+enf-t50-caps/
+enf-t51-caps/
+rec-t49-caps/
+backend/tmp-create-request.ts
+mk-rec-webp.cjs
+scaffold-rec.cjs
+tools-mk-mob-webp.cjs
+tools-scaffold-mob.cjs
+write-dem.cjs
+.vscode/

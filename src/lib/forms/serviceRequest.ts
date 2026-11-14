@@ -52,6 +52,39 @@ export async function submitGenericRequest(body: SubmitGenericRequestBody): Prom
   return { ok: true, reference: res.data.reference, recordedAt: res.data.recordedAt };
 }
 
+export type CatalogSubmitResult =
+  | { ok: true; reference: string }
+  | { ok: false; error: string };
+
+const catalogSaveFallback =
+  "La demande n’a pas pu être enregistrée. Réessayez dans un instant : vos informations sont conservées dans le formulaire.";
+
+/** Envoi d’une demande catalogue : référence réelle si l’API répond, sinon message d’erreur (pas de faux ONL-DEMO). */
+export function useCatalogFamilySubmit(demoReference: string) {
+  const clientRequestIdRef = useRef<string | null>(null);
+
+  return useCallback(
+    async (body: Omit<SubmitGenericRequestBody, "clientRequestId">): Promise<CatalogSubmitResult> => {
+      if (!apiEnabled()) {
+        return { ok: true, reference: demoReference };
+      }
+      if (!clientRequestIdRef.current) {
+        clientRequestIdRef.current = newClientRequestId();
+      }
+      const result = await submitGenericRequest({
+        ...body,
+        clientRequestId: clientRequestIdRef.current,
+      });
+      if (!result.ok) {
+        if (result.status === 409) clientRequestIdRef.current = null;
+        return { ok: false, error: result.error || catalogSaveFallback };
+      }
+      return { ok: true, reference: result.reference };
+    },
+    [demoReference],
+  );
+}
+
 /** Texte standard après enregistrement (pas une confirmation de réservation). */
 export function requestRecordedMessage(reference: string): string {
   return `Demande enregistrée. Référence : ${reference}. Conservez-la pour vos échanges. Elle ne confirme pas une réservation.`;

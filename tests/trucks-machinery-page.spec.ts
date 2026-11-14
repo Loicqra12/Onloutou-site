@@ -31,7 +31,7 @@ test.describe("page camions et engins", () => {
     await expect(search).toContainText("Disponibilités, capacités et conditions à confirmer.");
 
     if (testInfo.project.name === "desktop") {
-      await page.locator(".site-nav-trigger", { hasText: "Équipements" }).hover();
+      await page.locator(".site-nav-trigger", { hasText: "Articles & équipements" }).hover();
       await expect(page.locator("#mega-equipements a", { hasText: "Camions & engins" }).first()).toHaveAttribute(
         "href",
         "/equipements/camions-engins",

@@ -34,6 +34,12 @@ export default defineConfig({
       reuseExistingServer: true,
       timeout: 120_000,
     },
+    {
+      command: "npm run dev:admin",
+      url: process.env.ADMIN_ORIGIN ?? "http://127.0.0.1:3001",
+      reuseExistingServer: true,
+      timeout: 120_000,
+    },
   ],
   projects: [
     { name: "desktop", use: { viewport: { width: 1440, height: 900 } } },

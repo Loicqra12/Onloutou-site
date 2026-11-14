@@ -124,6 +124,32 @@
       gap: 0.6rem;
     }
   }
+
+  .site-header-utility-partner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  @media (max-width: 899px) {
+    .site-header-utility-label--rent,
+    .site-header-utility-label--login {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 719px) {
+    .site-header-utility-partner,
+    .site-header-utility-sep--partner {
+      display: none;
+    }
+  }
+
   /* ── Barre principale ─────────────────────────────────────────── */
   .site-header-bar {
     width: var(--nh-container);
@@ -525,6 +551,7 @@
   .mega-visual-link:focus-visible,
   .mega-card:focus-visible,
   .mega-family:focus-visible,
+  .mega-btn-yellow:focus-visible,
   .mega-promo-link:focus-visible {
     outline: 2px solid var(--nh-yellow);
     outline-offset: 2px;
@@ -750,6 +777,110 @@
     font-weight: 600;
   }
 
+  /* deux colonnes : articles du quotidien + matériel professionnel */
+  .mega-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--mega-aside, 0.78fr));
+    gap: 0;
+    align-items: start;
+  }
+
+  .mega-split-cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .mega-split-col + .mega-split-col {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--nh-line);
+  }
+
+  .mega-split-title {
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .mega-split-hint {
+    margin: 0.4rem 0 0;
+    color: var(--nh-muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .mega-split-list {
+    margin: 0.7rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mega-split .mega-family {
+    padding: 0.7rem 0.4rem 0.7rem 0;
+    gap: 0.85rem;
+    min-height: 44px;
+  }
+
+  .mega-split .mega-family .mega-group-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .mega-split .mega-family .mega-group-title {
+    font-size: 0.98rem;
+  }
+
+  .mega-split .mega-family .mega-group-desc {
+    margin-top: 0.12rem;
+    font-size: 13px;
+  }
+
+  .mega-split-aside {
+    padding-left: 1.5rem;
+  }
+
+  .mega-btn-yellow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    width: 100%;
+    min-height: 52px;
+    margin-top: 0.9rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    background: var(--nh-yellow);
+    color: #141414;
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .mega-btn-yellow:hover {
+    filter: brightness(1.04);
+  }
+
+  .mega-btn-yellow:focus-visible {
+    outline: 2px solid var(--nh-yellow);
+    outline-offset: 3px;
+  }
+
+  .mega-split-promo {
+    margin: 0.85rem 0 0;
+    color: #deded6;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  .mega-split-promo .mega-cta {
+    margin-top: 0;
+  }
+
   /* cartes projets */
   .mega-cards {
     display: grid;
@@ -909,7 +1040,7 @@
   }
 
   .site-mobile-panel {
-    padding: 0.25rem 0 1rem 0.25rem;
+    padding: 0.25rem 0 1.5rem 0.25rem;
   }
 
   .site-mobile-panel[hidden] {
@@ -946,6 +1077,33 @@
     color: #e9e9e1;
     font-size: 0.98rem;
     text-decoration: none;
+  }
+
+  .site-mobile-sublink.has-icon {
+    justify-content: flex-start;
+    gap: 0.7rem;
+    border-left: 0;
+    padding-left: 0.15rem;
+  }
+
+  .site-mobile-subicon {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    color: var(--nh-yellow);
+  }
+
+  .site-mobile-sublink.is-yellow {
+    display: flex;
+    justify-content: center;
+    gap: 0.45rem;
+    margin: 0.85rem 0 0.35rem;
+    min-height: 48px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--nh-yellow);
+    color: #141414;
+    font-weight: 800;
   }
 
   .site-mobile-sublink:hover,
@@ -1053,10 +1211,30 @@
       --nh-bar-h: 76px;
     }
 
+    /* Plus de largeur utile sur grand écran, sans toucher au mobile. */
+    .site-header {
+      --nh-container: min(1320px, calc(100% - clamp(2rem, 4vw, 3.5rem)));
+    }
+
     .site-header-bar {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: stretch;
+      /* Respiration entre logo, navigation et bouton. */
+      column-gap: clamp(1.5rem, 2.6vw, 3rem);
+    }
+
+    .site-nav-list {
+      gap: 0.3rem;
+    }
+
+    .site-nav-control {
+      padding: 0 0.85rem;
+    }
+
+    .site-nav-control::after {
+      left: 0.85rem;
+      right: 0.85rem;
     }
 
     .site-header-toggle,
@@ -1074,14 +1252,20 @@
     }
   }
 
+  /* Écrans 1200–1359 px : on resserre légèrement, mais jamais à zéro. */
   @media (min-width: 1200px) and (max-width: 1359px) {
     .site-nav-control {
-      padding: 0 0.6rem;
+      padding: 0 0.65rem;
+      font-size: 0.84rem;
     }
 
     .site-nav-control::after {
-      left: 0.6rem;
-      right: 0.6rem;
+      left: 0.65rem;
+      right: 0.65rem;
+    }
+
+    .site-nav-list {
+      gap: 0.15rem;
     }
   }
 

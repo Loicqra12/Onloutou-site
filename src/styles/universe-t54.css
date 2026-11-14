@@ -1,0 +1,655 @@
+/* t54 — harmonisation des 5 familles. Ne cible que elm/inf/mob/rec/enf. */
+/* Les pages Véhicules et Camions & engins n’importent pas ce fichier. */
+
+/* ---------- 1. Champs : une enveloppe, un focus ---------- */
+
+/* Neutraliser le contour page (spécificité 0,2,1) à l’intérieur de l’enveloppe. */
+.elm-page .elm-field--icon input:focus, .elm-page .elm-field--icon input:focus-visible, .elm-page .elm-field--icon select:focus, .elm-page .elm-field--icon select:focus-visible, .elm-page .elm-search__control input:focus, .elm-page .elm-search__control input:focus-visible, .elm-page .elm-search__control select:focus, .elm-page .elm-search__control select:focus-visible, .elm-page .elm-other__field input:focus, .elm-page .elm-other__field input:focus-visible, .elm-page .elm-filters__select input:focus, .elm-page .elm-filters__select select:focus, .elm-page .elm-filters__select input:focus-visible, .elm-page .elm-filters__select select:focus-visible,
+.inf-page .inf-field--icon input:focus, .inf-page .inf-field--icon input:focus-visible, .inf-page .inf-field--icon select:focus, .inf-page .inf-field--icon select:focus-visible, .inf-page .inf-search__control input:focus, .inf-page .inf-search__control input:focus-visible, .inf-page .inf-search__control select:focus, .inf-page .inf-search__control select:focus-visible, .inf-page .inf-other__field input:focus, .inf-page .inf-other__field input:focus-visible, .inf-page .inf-filters__select input:focus, .inf-page .inf-filters__select select:focus, .inf-page .inf-filters__select input:focus-visible, .inf-page .inf-filters__select select:focus-visible,
+.mob-page .mob-field--icon input:focus, .mob-page .mob-field--icon input:focus-visible, .mob-page .mob-field--icon select:focus, .mob-page .mob-field--icon select:focus-visible, .mob-page .mob-search__control input:focus, .mob-page .mob-search__control input:focus-visible, .mob-page .mob-search__control select:focus, .mob-page .mob-search__control select:focus-visible, .mob-page .mob-other__field input:focus, .mob-page .mob-other__field input:focus-visible, .mob-page .mob-filters__select input:focus, .mob-page .mob-filters__select select:focus, .mob-page .mob-filters__select input:focus-visible, .mob-page .mob-filters__select select:focus-visible,
+.rec-page .rec-field--icon input:focus, .rec-page .rec-field--icon input:focus-visible, .rec-page .rec-field--icon select:focus, .rec-page .rec-field--icon select:focus-visible, .rec-page .rec-search__control input:focus, .rec-page .rec-search__control input:focus-visible, .rec-page .rec-search__control select:focus, .rec-page .rec-search__control select:focus-visible, .rec-page .rec-other__field input:focus, .rec-page .rec-other__field input:focus-visible, .rec-page .rec-filters__select input:focus, .rec-page .rec-filters__select select:focus, .rec-page .rec-filters__select input:focus-visible, .rec-page .rec-filters__select select:focus-visible,
+.enf-page .enf-field--icon input:focus, .enf-page .enf-field--icon input:focus-visible, .enf-page .enf-field--icon select:focus, .enf-page .enf-field--icon select:focus-visible, .enf-page .enf-search__control input:focus, .enf-page .enf-search__control input:focus-visible, .enf-page .enf-search__control select:focus, .enf-page .enf-search__control select:focus-visible, .enf-page .enf-other__field input:focus, .enf-page .enf-other__field input:focus-visible, .enf-page .enf-filters__select input:focus, .enf-page .enf-filters__select select:focus, .enf-page .enf-filters__select input:focus-visible, .enf-page .enf-filters__select select:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.elm-buy__field .elm-field--icon input, .elm-buy__field .elm-field--icon select, .elm-field.elm-field--icon input, .elm-field.elm-field--icon select, .elm-field--icon input, .elm-field--icon select,
+.inf-buy__field .inf-field--icon input, .inf-buy__field .inf-field--icon select, .inf-field.inf-field--icon input, .inf-field.inf-field--icon select, .inf-field--icon input, .inf-field--icon select,
+.mob-buy__field .mob-field--icon input, .mob-buy__field .mob-field--icon select, .mob-field.mob-field--icon input, .mob-field.mob-field--icon select, .mob-field--icon input, .mob-field--icon select,
+.rec-buy__field .rec-field--icon input, .rec-buy__field .rec-field--icon select, .rec-field.rec-field--icon input, .rec-field.rec-field--icon select, .rec-field--icon input, .rec-field--icon select,
+.enf-buy__field .enf-field--icon input, .enf-buy__field .enf-field--icon select, .enf-field.enf-field--icon input, .enf-field.enf-field--icon select, .enf-field--icon input, .enf-field--icon select {
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent;
+  min-height: 46px;
+  height: 46px;
+  padding-left: 0;
+}
+
+.elm-field--icon, .elm-search__control, .elm-other__field, .elm-filters__select,
+.inf-field--icon, .inf-search__control, .inf-other__field, .inf-filters__select,
+.mob-field--icon, .mob-search__control, .mob-other__field, .mob-filters__select,
+.rec-field--icon, .rec-search__control, .rec-other__field, .rec-filters__select,
+.enf-field--icon, .enf-search__control, .enf-other__field, .enf-filters__select {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 0 14px;
+  border: 1px solid #dcd8cc;
+  border-radius: 6px;
+  background: #fff;
+  position: relative;
+}
+
+.elm-field--icon:focus-within, .elm-search__control:focus-within, .elm-other__field:focus-within, .elm-filters__select:focus-within,
+.inf-field--icon:focus-within, .inf-search__control:focus-within, .inf-other__field:focus-within, .inf-filters__select:focus-within,
+.mob-field--icon:focus-within, .mob-search__control:focus-within, .mob-other__field:focus-within, .mob-filters__select:focus-within,
+.rec-field--icon:focus-within, .rec-search__control:focus-within, .rec-other__field:focus-within, .rec-filters__select:focus-within,
+.enf-field--icon:focus-within, .enf-search__control:focus-within, .enf-other__field:focus-within, .enf-filters__select:focus-within {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.25);
+}
+
+.elm-field--icon.is-error, .elm-field.is-error, .elm-field--icon[aria-invalid='true'],
+.inf-field--icon.is-error, .inf-field.is-error, .inf-field--icon[aria-invalid='true'],
+.mob-field--icon.is-error, .mob-field.is-error, .mob-field--icon[aria-invalid='true'],
+.rec-field--icon.is-error, .rec-field.is-error, .rec-field--icon[aria-invalid='true'],
+.enf-field--icon.is-error, .enf-field.is-error, .enf-field--icon[aria-invalid='true'] {
+  border-color: #b42318;
+  box-shadow: 0 0 0 2px rgba(180, 35, 24, 0.22);
+}
+
+.elm-field--icon:has(:disabled), .elm-field:has(:disabled),
+.inf-field--icon:has(:disabled), .inf-field:has(:disabled),
+.mob-field--icon:has(:disabled), .mob-field:has(:disabled),
+.rec-field--icon:has(:disabled), .rec-field:has(:disabled),
+.enf-field--icon:has(:disabled), .enf-field:has(:disabled) {
+  background: #f4f1ea;
+  color: #8d8d8d;
+  cursor: not-allowed;
+}
+
+.elm-field--icon:has(select:not([value='']):not(:has(option[value='']:checked))), .elm-field--icon:has(input:not(:placeholder-shown):not([value=''])),
+.inf-field--icon:has(select:not([value='']):not(:has(option[value='']:checked))), .inf-field--icon:has(input:not(:placeholder-shown):not([value=''])),
+.mob-field--icon:has(select:not([value='']):not(:has(option[value='']:checked))), .mob-field--icon:has(input:not(:placeholder-shown):not([value=''])),
+.rec-field--icon:has(select:not([value='']):not(:has(option[value='']:checked))), .rec-field--icon:has(input:not(:placeholder-shown):not([value=''])),
+.enf-field--icon:has(select:not([value='']):not(:has(option[value='']:checked))), .enf-field--icon:has(input:not(:placeholder-shown):not([value=''])) {
+  border-color: #cfc8b6;
+}
+
+.elm-qty__ctrl button,
+.inf-qty__ctrl button,
+.mob-qty__ctrl button,
+.rec-qty__ctrl button,
+.enf-qty__ctrl button {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.elm-product-card__actions .elm-btn, .elm-search .elm-btn,
+.inf-product-card__actions .inf-btn, .inf-search .inf-btn,
+.mob-product-card__actions .mob-btn, .mob-search .mob-btn,
+.rec-product-card__actions .rec-btn, .rec-search .rec-btn,
+.enf-product-card__actions .enf-btn, .enf-search .enf-btn {
+  min-height: 44px;
+}
+
+.elm-buy .elm-btn--block,
+.inf-buy .inf-btn--block,
+.mob-buy .mob-btn--block,
+.rec-buy .rec-btn--block,
+.enf-buy .enf-btn--block {
+  min-height: 52px;
+  margin-top: 4px;
+}
+
+/* Champs demande : si le label wrappe un input nu, une seule bordure */
+.elm-field:not(.elm-field--icon) input, .elm-field:not(.elm-field--icon) select, .elm-field:not(.elm-field--icon) textarea,
+.inf-field:not(.inf-field--icon) input, .inf-field:not(.inf-field--icon) select, .inf-field:not(.inf-field--icon) textarea,
+.mob-field:not(.mob-field--icon) input, .mob-field:not(.mob-field--icon) select, .mob-field:not(.mob-field--icon) textarea,
+.rec-field:not(.rec-field--icon) input, .rec-field:not(.rec-field--icon) select, .rec-field:not(.rec-field--icon) textarea,
+.enf-field:not(.enf-field--icon) input, .enf-field:not(.enf-field--icon) select, .enf-field:not(.enf-field--icon) textarea {
+  border: 1px solid #dcd8cc;
+  border-radius: 6px;
+}
+.elm-page .elm-field:not(.elm-field--icon) input:focus, .elm-page .elm-field:not(.elm-field--icon) input:focus-visible, .elm-page .elm-field:not(.elm-field--icon) select:focus, .elm-page .elm-field:not(.elm-field--icon) select:focus-visible, .elm-page .elm-field:not(.elm-field--icon) textarea:focus, .elm-page .elm-field:not(.elm-field--icon) textarea:focus-visible,
+.inf-page .inf-field:not(.inf-field--icon) input:focus, .inf-page .inf-field:not(.inf-field--icon) input:focus-visible, .inf-page .inf-field:not(.inf-field--icon) select:focus, .inf-page .inf-field:not(.inf-field--icon) select:focus-visible, .inf-page .inf-field:not(.inf-field--icon) textarea:focus, .inf-page .inf-field:not(.inf-field--icon) textarea:focus-visible,
+.mob-page .mob-field:not(.mob-field--icon) input:focus, .mob-page .mob-field:not(.mob-field--icon) input:focus-visible, .mob-page .mob-field:not(.mob-field--icon) select:focus, .mob-page .mob-field:not(.mob-field--icon) select:focus-visible, .mob-page .mob-field:not(.mob-field--icon) textarea:focus, .mob-page .mob-field:not(.mob-field--icon) textarea:focus-visible,
+.rec-page .rec-field:not(.rec-field--icon) input:focus, .rec-page .rec-field:not(.rec-field--icon) input:focus-visible, .rec-page .rec-field:not(.rec-field--icon) select:focus, .rec-page .rec-field:not(.rec-field--icon) select:focus-visible, .rec-page .rec-field:not(.rec-field--icon) textarea:focus, .rec-page .rec-field:not(.rec-field--icon) textarea:focus-visible,
+.enf-page .enf-field:not(.enf-field--icon) input:focus, .enf-page .enf-field:not(.enf-field--icon) input:focus-visible, .enf-page .enf-field:not(.enf-field--icon) select:focus, .enf-page .enf-field:not(.enf-field--icon) select:focus-visible, .enf-page .enf-field:not(.enf-field--icon) textarea:focus, .enf-page .enf-field:not(.enf-field--icon) textarea:focus-visible {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.25);
+}
+
+/* ---------- 2. Listes d’articles ---------- */
+.elm-product-card__img,
+.inf-product-card__img,
+.mob-product-card__img,
+.rec-product-card__img,
+.enf-product-card__img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.elm-product-card__excerpt,
+.inf-product-card__excerpt,
+.mob-product-card__excerpt,
+.rec-product-card__excerpt,
+.enf-product-card__excerpt {
+  min-height: 0;
+}
+
+.elm-product-grid:has(> :only-child),
+.inf-product-grid:has(> :only-child),
+.mob-product-grid:has(> :only-child),
+.rec-product-grid:has(> :only-child),
+.enf-product-grid:has(> :only-child) {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+}
+
+.elm-product-grid:has(> :nth-child(2):last-child),
+.inf-product-grid:has(> :nth-child(2):last-child),
+.mob-product-grid:has(> :nth-child(2):last-child),
+.rec-product-grid:has(> :nth-child(2):last-child),
+.enf-product-grid:has(> :nth-child(2):last-child) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 980px;
+}
+
+@media (min-width: 800px) {
+  .elm-product-grid:has(> :only-child) .elm-product-card,
+.inf-product-grid:has(> :only-child) .inf-product-card,
+.mob-product-grid:has(> :only-child) .mob-product-card,
+.rec-product-grid:has(> :only-child) .rec-product-card,
+.enf-product-grid:has(> :only-child) .enf-product-card {
+    display: grid;
+    grid-template-columns: minmax(240px, 42%) minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
+    column-gap: 22px;
+    row-gap: 0;
+    align-items: start;
+    padding: 14px 16px 16px;
+  }
+  .elm-product-grid:has(> :only-child) .elm-product-card__img,
+.inf-product-grid:has(> :only-child) .inf-product-card__img,
+.mob-product-grid:has(> :only-child) .mob-product-card__img,
+.rec-product-grid:has(> :only-child) .rec-product-card__img,
+.enf-product-grid:has(> :only-child) .enf-product-card__img {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    width: 100%;
+    height: 100%;
+    max-height: 280px;
+    aspect-ratio: 4 / 3;
+    margin: 0;
+  }
+  .elm-product-grid:has(> :only-child) .elm-product-card__kicker,
+.inf-product-grid:has(> :only-child) .inf-product-card__kicker,
+.mob-product-grid:has(> :only-child) .mob-product-card__kicker,
+.rec-product-grid:has(> :only-child) .rec-product-card__kicker,
+.enf-product-grid:has(> :only-child) .enf-product-card__kicker {
+    grid-column: 2;
+    margin-top: 0;
+  }
+  .elm-product-grid:has(> :only-child) .elm-product-card__title, .elm-product-grid:has(> :only-child) .elm-product-card__excerpt, .elm-product-grid:has(> :only-child) .elm-product-card__actions, .elm-product-grid:has(> :only-child) .elm-unit-badge,
+.inf-product-grid:has(> :only-child) .inf-product-card__title, .inf-product-grid:has(> :only-child) .inf-product-card__excerpt, .inf-product-grid:has(> :only-child) .inf-product-card__actions, .inf-product-grid:has(> :only-child) .inf-unit-badge,
+.mob-product-grid:has(> :only-child) .mob-product-card__title, .mob-product-grid:has(> :only-child) .mob-product-card__excerpt, .mob-product-grid:has(> :only-child) .mob-product-card__actions, .mob-product-grid:has(> :only-child) .mob-unit-badge,
+.rec-product-grid:has(> :only-child) .rec-product-card__title, .rec-product-grid:has(> :only-child) .rec-product-card__excerpt, .rec-product-grid:has(> :only-child) .rec-product-card__actions, .rec-product-grid:has(> :only-child) .rec-unit-badge,
+.enf-product-grid:has(> :only-child) .enf-product-card__title, .enf-product-grid:has(> :only-child) .enf-product-card__excerpt, .enf-product-grid:has(> :only-child) .enf-product-card__actions, .enf-product-grid:has(> :only-child) .enf-unit-badge {
+    grid-column: 2;
+  }
+}
+
+.elm-aisle-layout.is-compact,
+.inf-aisle-layout.is-compact,
+.mob-aisle-layout.is-compact,
+.rec-aisle-layout.is-compact,
+.enf-aisle-layout.is-compact {
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.elm-aisle-layout.is-compact .elm-filters,
+.inf-aisle-layout.is-compact .inf-filters,
+.mob-aisle-layout.is-compact .mob-filters,
+.rec-aisle-layout.is-compact .rec-filters,
+.enf-aisle-layout.is-compact .enf-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.elm-aisle-layout.is-compact .elm-filters__group,
+.inf-aisle-layout.is-compact .inf-filters__group,
+.mob-aisle-layout.is-compact .mob-filters__group,
+.rec-aisle-layout.is-compact .rec-filters__group,
+.enf-aisle-layout.is-compact .enf-filters__group {
+  display: none;
+}
+
+.elm-aisle-layout.is-compact .elm-advice, .elm-aisle-layout.is-compact .elm-filters__title,
+.inf-aisle-layout.is-compact .inf-advice, .inf-aisle-layout.is-compact .inf-filters__title,
+.mob-aisle-layout.is-compact .mob-advice, .mob-aisle-layout.is-compact .mob-filters__title,
+.rec-aisle-layout.is-compact .rec-advice, .rec-aisle-layout.is-compact .rec-filters__title,
+.enf-aisle-layout.is-compact .enf-advice, .enf-aisle-layout.is-compact .enf-filters__title {
+  margin: 0;
+}
+
+.elm-aisle-layout.is-compact .elm-filters__title,
+.inf-aisle-layout.is-compact .inf-filters__title,
+.mob-aisle-layout.is-compact .mob-filters__title,
+.rec-aisle-layout.is-compact .rec-filters__title,
+.enf-aisle-layout.is-compact .enf-filters__title {
+  display: none;
+}
+
+.elm-empty,
+.inf-empty,
+.mob-empty,
+.rec-empty,
+.enf-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 560px;
+  padding: 24px 8px 12px;
+}
+
+/* ---------- 3. Fiches : galerie plus basse, miniatures contenues ---------- */
+.elm-gallery__main,
+.inf-gallery__main,
+.mob-gallery__main,
+.rec-gallery__main,
+.enf-gallery__main {
+  aspect-ratio: 16 / 10;
+  max-height: min(48vh, 440px);
+  width: 100%;
+  object-fit: cover;
+}
+
+.elm-gallery__thumbs,
+.inf-gallery__thumbs,
+.mob-gallery__thumbs,
+.rec-gallery__thumbs,
+.enf-gallery__thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.elm-gallery__thumbs li,
+.inf-gallery__thumbs li,
+.mob-gallery__thumbs li,
+.rec-gallery__thumbs li,
+.enf-gallery__thumbs li {
+  flex: 0 0 auto;
+  width: 72px;
+}
+
+.elm-gallery__thumbs button,
+.inf-gallery__thumbs button,
+.mob-gallery__thumbs button,
+.rec-gallery__thumbs button,
+.enf-gallery__thumbs button {
+  width: 72px;
+}
+
+.elm-gallery__thumbs img,
+.inf-gallery__thumbs img,
+.mob-gallery__thumbs img,
+.rec-gallery__thumbs img,
+.enf-gallery__thumbs img {
+  width: 72px;
+  height: 72px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.elm-gallery__caption,
+.inf-gallery__caption,
+.mob-gallery__caption,
+.rec-gallery__caption,
+.enf-gallery__caption {
+  margin-top: 8px;
+  font-size: 0.86rem;
+  color: #5c5c5c;
+}
+
+.elm-gallery__variant,
+.inf-gallery__variant,
+.mob-gallery__variant,
+.rec-gallery__variant,
+.enf-gallery__variant {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #444;
+  text-align: center;
+}
+
+.elm-buy,
+.inf-buy,
+.mob-buy,
+.rec-buy,
+.enf-buy {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.elm-buy__facts,
+.inf-buy__facts,
+.mob-buy__facts,
+.rec-buy__facts,
+.enf-buy__facts {
+  margin-bottom: 14px;
+}
+
+.elm-buy__field,
+.inf-buy__field,
+.mob-buy__field,
+.rec-buy__field,
+.enf-buy__field {
+  margin-bottom: 10px;
+}
+
+.elm-qty,
+.inf-qty,
+.mob-qty,
+.rec-qty,
+.enf-qty {
+  margin: 4px 0 14px;
+}
+
+/* ---------- 4. Guide d’entrée (critères compacts) ---------- */
+.elm-guide,
+.inf-guide,
+.mob-guide,
+.rec-guide,
+.enf-guide {
+  margin: clamp(28px, 4cqw, 56px) 0 0;
+}
+
+.elm-guide__title,
+.inf-guide__title,
+.mob-guide__title,
+.rec-guide__title,
+.enf-guide__title {
+  margin: 0 0 16px;
+}
+
+.elm-guide__uses,
+.inf-guide__uses,
+.mob-guide__uses,
+.rec-guide__uses,
+.enf-guide__uses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.elm-guide__uses li,
+.inf-guide__uses li,
+.mob-guide__uses li,
+.rec-guide__uses li,
+.enf-guide__uses li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid #e6e2d6;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.86rem;
+}
+
+.elm-guide__uses svg,
+.inf-guide__uses svg,
+.mob-guide__uses svg,
+.rec-guide__uses svg,
+.enf-guide__uses svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.elm-guide__grid,
+.inf-guide__grid,
+.mob-guide__grid,
+.rec-guide__grid,
+.enf-guide__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(16px, 2cqw, 28px);
+}
+
+.elm-guide__criteria, .elm-guide__precis,
+.inf-guide__criteria, .inf-guide__precis,
+.mob-guide__criteria, .mob-guide__precis,
+.rec-guide__criteria, .rec-guide__precis,
+.enf-guide__criteria, .enf-guide__precis {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.elm-guide__criteria li, .elm-guide__precis li,
+.inf-guide__criteria li, .inf-guide__precis li,
+.mob-guide__criteria li, .mob-guide__precis li,
+.rec-guide__criteria li, .rec-guide__precis li,
+.enf-guide__criteria li, .enf-guide__precis li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.elm-guide__criteria svg, .elm-guide__precis svg,
+.inf-guide__criteria svg, .inf-guide__precis svg,
+.mob-guide__criteria svg, .mob-guide__precis svg,
+.rec-guide__criteria svg, .rec-guide__precis svg,
+.enf-guide__criteria svg, .enf-guide__precis svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  color: #111;
+}
+
+.elm-guide__criteria strong, .elm-guide__precis strong,
+.inf-guide__criteria strong, .inf-guide__precis strong,
+.mob-guide__criteria strong, .mob-guide__precis strong,
+.rec-guide__criteria strong, .rec-guide__precis strong,
+.enf-guide__criteria strong, .enf-guide__precis strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.elm-guide__criteria span, .elm-guide__precis span,
+.inf-guide__criteria span, .inf-guide__precis span,
+.mob-guide__criteria span, .mob-guide__precis span,
+.rec-guide__criteria span, .rec-guide__precis span,
+.enf-guide__criteria span, .enf-guide__precis span {
+  display: block;
+  color: #5c5c5c;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.elm-guide h3,
+.inf-guide h3,
+.mob-guide h3,
+.rec-guide h3,
+.enf-guide h3 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+@media (max-width: 799px) {
+  .elm-guide__grid,
+.inf-guide__grid,
+.mob-guide__grid,
+.rec-guide__grid,
+.enf-guide__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Rendre le bloc « autre article » plus visible, comme la bannière de référence */
+.elm-other,
+.inf-other,
+.mob-other,
+.rec-other,
+.enf-other {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  margin-top: clamp(22px, 3cqw, 36px);
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid #e6e2d6;
+  border-radius: 8px;
+}
+
+.elm-other__icon,
+.inf-other__icon,
+.mob-other__icon,
+.rec-other__icon,
+.enf-other__icon {
+  width: 28px;
+  height: 28px;
+  color: #111;
+}
+
+.elm-other__copy,
+.inf-other__copy,
+.mob-other__copy,
+.rec-other__copy,
+.enf-other__copy {
+  min-width: 0;
+}
+
+.elm-other__copy strong,
+.inf-other__copy strong,
+.mob-other__copy strong,
+.rec-other__copy strong,
+.enf-other__copy strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.elm-other__copy span,
+.inf-other__copy span,
+.mob-other__copy span,
+.rec-other__copy span,
+.enf-other__copy span {
+  display: block;
+  color: #5c5c5c;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 699px) {
+  .elm-other,
+.inf-other,
+.mob-other,
+.rec-other,
+.enf-other {
+    grid-template-columns: 1fr;
+  }
+}
+
+.enf-product-card__actions,
+.elm-product-card__actions,
+.inf-product-card__actions,
+.mob-product-card__actions,
+.rec-product-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+.enf-product-card__sheet,
+.elm-product-card__sheet,
+.inf-product-card__sheet,
+.mob-product-card__sheet,
+.rec-product-card__sheet {
+  margin-bottom: 0;
+  flex: 1 1 auto;
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* t56 date-range + card images */
+.elm-date-range,
+.inf-date-range,
+.mob-date-range,
+.rec-date-range,
+.enf-date-range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  min-width: 0;
+}
+.elm-search .elm-date-range,
+.inf-search .inf-date-range,
+.mob-search .mob-date-range,
+.rec-search .rec-date-range,
+.enf-search .enf-date-range {
+  grid-template-columns: 1fr;
+}
+.elm-aisle-tools .elm-date-range,
+.inf-aisle-tools .inf-date-range,
+.mob-aisle-tools .mob-date-range,
+.rec-aisle-tools .rec-date-range,
+.enf-aisle-tools .enf-date-range {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+.elm-product-card__img,
+.inf-product-card__img,
+.mob-product-card__img,
+.rec-product-card__img,
+.enf-product-card__img {
+  object-fit: cover;
+  object-position: center;
+}
+.elm-product-card__img img,
+.inf-product-card__img img,
+.mob-product-card__img img,
+.rec-product-card__img img,
+.enf-product-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+@media (max-width: 520px) {
+  .elm-date-range,
+  .inf-date-range,
+  .mob-date-range,
+  .rec-date-range,
+  .enf-date-range {
+    grid-template-columns: 1fr;
+  }
+}

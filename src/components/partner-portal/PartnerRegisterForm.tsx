@@ -4,15 +4,24 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { apiFetch } from "@/lib/api/client";
+import { dpAuth, dpPaths } from "@/content/devenir-partenaire";
+import { DpIcon } from "@/components/partners/DpIcon";
+import { DpPicture } from "@/components/partners/DpPicture";
 
 export function PartnerRegisterForm() {
   const router = useRouter();
+  const c = dpAuth.register;
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const [show, setShow] = useState(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    if (!form.get("terms")) {
+      setError("Veuillez accepter les conditions d’utilisation.");
+      return;
+    }
     setPending(true);
     setError(null);
     const res = await apiFetch("/auth/register/partner", {
@@ -21,10 +30,7 @@ export function PartnerRegisterForm() {
         email: String(form.get("email")),
         password: String(form.get("password")),
         displayName: String(form.get("displayName")),
-        organizationName: String(form.get("organizationName")),
-        partnerType: String(form.get("partnerType")),
-        zone: String(form.get("zone") || "") || undefined,
-        description: String(form.get("description") || "") || undefined,
+        termsAccepted: true,
       },
     });
     setPending(false);
@@ -32,36 +38,77 @@ export function PartnerRegisterForm() {
       setError(res.error);
       return;
     }
-    router.push("/espace-partenaire/catalogue?candidature=recue");
+    router.push(dpPaths.home);
+    router.refresh();
   }
 
   return (
-    <form className="adm-form" onSubmit={onSubmit}>
-      <label htmlFor="fld-email">E-mail</label>
-      <input className="adm-input" id="fld-email" name="email" type="email" required />
-      <label htmlFor="fld-password">Mot de passe (10 caractères min.)</label>
-      <input className="adm-input" id="fld-password" name="password" type="password" minLength={10} required />
-      <label htmlFor="fld-displayName">Votre nom</label>
-      <input className="adm-input" id="fld-displayName" name="displayName" required />
-      <label htmlFor="fld-organizationName">Organisation</label>
-      <input className="adm-input" id="fld-organizationName" name="organizationName" required />
-      <label htmlFor="fld-partnerType">Type</label>
-      <select className="adm-input" id="fld-partnerType" name="partnerType" required defaultValue="SUPPLIER">
-        <option value="SUPPLIER">Fournisseur d’équipements</option>
-        <option value="DELIVERY">Livraison</option>
-        <option value="TECH">Technologique</option>
-      </select>
-      <label htmlFor="fld-zone">Zone</label>
-      <input className="adm-input" id="fld-zone" name="zone" />
-      <label htmlFor="fld-description">Description</label>
-      <textarea className="adm-input" id="fld-description" name="description" rows={3} />
-      {error ? <p className="adm-error" role="alert">{error}</p> : null}
-      <button type="submit" className="adm-btn" disabled={pending}>
-        {pending ? "Création…" : "Créer mon dossier"}
-      </button>
-      <p className="adm-note">
-        Déjà inscrit ? <Link href="/espace-partenaire/connexion">Se connecter</Link>
+    <div className="pa-reg">
+      <div className="pa-intro">
+        <h1>{c.introTitle}</h1>
+        <p>{c.introLead}</p>
+        <div className="pa-photos">
+          {c.photos.map((image) => (
+            <DpPicture key={image.file} image={image} sizes="(max-width: 700px) 50vw, 22vw" />
+          ))}
+        </div>
+        <ul className="pa-bullets">
+          {c.bullets.map((item, index) => (
+            <li key={item}>
+              <DpIcon name={index === 0 ? "layers" : index === 1 ? "pen" : "shield"} />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="pa-card">
+        <h1>{c.title}</h1>
+        <p className="pa-lead">
+          {c.already} <Link href={dpPaths.login} className="pa-link">{c.login}</Link>
+        </p>
+        <form className="pa-form" onSubmit={onSubmit} noValidate>
+          <div className="pa-field">
+            <label htmlFor="fld-displayName">{c.name}</label>
+            <div className="pa-field__control">
+              <DpIcon name="user" />
+              <input id="fld-displayName" name="displayName" required autoComplete="name" placeholder={c.namePlaceholder} />
+            </div>
+          </div>
+          <div className="pa-field">
+            <label htmlFor="fld-email">{c.email}</label>
+            <div className="pa-field__control">
+              <DpIcon name="mail" />
+              <input id="fld-email" name="email" type="email" required autoComplete="email" placeholder={c.emailPlaceholder} />
+            </div>
+          </div>
+          <div className="pa-field">
+            <label htmlFor="fld-password">{c.password}</label>
+            <div className="pa-field__control">
+              <DpIcon name="lock" />
+              <input id="fld-password" name="password" type={show ? "text" : "password"} required minLength={10} autoComplete="new-password" placeholder={c.passwordPlaceholder} />
+              <button type="button" className="pa-field__toggle" onClick={() => setShow((v) => !v)} aria-pressed={show} aria-label={show ? "Masquer le mot de passe" : "Afficher le mot de passe"}>
+                <DpIcon name="eye" />
+              </button>
+            </div>
+            <p className="pa-hint">{c.passwordHint}</p>
+          </div>
+          <label className="pa-check">
+            <input type="checkbox" name="terms" value="1" required />
+            <span>
+              J’accepte les <Link href={c.termsCguHref} className="pa-link">conditions d’utilisation</Link> et j’ai lu la{" "}
+              <Link href={c.termsPrivacyHref} className="pa-link">politique de confidentialité</Link>.
+            </span>
+          </label>
+          {error ? <p className="pa-error" role="alert">{error}</p> : null}
+          <button type="submit" className="pa-submit" disabled={pending}>
+            {pending ? "Création…" : `${c.submit} →`}
+          </button>
+          <p className="pa-hint">{c.after}</p>
+        </form>
+      </div>
+      <p className="pa-help pa-help--center">
+        <DpIcon name="headset" /> {c.help} <Link href={c.helpHref} className="pa-link">{c.helpLink}</Link>
       </p>
-    </form>
+    </div>
   );
 }

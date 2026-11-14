@@ -12,7 +12,7 @@ test("vidéo — survol, bascule et menu mobile", async ({ page }) => {
 
   await page.getByRole("button", { name: "Solutions", exact: true }).hover();
   await page.waitForTimeout(700);
-  await page.getByRole("button", { name: "Équipements", exact: true }).hover();
+  await page.getByRole("button", { name: "Articles & équipements", exact: true }).hover();
   await page.waitForTimeout(700);
   await page.getByRole("button", { name: "Partenaires", exact: true }).hover();
   await page.waitForTimeout(500);
@@ -25,7 +25,7 @@ test("vidéo — survol, bascule et menu mobile", async ({ page }) => {
   await page.waitForTimeout(250);
   await page.getByRole("button", { name: "Solutions" }).click();
   await page.waitForTimeout(400);
-  await page.getByRole("button", { name: "Équipements" }).click();
+  await page.getByRole("button", { name: "Articles & équipements" }).click();
   await page.waitForTimeout(400);
   await page.getByRole("button", { name: /Fermer le menu/i }).click();
   await page.waitForTimeout(250);

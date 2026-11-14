@@ -1,16 +1,5 @@
-import type { Metadata } from "next";
-import { PartnerCatalogPanel } from "@/components/partner-portal/PartnerCatalogPanel";
-import "@/styles/admin.css";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Catalogue partenaire",
-  robots: { index: false, follow: false },
-};
-
-export default function PartnerCatalogPage() {
-  return (
-    <main className="adm-page">
-      <PartnerCatalogPanel />
-    </main>
-  );
+export default function PartnerCatalogueRedirect() {
+  redirect("/espace-partenaire/articles");
 }

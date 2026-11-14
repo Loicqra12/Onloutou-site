@@ -4,6 +4,7 @@ loadBackendEnv();
 
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../src/lib/password.js";
+import { enableTwoFactorForUser } from "../src/modules/auth/service.js";
 
 // Garde : ne jamais créer l'admin de test hors d'une base de test autorisée.
 const dbName = process.env.DATABASE_URL?.match(/\/([^/?]+)(\?|$)/)?.[1] ?? "";
@@ -16,10 +17,11 @@ const prisma = new PrismaClient();
 
 const email = process.env.E2E_ADMIN_EMAIL ?? "e2e-admin@onloutou.local";
 const password = process.env.E2E_ADMIN_PASSWORD ?? "E2eAdminPass12345!";
+const totpSecret = process.env.E2E_ADMIN_TOTP_SECRET ?? "ONLOUTOUADMIN2FADEVAAA";
 
 async function main() {
   const passwordHash = await hashPassword(password);
-  await prisma.user.upsert({
+  const user = await prisma.user.upsert({
     where: { email },
     update: { passwordHash, role: "ADMIN", status: "ACTIVE" },
     create: {
@@ -30,6 +32,7 @@ async function main() {
       displayName: "Admin E2E",
     },
   });
+  await enableTwoFactorForUser(user.id, totpSecret);
   console.log(`E2E admin prêt : ${email}`);
 }
 

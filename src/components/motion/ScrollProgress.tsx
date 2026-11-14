@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { prefersReducedMotion } from "@/components/motion/enable-motion";
 
 export function ScrollProgress() {
+  const pathname = usePathname() ?? "";
+  const hidden = pathname.startsWith("/espace-partenaire") || pathname.startsWith("/espace-livreur");
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || hidden) return;
 
     let frame = 0;
     const update = () => {
@@ -31,9 +34,9 @@ export function ScrollProgress() {
       window.removeEventListener("scroll", onScroll);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [hidden]);
 
-  if (progress <= 0) return null;
+  if (hidden || progress <= 0) return null;
 
   return (
     <div

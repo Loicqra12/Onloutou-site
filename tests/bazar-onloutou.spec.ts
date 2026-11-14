@@ -35,7 +35,7 @@ test.describe("Archives catalogue bazar-onloutou", () => {
   test("pas de nouvelle route applicative", () => {
     const routes = discoverAppRoutes();
     expect(routes).not.toContain("/bazar");
-    expect(routes.length).toBe(46);
+    expect(routes.length).toBe(43);
   });
 
   test("contenu interdit absent sur /projets", async ({ page }) => {
